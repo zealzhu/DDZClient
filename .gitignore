@@ -286,3 +286,47 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+#debug
+Debug.win32/
+
+# Xcode
+.DS_Store
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+profile
+*.moved-aside
+DerivedData
+.idea/
+*.hmap
+
+#CocoaPods
+Pods
+
+# Ignore files build by ndk and eclipse
+bin/
+obj/
+gen/
+assets/
+local.properties
+
+# android
+libcocos2dcpp.so
+proj.android/libs/armeabi/gdb.setup
+proj.android/libs/armeabi/gdbserver
+proj.android/libs/armeabi-v7a/gdb.setup
+proj.android/libs/armeabi-v7a/gdbserver
+proj.android/libs/x86/gdb.setup
+proj.android/libs/x86/gdbserver
+proj.android/libs/armeabi/libMyGame.so
+
+# android studio
+*.iml
+cocos2d/cocos/platform/android/libcocos2dx/build
