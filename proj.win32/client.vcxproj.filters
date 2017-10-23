@@ -34,6 +34,12 @@
     <Filter Include="src\FrameWork（框架）\UI">
       <UniqueIdentifier>{98afa498-67ce-48f9-b244-304a995d48e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\FrameWork（框架）\Thread">
+      <UniqueIdentifier>{a9bd9074-34ae-4e2f-b63b-1d0d731507f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\FrameWork（框架）\Net\Message">
+      <UniqueIdentifier>{aae46ab4-69cf-4c35-ac53-638ba7a12e6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -91,6 +97,18 @@
     </ClInclude>
     <ClInclude Include="..\Classes\FrameWork\Control\AppInitManager.h">
       <Filter>src\FrameWork（框架）\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Thread\ThreadLib.h">
+      <Filter>src\FrameWork（框架）\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Thread\ThreadLibMutex.h">
+      <Filter>src\FrameWork（框架）\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Thread\ThreadException.h">
+      <Filter>src\FrameWork（框架）\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Thread\ThreadLibFunctions.h">
+      <Filter>src\FrameWork（框架）\Thread</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

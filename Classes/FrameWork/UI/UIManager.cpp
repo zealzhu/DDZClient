@@ -78,13 +78,11 @@ cocos2d::Layer * CUIManager::createLayer(ENUM_UI_LAYER layerId)
 {
 	Layer * layer = NULL;
 	auto it = m_mapLayerCreateFunc.find(layerId);
-	if (it != m_mapLayerCreateFunc.end()) {
-		// 创建layer
-		layer = it->second();
-	}
-	else {
-		CCLOG("Layer %d is not found.", layerId);
-	}
+
+	CCAssert(it != m_mapLayerCreateFunc.end(), "Layer %d is not found.", layerId);
+
+	// 创建layer
+	layer = it->second();
 
 	return layer;
 }

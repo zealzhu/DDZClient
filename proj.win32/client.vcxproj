@@ -163,6 +163,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Common\Singleton.h" />
     <ClInclude Include="..\Classes\Common\UIDataDefine.h" />
     <ClInclude Include="..\Classes\FrameWork\Control\AppInitManager.h" />
+    <ClInclude Include="..\Classes\FrameWork\Thread\ThreadException.h" />
+    <ClInclude Include="..\Classes\FrameWork\Thread\ThreadLib.h" />
+    <ClInclude Include="..\Classes\FrameWork\Thread\ThreadLibFunctions.h" />
+    <ClInclude Include="..\Classes\FrameWork\Thread\ThreadLibMutex.h" />
     <ClInclude Include="..\Classes\FrameWork\UI\BaseLayer.h" />
     <ClInclude Include="..\Classes\FrameWork\UI\ILayer.h" />
     <ClInclude Include="..\Classes\FrameWork\UI\UIManager.h" />
