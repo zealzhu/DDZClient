@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -14,7 +14,6 @@
     <ProjectGuid>{76A39BB2-9B84-4C65-98A5-654D86B86F2A}</ProjectGuid>
     <RootNamespace>test_win32</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -76,7 +75,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(EngineRoot);$(EngineRoot)external;$(EngineRoot)cocos\audio\include;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>G:\zhu\DDZClient\Classes\FrameWork\Control;G:\zhu\DDZClient\Classes\UI\Layer;G:\zhu\DDZClient\Classes\UI\Scene;G:\zhu\DDZClient\Classes\FrameWork\Data;G:\zhu\DDZClient\Classes\FrameWork\NET;G:\zhu\DDZClient\Classes\FrameWork\UI;G:\zhu\DDZClient\Classes\Common;$(EngineRoot);$(EngineRoot)external;$(EngineRoot)cocos\audio\include;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -150,12 +149,24 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
+    <ClCompile Include="..\Classes\Common\UIDataDefine.cpp" />
+    <ClCompile Include="..\Classes\FrameWork\Control\AppInitManager.cpp" />
+    <ClCompile Include="..\Classes\FrameWork\UI\BaseLayer.cpp" />
+    <ClCompile Include="..\Classes\FrameWork\UI\UIManager.cpp" />
+    <ClCompile Include="..\Classes\UI\Layer\HallLayer.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
-    <ClInclude Include="..\Classes\HelloWorldScene.h" />
+    <ClInclude Include="..\Classes\Common\AppFunc.h" />
+    <ClInclude Include="..\Classes\Common\IncludeLayersHead.h" />
+    <ClInclude Include="..\Classes\Common\Singleton.h" />
+    <ClInclude Include="..\Classes\Common\UIDataDefine.h" />
+    <ClInclude Include="..\Classes\FrameWork\Control\AppInitManager.h" />
+    <ClInclude Include="..\Classes\FrameWork\UI\BaseLayer.h" />
+    <ClInclude Include="..\Classes\FrameWork\UI\ILayer.h" />
+    <ClInclude Include="..\Classes\FrameWork\UI\UIManager.h" />
+    <ClInclude Include="..\Classes\UI\Layer\HallLayer.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

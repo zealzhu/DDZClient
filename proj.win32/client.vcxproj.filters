@@ -10,6 +10,30 @@
     <Filter Include="src">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Common（通用）">
+      <UniqueIdentifier>{906bdc27-ce6b-4289-8135-1ad4401e38e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\FrameWork（框架）">
+      <UniqueIdentifier>{e942a934-2946-4444-b1cb-b83815b9c2b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\UI（界面图形）">
+      <UniqueIdentifier>{d3decfae-7095-4bad-992e-884eb1df0e56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\UI（界面图形）\Layer">
+      <UniqueIdentifier>{76046264-40b4-4ab5-b413-5851f5bbf042}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\FrameWork（框架）\Net">
+      <UniqueIdentifier>{99b5d61a-04a6-4a63-81b9-b98ed6f44530}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\FrameWork（框架）\Data">
+      <UniqueIdentifier>{70e8c67b-e35a-4c94-aed0-43b80ca26543}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\FrameWork（框架）\Control">
+      <UniqueIdentifier>{c0f81e7d-2b8e-4304-85d5-0780738a854b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\FrameWork（框架）\UI">
+      <UniqueIdentifier>{98afa498-67ce-48f9-b244-304a995d48e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -18,8 +42,20 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\Classes\FrameWork\UI\UIManager.cpp">
+      <Filter>src\FrameWork（框架）\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UI\Layer\HallLayer.cpp">
+      <Filter>src\UI（界面图形）\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Common\UIDataDefine.cpp">
+      <Filter>src\Common（通用）</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FrameWork\UI\BaseLayer.cpp">
+      <Filter>src\FrameWork（框架）\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FrameWork\Control\AppInitManager.cpp">
+      <Filter>src\FrameWork（框架）\Control</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -29,8 +65,32 @@
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\HelloWorldScene.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\Classes\FrameWork\UI\UIManager.h">
+      <Filter>src\FrameWork（框架）\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Common\Singleton.h">
+      <Filter>src\Common（通用）</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Common\UIDataDefine.h">
+      <Filter>src\Common（通用）</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Common\IncludeLayersHead.h">
+      <Filter>src\Common（通用）</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\UI\ILayer.h">
+      <Filter>src\FrameWork（框架）\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UI\Layer\HallLayer.h">
+      <Filter>src\UI（界面图形）\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\UI\BaseLayer.h">
+      <Filter>src\FrameWork（框架）\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Common\AppFunc.h">
+      <Filter>src\Common（通用）</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Control\AppInitManager.h">
+      <Filter>src\FrameWork（框架）\Control</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
