@@ -40,6 +40,9 @@
     <Filter Include="src\FrameWork（框架）\Net\Message">
       <UniqueIdentifier>{aae46ab4-69cf-4c35-ac53-638ba7a12e6e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\FrameWork（框架）\Net\Socket">
+      <UniqueIdentifier>{01b218a1-96b0-45d1-9441-62e3de3620fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -62,6 +65,18 @@
     </ClCompile>
     <ClCompile Include="..\Classes\FrameWork\Control\AppInitManager.cpp">
       <Filter>src\FrameWork（框架）\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FrameWork\Thread\ThreadLibFunctions.cpp">
+      <Filter>src\FrameWork（框架）\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FrameWork\Net\Socket\SocketLibErrors.cpp">
+      <Filter>src\FrameWork（框架）\Net\Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FrameWork\Net\Socket\SocketLibSocket.cpp">
+      <Filter>src\FrameWork（框架）\Net\Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FrameWork\Net\Socket\SocketLibSystem.cpp">
+      <Filter>src\FrameWork（框架）\Net\Socket</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +124,18 @@
     </ClInclude>
     <ClInclude Include="..\Classes\FrameWork\Thread\ThreadLibFunctions.h">
       <Filter>src\FrameWork（框架）\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibErrors.h">
+      <Filter>src\FrameWork（框架）\Net\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibSocket.h">
+      <Filter>src\FrameWork（框架）\Net\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibSystem.h">
+      <Filter>src\FrameWork（框架）\Net\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibTypes.h">
+      <Filter>src\FrameWork（框架）\Net\Socket</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

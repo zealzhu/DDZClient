@@ -151,6 +151,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Common\UIDataDefine.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Control\AppInitManager.cpp" />
+    <ClCompile Include="..\Classes\FrameWork\Net\Socket\SocketLibErrors.cpp" />
+    <ClCompile Include="..\Classes\FrameWork\Net\Socket\SocketLibSocket.cpp" />
+    <ClCompile Include="..\Classes\FrameWork\Net\Socket\SocketLibSystem.cpp" />
+    <ClCompile Include="..\Classes\FrameWork\Thread\ThreadLibFunctions.cpp" />
     <ClCompile Include="..\Classes\FrameWork\UI\BaseLayer.cpp" />
     <ClCompile Include="..\Classes\FrameWork\UI\UIManager.cpp" />
     <ClCompile Include="..\Classes\UI\Layer\HallLayer.cpp" />
@@ -163,6 +167,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Common\Singleton.h" />
     <ClInclude Include="..\Classes\Common\UIDataDefine.h" />
     <ClInclude Include="..\Classes\FrameWork\Control\AppInitManager.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibErrors.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibSocket.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibSystem.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibTypes.h" />
     <ClInclude Include="..\Classes\FrameWork\Thread\ThreadException.h" />
     <ClInclude Include="..\Classes\FrameWork\Thread\ThreadLib.h" />
     <ClInclude Include="..\Classes\FrameWork\Thread\ThreadLibFunctions.h" />
