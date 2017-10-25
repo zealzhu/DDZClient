@@ -75,7 +75,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>G:\zhu\DDZClient\Classes\FrameWork\Control;G:\zhu\DDZClient\Classes\UI\Layer;G:\zhu\DDZClient\Classes\UI\Scene;G:\zhu\DDZClient\Classes\FrameWork\Data;G:\zhu\DDZClient\Classes\FrameWork\NET;G:\zhu\DDZClient\Classes\FrameWork\UI;G:\zhu\DDZClient\Classes\Common;$(EngineRoot);$(EngineRoot)external;$(EngineRoot)cocos\audio\include;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>G:\zhu\DDZClient\Classes\FrameWork\Net\Message;G:\zhu\DDZClient\Classes\protobuf\lib;G:\zhu\DDZClient\Classes\protobuf\include;G:\zhu\DDZClient\Classes\FrameWork\Control;G:\zhu\DDZClient\Classes\UI\Layer;G:\zhu\DDZClient\Classes\UI\Scene;G:\zhu\DDZClient\Classes\FrameWork\Data;G:\zhu\DDZClient\Classes\FrameWork\NET;G:\zhu\DDZClient\Classes\FrameWork\UI;G:\zhu\DDZClient\Classes\Common;$(EngineRoot);$(EngineRoot)external;$(EngineRoot)cocos\audio\include;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -151,6 +151,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Common\UIDataDefine.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Control\AppInitManager.cpp" />
+    <ClCompile Include="..\Classes\FrameWork\Net\Protocol\Code.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Socket\SocketLibErrors.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Socket\SocketLibSocket.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Socket\SocketLibSystem.cpp" />
@@ -167,6 +168,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Common\Singleton.h" />
     <ClInclude Include="..\Classes\Common\UIDataDefine.h" />
     <ClInclude Include="..\Classes\FrameWork\Control\AppInitManager.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Protocol\Code.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibErrors.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibSocket.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibSystem.h" />
