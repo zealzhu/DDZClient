@@ -84,6 +84,18 @@
     <ClCompile Include="..\Classes\FrameWork\Net\Protocol\Code.cpp">
       <Filter>src\FrameWork（框架）\Net（网络）\Protocol（协议）</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\FrameWork\Net\Message\BaseMsg.pb.cc">
+      <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FrameWork\Net\NetManager.cpp">
+      <Filter>src\FrameWork（框架）\Net（网络）</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FrameWork\Net\Socket\GameServerSocket.cpp">
+      <Filter>src\FrameWork（框架）\Net（网络）\Socket（传输）</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FrameWork\Net\Message\MsgManager.cpp">
+      <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -145,6 +157,24 @@
     </ClInclude>
     <ClInclude Include="..\Classes\FrameWork\Net\Protocol\Code.h">
       <Filter>src\FrameWork（框架）\Net（网络）\Protocol（协议）</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\BaseMsg.pb.h">
+      <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Common\Basic.h">
+      <Filter>src\Common（通用）</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Common\Exception.h">
+      <Filter>src\Common（通用）</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Net\NetManager.h">
+      <Filter>src\FrameWork（框架）\Net（网络）</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Net\Socket\GameServerSocket.h">
+      <Filter>src\FrameWork（框架）\Net（网络）\Socket（传输）</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\MsgManager.h">
+      <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

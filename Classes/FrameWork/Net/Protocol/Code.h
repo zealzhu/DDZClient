@@ -9,6 +9,7 @@
 
 #include <google/protobuf/message.h>
 #include <BaseMsg.pb.h>
+#include <SocketLibSocket.h>
 
 #define HEADER_SIZE 4
 
@@ -32,7 +33,7 @@ public:
 	static const char * encode(const google::protobuf::Message & message, int & iBuffSize);
 
 	// 解码
-	static google::protobuf::Message * decode(char * pBuf);
+	static MessagePtr decode(SocketLib::DataSocket * cSock, unsigned int iSize);
 
 	// 读取头部
 	static unsigned int readHdr(char * pBuf);
@@ -42,6 +43,9 @@ public:
 
 	// 解析Message成真正有用的数据包
 	static MessagePtr parseInnerMsg(std::shared_ptr<zhu::SelfDescribingMessage> pOutterMsg, ErrorCode& error);
+
+	// 将错误码转换成对应的文本
+	static const std::string& ErrorCodeToString(ErrorCode errorCode);
 };
 
 #endif // !_CODE_H

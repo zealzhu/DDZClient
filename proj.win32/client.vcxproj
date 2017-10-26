@@ -75,11 +75,11 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>G:\zhu\DDZClient\Classes\FrameWork\Net\Message;G:\zhu\DDZClient\Classes\protobuf\lib;G:\zhu\DDZClient\Classes\protobuf\include;G:\zhu\DDZClient\Classes\FrameWork\Control;G:\zhu\DDZClient\Classes\UI\Layer;G:\zhu\DDZClient\Classes\UI\Scene;G:\zhu\DDZClient\Classes\FrameWork\Data;G:\zhu\DDZClient\Classes\FrameWork\NET;G:\zhu\DDZClient\Classes\FrameWork\UI;G:\zhu\DDZClient\Classes\Common;$(EngineRoot);$(EngineRoot)external;$(EngineRoot)cocos\audio\include;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>G:\zhu\DDZClient\Classes\FrameWork\Thread;G:\zhu\DDZClient\Classes\FrameWork\Net\Socket;G:\zhu\DDZClient\Classes\FrameWork\Net\Message;G:\zhu\DDZClient\Classes\FrameWork\Control;G:\zhu\DDZClient\Classes\UI\Layer;G:\zhu\DDZClient\Classes\UI\Scene;G:\zhu\DDZClient\Classes\FrameWork\Data;G:\zhu\DDZClient\Classes\FrameWork\NET;G:\zhu\DDZClient\Classes\FrameWork\UI;G:\zhu\DDZClient\Classes\Common;$(EngineRoot);$(EngineRoot)external;$(EngineRoot)cocos\audio\include;$(EngineRoot)external\protobuf\include;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -88,9 +88,9 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libcurl.lib;%(AdditionalDependencies);$(_COCOS_LIB_WIN32_BEGIN);$(_COCOS_LIB_WIN32_END)</AdditionalDependencies>
+      <AdditionalDependencies>libprotobufd.lib;%(AdditionalDependencies);$(_COCOS_LIB_WIN32_BEGIN);$(_COCOS_LIB_WIN32_END)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories);$(_COCOS_LIB_PATH_WIN32_BEGIN);$(_COCOS_LIB_PATH_WIN32_END)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>G:\zhu\DDZClient\cocos2d\external\protobuf\prebuilt\win32\debug-lib;$(OutDir);%(AdditionalLibraryDirectories);$(_COCOS_LIB_PATH_WIN32_BEGIN);$(_COCOS_LIB_PATH_WIN32_END)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -112,6 +112,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
       <Outputs>$(TargetName).cab</Outputs>
       <Inputs>$(TargetFileName)</Inputs>
     </CustomBuildStep>
+    <Link>
+      <IgnoreSpecificDefaultLibraries Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</IgnoreAllDefaultLibraries>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -151,7 +155,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Common\UIDataDefine.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Control\AppInitManager.cpp" />
+    <ClCompile Include="..\Classes\FrameWork\Net\Message\BaseMsg.pb.cc" />
+    <ClCompile Include="..\Classes\FrameWork\Net\Message\MsgManager.cpp" />
+    <ClCompile Include="..\Classes\FrameWork\Net\NetManager.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Protocol\Code.cpp" />
+    <ClCompile Include="..\Classes\FrameWork\Net\Socket\GameServerSocket.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Socket\SocketLibErrors.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Socket\SocketLibSocket.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Socket\SocketLibSystem.cpp" />
@@ -164,11 +172,17 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Common\AppFunc.h" />
+    <ClInclude Include="..\Classes\Common\Basic.h" />
+    <ClInclude Include="..\Classes\Common\Exception.h" />
     <ClInclude Include="..\Classes\Common\IncludeLayersHead.h" />
     <ClInclude Include="..\Classes\Common\Singleton.h" />
     <ClInclude Include="..\Classes\Common\UIDataDefine.h" />
     <ClInclude Include="..\Classes\FrameWork\Control\AppInitManager.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\BaseMsg.pb.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\MsgManager.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\NetManager.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Protocol\Code.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Socket\GameServerSocket.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibErrors.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibSocket.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibSystem.h" />
