@@ -176,6 +176,12 @@
     <ClInclude Include="..\Classes\FrameWork\Net\Message\MsgManager.h">
       <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Data\IModule.h">
+      <Filter>src\FrameWork（框架）\Data（游戏数据）</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Data\ModuleManager.h">
+      <Filter>src\FrameWork（框架）\Data（游戏数据）</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

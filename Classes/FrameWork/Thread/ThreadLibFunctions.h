@@ -29,6 +29,7 @@ namespace ThreadLib
     // define the standard thread function format, which takes a void* as its
     // parameter, and returns nothing
     // ========================================================================
+
     typedef void (*ThreadFunc)(void*);
 
     // ========================================================================

@@ -4,6 +4,7 @@
 
 #include "SocketLibSocket.h"
 #include <string>
+#include <google/protobuf/message.h>
 
 class CGameServerSocket 
 	: public SocketLib::DataSocket
@@ -31,7 +32,7 @@ public:
 	virtual void receive();
 
 	// 发送数据
-	virtual void send();
+	virtual int send(const google::protobuf::Message & message);
 	
 protected:
 	// 初始化
@@ -44,6 +45,9 @@ public:
 protected:
 	// 链接是否关闭
 	bool m_closed;
+
+	// 用来接收头部缓存
+	char headerBuf[4];
 };
 
 #endif

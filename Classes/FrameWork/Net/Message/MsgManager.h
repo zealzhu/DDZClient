@@ -4,10 +4,14 @@
 // Created： 2017/10/26
 // Describe：消息管理器 - 单线程就没必要使用生产者消费者模式了
 ////////////////////////////////////////////////////////////////////////
+#ifndef _MSG_MANAGER_H
+#define _MSG_MANAGER_H
 
 #include <google/protobuf/message.h>
 #include <deque>
-#include <ThreadLibMutex.h>
+#include <ThreadLib.h>
+#include <Singleton.h>
+
 
 typedef std::shared_ptr<google::protobuf::Message> MSG_PTR;
 typedef std::deque<MSG_PTR> MSG_DEQUE;
@@ -16,12 +20,53 @@ typedef std::deque<MSG_PTR>::iterator MSG_ITER;
 // 消息队列最大容量
 const unsigned int MAX_DEQUE_MESSAGE_SIZE = 90000;
 
-class CMsgManager
+// ========================================================================
+// Type:        CMsgLooper
+// Purpose:     消息循环
+// ========================================================================
+class CMsgLooper {
+public:
+
+	// 由cocos2dx Scheduler调用实现与游戏帧率相同的回调函数，与游戏同线程
+	void update(float dt);
+
+	// 开启一个新线程用来接收数据
+	void beginReceiveThread();
+
+	// 结束接收线程
+	void endReceiveThread();
+
+	// 接收线程处理函数
+	static void handleReceiveThread(void * pData);
+
+public:
+	CMsgLooper();
+	~CMsgLooper();
+
+private:
+	static bool m_flag;								//线程结束标志
+	static ThreadLib::ThreadID m_receiveThread;		//接收线程id
+};
+
+class CMsgManager 
+	: public CSingleTon<CMsgManager>
 {
 public:
-	// 获取实例
-	static CMsgManager & getInstance() {
-		static CMsgManager instance;
+	virtual bool init();
+
+private:
+	CMsgLooper m_looper;
+};
+
+// ========================================================================
+// Type:        CMsgDeque
+// Purpose:     消息队列
+// ========================================================================
+class CMsgDeque
+{
+public:
+	static CMsgDeque & getInstance() {
+		static CMsgDeque instance;
 		return instance;
 	}
 
@@ -35,7 +80,7 @@ public:
 	MSG_PTR getReceivedMsg();
 
 private:
-	CMsgManager() {
+	CMsgDeque() {
 		init();
 	}
 
@@ -54,3 +99,5 @@ protected:
 #endif // WIN32
 };
 
+#define MsgManagerIns CMsgManager::getInstance()
+#endif // !_MSG_MANAGER_H

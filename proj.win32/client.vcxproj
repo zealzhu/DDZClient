@@ -76,7 +76,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>G:\zhu\DDZClient\Classes\FrameWork\Thread;G:\zhu\DDZClient\Classes\FrameWork\Net\Socket;G:\zhu\DDZClient\Classes\FrameWork\Net\Message;G:\zhu\DDZClient\Classes\FrameWork\Control;G:\zhu\DDZClient\Classes\UI\Layer;G:\zhu\DDZClient\Classes\UI\Scene;G:\zhu\DDZClient\Classes\FrameWork\Data;G:\zhu\DDZClient\Classes\FrameWork\NET;G:\zhu\DDZClient\Classes\FrameWork\UI;G:\zhu\DDZClient\Classes\Common;$(EngineRoot);$(EngineRoot)external;$(EngineRoot)cocos\audio\include;$(EngineRoot)external\protobuf\include;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -178,6 +178,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Common\Singleton.h" />
     <ClInclude Include="..\Classes\Common\UIDataDefine.h" />
     <ClInclude Include="..\Classes\FrameWork\Control\AppInitManager.h" />
+    <ClInclude Include="..\Classes\FrameWork\Data\IModule.h" />
+    <ClInclude Include="..\Classes\FrameWork\Data\ModuleManager.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Message\BaseMsg.pb.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Message\MsgManager.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\NetManager.h" />

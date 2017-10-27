@@ -12,6 +12,7 @@ class CNetManager
 public:
 	// 连接到游戏服务器
 	bool connectGameServer();
+	CGameServerSocket & getGameServerSocket();
 	virtual bool init();
 
 protected:
@@ -22,6 +23,7 @@ private:
 	CGameServerSocket m_gameServerSocket;
 };
 
+#define NetManagerIns CNetManager::getInstance()
 #endif
 
 

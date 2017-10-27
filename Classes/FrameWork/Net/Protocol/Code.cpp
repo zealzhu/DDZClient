@@ -4,6 +4,7 @@
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <BaseMsg.pb.h>
 #include <Basic.h>
+#include "cocos2d.h"
 
 using namespace google::protobuf;
 using namespace google::protobuf::io;
@@ -56,12 +57,16 @@ MessagePtr ProtocolCode::decode(SocketLib::DataSocket * cSock, unsigned int iSiz
 
 		uiTotal += uiByteCount;
 	}
+	cocos2d::log("receive byte : %d", uiTotal);
+
 	//Assign ArrayInputStream with enough memory 
 	google::protobuf::io::ArrayInputStream ais(pBuf, iSize);
 	CodedInputStream codedInput(&ais);
 	//De-Serialize
 	pPayload->ParseFromCodedStream(&codedInput);
 	pPayload->add_socket(cSock->GetSock());
+
+	cocos2d::log("inner typename is : %s", pPayload->type_name());
 
 	SAFE_DELETE(pBuf);
 

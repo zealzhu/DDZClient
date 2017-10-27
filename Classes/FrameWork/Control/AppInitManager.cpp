@@ -1,7 +1,7 @@
 #include "AppInitManager.h"
 #include "UIManager.h"
 #include "NetManager.h"
-
+#include "MsgManager.h"
 
 CAppInitManager::CAppInitManager()
 {
@@ -25,7 +25,8 @@ bool CAppInitManager::initManager()
 	if (!m_bInit) {
 		m_bInit = true;
 		if (!UIManagerIns->init()) return false;
-		if (!CNetManager::getInstance()->connectGameServer()) return false;
+		if (!NetManagerIns->init()) return false;
+		if (!MsgManagerIns->init()) return false;
 	}
 	return m_bInit;
 }
