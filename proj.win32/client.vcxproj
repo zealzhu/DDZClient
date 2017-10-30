@@ -167,6 +167,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\FrameWork\UI\BaseLayer.cpp" />
     <ClCompile Include="..\Classes\FrameWork\UI\UIManager.cpp" />
     <ClCompile Include="..\Classes\UI\Layer\HallLayer.cpp" />
+    <ClCompile Include="..\Classes\UI\Layer\LoginLayer.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +198,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\FrameWork\UI\ILayer.h" />
     <ClInclude Include="..\Classes\FrameWork\UI\UIManager.h" />
     <ClInclude Include="..\Classes\UI\Layer\HallLayer.h" />
+    <ClInclude Include="..\Classes\UI\Layer\LoginLayer.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

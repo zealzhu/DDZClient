@@ -17,7 +17,8 @@ CGameServerSocket & CNetManager::getGameServerSocket()
 
 bool CNetManager::init()
 {
-	return connectGameServer();
+	return true;
+	//return connectGameServer();
 }
 
 CNetManager::CNetManager()

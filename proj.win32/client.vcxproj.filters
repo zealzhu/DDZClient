@@ -96,6 +96,9 @@
     <ClCompile Include="..\Classes\FrameWork\Net\Message\MsgManager.cpp">
       <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\UI\Layer\LoginLayer.cpp">
+      <Filter>src\UI（界面图形）\Layer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\FrameWork\Data\ModuleManager.h">
       <Filter>src\FrameWork（框架）\Data（游戏数据）</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UI\Layer\LoginLayer.h">
+      <Filter>src\UI（界面图形）\Layer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
