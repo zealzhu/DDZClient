@@ -2,13 +2,13 @@
 #define IMODULE_H
 
 #include <string>
+#include <Message/BaseMsg.pb.h>
 
 class IModule
 {
 public:
-	virtual void handle() = 0;
-	virtual void init() = 0;
-	virtual std::string getModuleName() = 0;
+	virtual void handle(std::shared_ptr<zhu::SelfDescribingMessage> pTmpMsg) = 0;
+	virtual bool init() = 0;
 };
 
 

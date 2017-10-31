@@ -17,8 +17,12 @@ const std::string STR_UNKNOWN_ERROR = "UnknownError";
 
 const char * ProtocolCode::encode(const google::protobuf::Message & message, int & iBuffSize)
 {
+	zhu::SelfDescribingMessage sendMsg;
+	sendMsg.set_type_name(message.GetTypeName());
+	sendMsg.set_message_data(message.SerializeAsString());
+
 	// 4个字节的头部（长度）+数据包内容长度
-	iBuffSize = message.ByteSize() + HEADER_SIZE;
+	iBuffSize = sendMsg.ByteSize() + HEADER_SIZE;
 
 	// 创建一个该大小的缓存区
 	char * pBuf = new char[iBuffSize];
@@ -27,15 +31,15 @@ const char * ProtocolCode::encode(const google::protobuf::Message & message, int
 	ZeroMemory(pBuf, iBuffSize);
 
 	// 将本地字节流转换为网络字节流
-	unsigned int iNumber = htonl(message.ByteSize());
+	unsigned int iNumber = htonl(sendMsg.ByteSize());
 
 	// 头四个字节用来存储数据包大小
 	memcpy(pBuf, &iNumber, HEADER_SIZE);
 
 	// 以下就是将protobuf数据序列化到内存中
-	ArrayOutputStream aos(pBuf + HEADER_SIZE, message.ByteSize());
+	ArrayOutputStream aos(pBuf + HEADER_SIZE, sendMsg.ByteSize());
 	CodedOutputStream pCodedOutput(&aos);
-	message.SerializeToCodedStream(&pCodedOutput);
+	sendMsg.SerializeToCodedStream(&pCodedOutput);
 
 	return pBuf;
 }
@@ -48,7 +52,8 @@ MessagePtr ProtocolCode::decode(SocketLib::DataSocket * cSock, unsigned int iSiz
 	ZeroMemory(pBuf, iSize);
 
 	unsigned uiTotal = 0;
-	while (uiTotal < iSize && (uiByteCount = recv(cSock->GetSock(), pBuf + uiByteCount, iSize - uiByteCount, 0) > 0))
+	
+	while (uiTotal < iSize && (uiByteCount = cSock->Receive(pBuf + uiByteCount, iSize - uiByteCount)) > 0)
 	{
 		if (uiByteCount == -1)
 		{
@@ -66,7 +71,7 @@ MessagePtr ProtocolCode::decode(SocketLib::DataSocket * cSock, unsigned int iSiz
 	pPayload->ParseFromCodedStream(&codedInput);
 	pPayload->add_socket(cSock->GetSock());
 
-	cocos2d::log("inner typename is : %s", pPayload->type_name());
+	cocos2d::log("inner typename is : %s", pPayload->type_name().c_str());
 
 	SAFE_DELETE(pBuf);
 

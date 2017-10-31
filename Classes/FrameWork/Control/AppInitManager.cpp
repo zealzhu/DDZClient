@@ -2,6 +2,7 @@
 #include "UIManager.h"
 #include "NetManager.h"
 #include "MsgManager.h"
+#include "ModuleManager.h"
 
 CAppInitManager::CAppInitManager()
 {
@@ -27,7 +28,7 @@ bool CAppInitManager::initManager()
 		m_bInit = true;
 		if (!UIManagerIns->init()) return false;
 		if (!NetManagerIns->init()) return false;
-		//if (!MsgManagerIns->init()) return false;
+		if (!ModuleManagerIns->init()) return false;
 	}
 	return m_bInit;
 }

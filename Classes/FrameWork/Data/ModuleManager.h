@@ -6,6 +6,7 @@
 #include <map>
 #include <BaseMsg.pb.h>
 #include <Singleton.h>
+#include "DataCenter.h"
 
 typedef std::map<std::string, std::shared_ptr<IModule>> MODULE_MAP;
 typedef std::map<std::string, std::shared_ptr<IModule>>::iterator MODULE_ITER;
@@ -55,12 +56,28 @@ public:
 
 	// 初始化模块
 	virtual bool init() {
+		std::shared_ptr<CDataCenter> pDataCenter(new CDataCenter);
+		pDataCenter->init();
+		addModule("data", pDataCenter);
+
 		return true;
 	}
 
 	// 将消息分发给各个模块
-	void dispatchMsg() {
+	void dispatchMsg(MSG_PTR pMsg) {
+		std::shared_ptr<zhu::SelfDescribingMessage> pTmpMsg = std::dynamic_pointer_cast<zhu::SelfDescribingMessage>(pMsg);
+		if (NULL == pTmpMsg.get())
+		{
+			//log("dynamic_cast msg failed");
+			return;
+		}
 
+		auto it = m_moduleMap.begin();
+
+		while (it != m_moduleMap.end()) {
+			it->second->handle(pTmpMsg);
+			it++;
+		}
 	}
 
 private:
@@ -70,4 +87,5 @@ private:
 	MODULE_MAP m_moduleMap;
 };
 
+#define ModuleManagerIns CModuleManager::getInstance()
 #endif

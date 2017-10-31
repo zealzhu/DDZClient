@@ -4,5 +4,6 @@
 
 #include "HallLayer.h"
 #include "LoginLayer.h"
+#include "TopLayer.h"
 
 #endif

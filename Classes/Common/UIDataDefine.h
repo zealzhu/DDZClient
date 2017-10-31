@@ -4,7 +4,7 @@
 
 // Layer 枚举
 typedef enum {
-	ENUM_LOADING_LAYER,			// 加载
+	ENUM_TOP_LAYER,				// 加载
 	ENUM_LOGIN_LAYER,			// 登录
 	ENUM_HALL_LAYER,			// 大厅
 } ENUM_UI_LAYER;

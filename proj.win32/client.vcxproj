@@ -155,7 +155,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Common\UIDataDefine.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Control\AppInitManager.cpp" />
+    <ClCompile Include="..\Classes\FrameWork\Data\DataCenter.cpp" />
+    <ClCompile Include="..\Classes\FrameWork\Data\user\player.pb.cc" />
     <ClCompile Include="..\Classes\FrameWork\Net\Message\BaseMsg.pb.cc" />
+    <ClCompile Include="..\Classes\FrameWork\Net\Message\MsgHandler.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Message\MsgManager.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\NetManager.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Protocol\Code.cpp" />
@@ -179,9 +182,12 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Common\Singleton.h" />
     <ClInclude Include="..\Classes\Common\UIDataDefine.h" />
     <ClInclude Include="..\Classes\FrameWork\Control\AppInitManager.h" />
+    <ClInclude Include="..\Classes\FrameWork\Data\DataCenter.h" />
     <ClInclude Include="..\Classes\FrameWork\Data\IModule.h" />
     <ClInclude Include="..\Classes\FrameWork\Data\ModuleManager.h" />
+    <ClInclude Include="..\Classes\FrameWork\Data\user\player.pb.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Message\BaseMsg.pb.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\MsgHandler.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Message\MsgManager.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\NetManager.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Protocol\Code.h" />

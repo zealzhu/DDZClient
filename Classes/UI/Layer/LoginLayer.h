@@ -10,6 +10,7 @@ class LoginLayer
 public:
 	LoginLayer();
 	virtual bool init();
+	void loginCallback(cocos2d::Ref * target);
 
 private:
 	cocos2d::Node * m_layerGraphNode;

@@ -9,8 +9,11 @@ ThreadLib::ThreadID CMsgLooper::m_receiveThread = 0;
 
 void CMsgLooper::update(float dt)
 {
+	if (CMsgDeque::getInstance().receivedMsgEmpty())
+		return;
+	auto msg = CMsgDeque::getInstance().getReceivedMsg();
 	// 分发处理消息
-	CModuleManager::getInstance()->dispatchMsg();
+	CModuleManager::getInstance()->dispatchMsg(msg);
 }
 
 void CMsgLooper::beginReceiveThread()
