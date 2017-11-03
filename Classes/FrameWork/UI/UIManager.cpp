@@ -54,12 +54,17 @@ void CUIManager::initCocosSetting(const std::string strWindowsName)
 	{
 		GDirector->setContentScaleFactor(MIN(smallResolutionSize.height / designResolutionSize.height, smallResolutionSize.width / designResolutionSize.width));
 	}
+
+	// add search path
+	cocos2d::FileUtils::getInstance()->addSearchPath("res");
 }
 
 bool CUIManager::init()
 {
 
 	layerCreateInit(&m_mapLayerCreateFunc);
+
+	GSpriteFrameCache->addSpriteFramesWithFile("card.plist");
 
 	return true;
 }
@@ -69,9 +74,18 @@ void CUIManager::initGraphBase()
 	if (m_currentScene == NULL) {
 		m_currentScene = Scene::create();	
 		auto layer = createLayer(ENUM_LOGIN_LAYER);
+		m_currentLayerId = ENUM_LOGIN_LAYER;
 		m_currentScene->addChild(layer);
 		GDirector->runWithScene(m_currentScene);
+
+		initTopLayer();
 	}
+}
+
+void CUIManager::initTopLayer()
+{
+	m_topLayer = (CTopLayer *)createLayer(ENUM_TOP_LAYER);
+	m_currentScene->addChild(m_topLayer, 9999, ENUM_TOP_LAYER);
 }
 
 cocos2d::Layer * CUIManager::createLayer(ENUM_UI_LAYER layerId)
@@ -82,7 +96,25 @@ cocos2d::Layer * CUIManager::createLayer(ENUM_UI_LAYER layerId)
 	CCAssert(it != m_mapLayerCreateFunc.end(), "Layer not found.");
 
 	// ´´½¨layer
-	layer = it->second();
+	layer = it->second(layerId);
 
 	return layer;
+}
+
+CTopLayer * CUIManager::getTopLayer()
+{
+	return m_topLayer;
+}
+
+cocos2d::Layer * CUIManager::getCurrentLayer()
+{
+	return (Layer *)m_currentScene->getChildByTag(m_currentLayerId);
+}
+
+void CUIManager::replaceCurrentLayer(ENUM_UI_LAYER layerId)
+{
+	m_currentScene->removeChildByTag(m_currentLayerId, true);
+	auto layer = createLayer(layerId);
+	m_currentLayerId = layerId;
+	m_currentScene->addChild(layer, layerId);
 }

@@ -6,7 +6,7 @@ using namespace SocketLib;
 
 bool CNetManager::connectGameServer()
 {
-	return m_gameServerSocket.connectServer("127.0.0.1");
+	return m_gameServerSocket.connectServer("127.0.0.1", 9999);
 }
 
 CGameServerSocket & CNetManager::getGameServerSocket()
@@ -15,10 +15,15 @@ CGameServerSocket & CNetManager::getGameServerSocket()
 	return m_gameServerSocket;
 }
 
+bool CNetManager::isConnected()
+{
+	return m_gameServerSocket.IsConnected();
+}
+
 bool CNetManager::init()
 {
+
 	return true;
-	//return connectGameServer();
 }
 
 CNetManager::CNetManager()

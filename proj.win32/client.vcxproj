@@ -153,13 +153,15 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\Common\RayCommonFunction.cpp" />
     <ClCompile Include="..\Classes\Common\UIDataDefine.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Control\AppInitManager.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Data\DataCenter.cpp" />
-    <ClCompile Include="..\Classes\FrameWork\Data\user\player.pb.cc" />
     <ClCompile Include="..\Classes\FrameWork\Net\Message\BaseMsg.pb.cc" />
-    <ClCompile Include="..\Classes\FrameWork\Net\Message\MsgHandler.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Message\MsgManager.cpp" />
+    <ClCompile Include="..\Classes\FrameWork\Net\Message\room\room.pb.cc" />
+    <ClCompile Include="..\Classes\FrameWork\Net\Message\table\table.pb.cc" />
+    <ClCompile Include="..\Classes\FrameWork\Net\Message\user\player.pb.cc" />
     <ClCompile Include="..\Classes\FrameWork\Net\NetManager.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Protocol\Code.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Socket\GameServerSocket.cpp" />
@@ -169,8 +171,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\FrameWork\Thread\ThreadLibFunctions.cpp" />
     <ClCompile Include="..\Classes\FrameWork\UI\BaseLayer.cpp" />
     <ClCompile Include="..\Classes\FrameWork\UI\UIManager.cpp" />
+    <ClCompile Include="..\Classes\UI\Layer\RoomLayer.cpp" />
+    <ClCompile Include="..\Classes\UI\Layer\TopLayer.cpp" />
     <ClCompile Include="..\Classes\UI\Layer\HallLayer.cpp" />
     <ClCompile Include="..\Classes\UI\Layer\LoginLayer.cpp" />
+    <ClCompile Include="..\Classes\UI\Node\Poker.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -179,16 +184,19 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Common\Basic.h" />
     <ClInclude Include="..\Classes\Common\Exception.h" />
     <ClInclude Include="..\Classes\Common\IncludeLayersHead.h" />
+    <ClInclude Include="..\Classes\Common\NotifacationString.h" />
+    <ClInclude Include="..\Classes\Common\RayCommonFunction.h" />
     <ClInclude Include="..\Classes\Common\Singleton.h" />
     <ClInclude Include="..\Classes\Common\UIDataDefine.h" />
     <ClInclude Include="..\Classes\FrameWork\Control\AppInitManager.h" />
     <ClInclude Include="..\Classes\FrameWork\Data\DataCenter.h" />
     <ClInclude Include="..\Classes\FrameWork\Data\IModule.h" />
     <ClInclude Include="..\Classes\FrameWork\Data\ModuleManager.h" />
-    <ClInclude Include="..\Classes\FrameWork\Data\user\player.pb.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Message\BaseMsg.pb.h" />
-    <ClInclude Include="..\Classes\FrameWork\Net\Message\MsgHandler.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Message\MsgManager.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\room\room.pb.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\table\table.pb.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\user\player.pb.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\NetManager.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Protocol\Code.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Socket\GameServerSocket.h" />
@@ -203,8 +211,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\FrameWork\UI\BaseLayer.h" />
     <ClInclude Include="..\Classes\FrameWork\UI\ILayer.h" />
     <ClInclude Include="..\Classes\FrameWork\UI\UIManager.h" />
+    <ClInclude Include="..\Classes\UI\Layer\RoomLayer.h" />
+    <ClInclude Include="..\Classes\UI\Layer\TopLayer.h" />
     <ClInclude Include="..\Classes\UI\Layer\HallLayer.h" />
     <ClInclude Include="..\Classes\UI\Layer\LoginLayer.h" />
+    <ClInclude Include="..\Classes\UI\Node\Poker.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

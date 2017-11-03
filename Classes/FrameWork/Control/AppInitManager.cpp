@@ -23,7 +23,7 @@ CAppInitManager & CAppInitManager::getInstance()
 
 bool CAppInitManager::initManager()
 {
-	cocos2d::FileUtils::getInstance()->addSearchPath("res");
+	
 	if (!m_bInit) {
 		m_bInit = true;
 		if (!UIManagerIns->init()) return false;

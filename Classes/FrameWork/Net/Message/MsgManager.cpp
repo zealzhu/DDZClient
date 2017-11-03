@@ -3,6 +3,7 @@
 #include <AppFunc.h>
 #include <ModuleManager.h>
 #include <cocos2d.h>
+#include <UIManager.h>
 
 bool CMsgLooper::m_flag = false;
 ThreadLib::ThreadID CMsgLooper::m_receiveThread = 0;
@@ -35,10 +36,18 @@ void CMsgLooper::endReceiveThread()
 
 void CMsgLooper::handleReceiveThread(void * pData)
 {
-	cocos2d::log("begin receive thread");
-	while (!m_flag) {
-		NetManagerIns->getGameServerSocket().receive();
+	try
+	{
+		cocos2d::log("begin receive thread");
+		while (!m_flag) {
+			NetManagerIns->getGameServerSocket().receive();
+		}
 	}
+	catch (SocketLib::Exception & e)
+	{
+		cocos2d::log("%s", e.PrintError());
+	}
+	
 	ThreadLib::Kill(m_receiveThread);
 	cocos2d::log("end receive thread");
 }

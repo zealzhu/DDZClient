@@ -49,6 +49,15 @@
     <Filter Include="src\FrameWork（框架）\Net（网络）\Message（消息包）\user">
       <UniqueIdentifier>{a795d606-31af-49c6-aa4b-c948c04baedb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\FrameWork（框架）\Net（网络）\Message（消息包）\room">
+      <UniqueIdentifier>{7a034547-b7b6-49da-b7b9-4c72b5ef8f67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\UI（界面图形）\Node">
+      <UniqueIdentifier>{30cb8400-6f79-4086-82c8-f3fdcfc37e99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\FrameWork（框架）\Net（网络）\Message（消息包）\table">
+      <UniqueIdentifier>{55ad2129-590d-4343-9be4-2711cb55a2a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -105,11 +114,26 @@
     <ClCompile Include="..\Classes\FrameWork\Data\DataCenter.cpp">
       <Filter>src\FrameWork（框架）\Data（游戏数据）</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\FrameWork\Net\Message\MsgHandler.cpp">
-      <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）</Filter>
+    <ClCompile Include="..\Classes\UI\Layer\TopLayer.cpp">
+      <Filter>src\UI（界面图形）\Layer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\FrameWork\Data\user\player.pb.cc">
+    <ClCompile Include="..\Classes\Common\RayCommonFunction.cpp">
+      <Filter>src\Common（通用）</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FrameWork\Net\Message\user\player.pb.cc">
       <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）\user</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FrameWork\Net\Message\room\room.pb.cc">
+      <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）\room</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UI\Layer\RoomLayer.cpp">
+      <Filter>src\UI（界面图形）\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FrameWork\Net\Message\table\table.pb.cc">
+      <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）\table</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UI\Node\Poker.cpp">
+      <Filter>src\UI（界面图形）\Node</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -203,11 +227,29 @@
     <ClInclude Include="..\Classes\FrameWork\Data\DataCenter.h">
       <Filter>src\FrameWork（框架）\Data（游戏数据）</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\FrameWork\Net\Message\MsgHandler.h">
-      <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）</Filter>
+    <ClInclude Include="..\Classes\UI\Layer\TopLayer.h">
+      <Filter>src\UI（界面图形）\Layer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\FrameWork\Data\user\player.pb.h">
+    <ClInclude Include="..\Classes\Common\RayCommonFunction.h">
+      <Filter>src\Common（通用）</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\user\player.pb.h">
       <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）\user</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\room\room.pb.h">
+      <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）\room</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Common\NotifacationString.h">
+      <Filter>src\Common（通用）</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UI\Layer\RoomLayer.h">
+      <Filter>src\UI（界面图形）\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UI\Node\Poker.h">
+      <Filter>src\UI（界面图形）\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\table\table.pb.h">
+      <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）\table</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // create the application instance
-#if 1
+#if 0
 	//将输出重定向到dos命令行窗口
 	AllocConsole();
 	freopen("CONIN$", "r", stdin);

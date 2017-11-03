@@ -4,11 +4,11 @@
 
 #include "BaseLayer.h"
 
-class LoginLayer
-	: public CBaseLayer<LoginLayer>
+class CLoginLayer
+	: public CBaseLayer<CLoginLayer>
 {
 public:
-	LoginLayer();
+	CLoginLayer();
 	virtual bool init();
 	void loginCallback(cocos2d::Ref * target);
 

@@ -8,10 +8,9 @@
 #include <Singleton.h>
 #include "DataCenter.h"
 
-typedef std::map<std::string, std::shared_ptr<IModule>> MODULE_MAP;
-typedef std::map<std::string, std::shared_ptr<IModule>>::iterator MODULE_ITER;
+typedef std::map<std::string, IModule*> MODULE_MAP;
+typedef std::map<std::string, IModule*>::iterator MODULE_ITER;
 typedef std::shared_ptr<google::protobuf::Message> MSG_PTR;
-typedef std::shared_ptr<IModule> MODULE_PTR;
 
 class CModuleManager
 	: public CSingleTon<CModuleManager>
@@ -19,7 +18,7 @@ class CModuleManager
 	friend class CSingleTon<CModuleManager>;
 public:
 	// 添加模块
-	void addModule(std::string strModuleName, MODULE_PTR pModule) {
+	void addModule(std::string strModuleName, IModule * pModule) {
 		m_moduleMap[strModuleName] = pModule;
 	}
 
@@ -38,7 +37,7 @@ public:
 	}
 
 	// 获取指定模块
-	MODULE_PTR getModule(const char * strModuleName) {
+	IModule * getModule(const char * strModuleName) {
 		return m_moduleMap[strModuleName];
 	}
 
@@ -56,7 +55,7 @@ public:
 
 	// 初始化模块
 	virtual bool init() {
-		std::shared_ptr<CDataCenter> pDataCenter(new CDataCenter);
+		auto pDataCenter = CDataCenter::getInstance();
 		pDataCenter->init();
 		addModule("data", pDataCenter);
 

@@ -11,16 +11,17 @@ class CBaseLayer
 	: public cocos2d::Layer, public ILayer
 {
 public:
-	static T * create();
+	static T * create(int tag);
 	virtual bool isChildExit(int id);
 	virtual bool isChildExit(void * target);
 	virtual bool isChildExit(std::string name);
 };
 
 template<class T>
-T * CBaseLayer<T>::create()
+T * CBaseLayer<T>::create(int tag)
 {
 	T *pRet = new(std::nothrow) T();
+	pRet->setTag(tag);
 	if (pRet && pRet->init())
 	{
 		pRet->autorelease();

@@ -28,7 +28,7 @@ protected:
 
 // й╣ож
 template<class T>
-T * CSingleTon<T>::m_pInstance = NULL;
+T * CSingleTon<T>::m_pInstance = 0;
 
 template<class T>
 inline T * CSingleTon<T>::getInstance()
