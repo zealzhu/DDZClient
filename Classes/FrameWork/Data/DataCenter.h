@@ -2,9 +2,9 @@
 #ifndef _DATA_CENTER_H
 #define _DATA_CENTER_H
 
-#include <Singleton.h>
+#include "Common/Singleton.h"
 #include "IModule.h"
-#include <Protocol/Code.h>
+#include "FrameWork/Net/Protocol/Code.h"
 #include <list>
 #include <memory>
 
@@ -57,6 +57,10 @@ public:
 	void dealWithLeaveRoomResponse(MessagePtr pMsg);		// 离开房间响应
 	void dealWithOtherEnterInRoom(MessagePtr pMsg);			// 其他玩家进入房间
 	void dealWithPlayerReadyMsg(MessagePtr pMsg);			// 玩家准备消息
+	void dealWithRoomStatuChangeMsg(MessagePtr pMsg);		// 房间状态改变
+	void dealWithDispatchPokerMsg(MessagePtr pMsg);			// 分牌
+	void dealWithCallLandlordMsg(MessagePtr pMsg);			// 请求地主
+	void dealWithPlayResponse(MessagePtr pMsg);				// 出牌响应
 
 public:
 	std::list<ROOM_INFO_PTR> & getRoomInfoList();

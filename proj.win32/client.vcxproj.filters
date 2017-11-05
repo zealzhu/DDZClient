@@ -135,6 +135,9 @@
     <ClCompile Include="..\Classes\UI\Node\Poker.cpp">
       <Filter>src\UI（界面图形）\Node</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Common\PokerUtils.cpp">
+      <Filter>src\Common（通用）</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -250,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\FrameWork\Net\Message\table\table.pb.h">
       <Filter>src\FrameWork（框架）\Net（网络）\Message（消息包）\table</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Common\PokerUtils.h">
+      <Filter>src\Common（通用）</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

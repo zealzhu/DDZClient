@@ -12,7 +12,6 @@
 #include <ThreadLib.h>
 #include <Singleton.h>
 
-
 typedef std::shared_ptr<google::protobuf::Message> MSG_PTR;
 typedef std::deque<MSG_PTR> MSG_DEQUE;
 typedef std::deque<MSG_PTR>::iterator MSG_ITER;

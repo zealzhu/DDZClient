@@ -8,6 +8,9 @@
 #include <TopLayer.h>
 #include <UIManager.h>
 
+#include <AppFunc.h>
+#include "UI\Node\Poker.h"
+
 USING_NS_CC;
 
 CLoginLayer::CLoginLayer()

@@ -48,7 +48,6 @@ void CMsgLooper::handleReceiveThread(void * pData)
 		cocos2d::log("%s", e.PrintError());
 	}
 	
-	ThreadLib::Kill(m_receiveThread);
 	cocos2d::log("end receive thread");
 }
 

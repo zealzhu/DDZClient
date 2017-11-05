@@ -4,6 +4,7 @@
 #include <UIManager.h>
 #include <user/player.pb.h>
 #include <room/room.pb.h>
+#include <table/table.pb.h>
 #include <AppFunc.h>
 #include <NotifacationString.h>
 #include <NetManager.h>
@@ -57,6 +58,18 @@ void CDataCenter::handle(std::shared_ptr<SelfDescribingMessage> pMsg)
 	}
 	else if ("zhu.room.ReadyResp" == pMsg->type_name()) {
 		dealWithPlayerReadyMsg(pInnerMsg);
+	}
+	else if ("zhu.room.RoomGameStatuChangeNotify" == pMsg->type_name()) {
+		dealWithRoomStatuChangeMsg(pInnerMsg);
+	}
+	else if ("zhu.table.DispatchPoker" == pMsg->type_name()) {
+		dealWithDispatchPokerMsg(pInnerMsg);
+	}
+	else if ("zhu.table.RequestLandlordResp" == pMsg->type_name()) {
+		dealWithCallLandlordMsg(pInnerMsg);
+	}
+	else if ("zhu.table.PlayResp" == pMsg->type_name()) {
+		dealWithPlayResponse(pInnerMsg);
 	}
 }
 
@@ -161,6 +174,111 @@ void CDataCenter::dealWithPlayerReadyMsg(MessagePtr pMsg)
 	else if(pReadyResp->account() == m_userAccount){
 		UIManagerIns->getTopLayer()->showDialog("error", pReadyResp->desc());
 	}
+}
+
+void CDataCenter::dealWithRoomStatuChangeMsg(MessagePtr pMsg)
+{
+	shared_ptr<zhu::room::RoomGameStatuChangeNotify> pStatuChangeMsg =
+		dynamic_pointer_cast<zhu::room::RoomGameStatuChangeNotify>(pMsg);
+
+	if (pStatuChangeMsg->start() == true) {
+		GEventDispatch->dispatchCustomEvent(strAllPlayerReady);
+	}
+}
+
+void CDataCenter::dealWithDispatchPokerMsg(MessagePtr pMsg)
+{
+	shared_ptr<zhu::table::DispatchPoker> pDispatchPockerResp = dynamic_pointer_cast<zhu::table::DispatchPoker>(pMsg);
+
+	// 服务器初始分牌
+	if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::DEAL_POKER) {
+		GEventDispatch->dispatchCustomEvent(strFirstDispatchPoker, (void *)pDispatchPockerResp.get());
+	}
+	// 显示地主牌
+	else if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::LANDLORD_POKER) {
+		GEventDispatch->dispatchCustomEvent(strShowLandlordPoker, (void *)pDispatchPockerResp.get());
+	}
+	// 显示当前牌
+	else if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::CURRENT_POKER) {
+		GEventDispatch->dispatchCustomEvent(strUpdateCurrentPoker, (void *)pDispatchPockerResp.get());
+	}
+	// 显示出的牌
+	else if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::PLAYER_POKER) {
+		GEventDispatch->dispatchCustomEvent(strShowOtherPlayerPoker, (void *)pDispatchPockerResp.get());
+	}
+}
+
+void CDataCenter::dealWithCallLandlordMsg(MessagePtr pMsg)
+{
+	shared_ptr<zhu::table::RequestLandlordResp> pRequestLandlordResp = dynamic_pointer_cast<zhu::table::RequestLandlordResp>(pMsg);
+	// 未轮到该玩家请求地主
+	if (pRequestLandlordResp->calllandlordresult() == table::ERROR_CODE::NO_TURN_TO_REQUEST) {
+		//cout << "还没轮到你请求" << endl;
+		return;
+	}
+	GEventDispatch->dispatchCustomEvent(strCallLandlordResult, (void *)pRequestLandlordResp.get());
+}
+
+void CDataCenter::dealWithPlayResponse(MessagePtr pMsg)
+{
+	shared_ptr<zhu::table::PlayResp> pPlayResp = dynamic_pointer_cast<zhu::table::PlayResp>(pMsg);
+	auto topLayer = UIManagerIns->getTopLayer();
+
+	// 比牌失败
+	if (pPlayResp->playresult() == table::ERROR_CODE::COMPARE_LOSE && 
+		pPlayResp->account() == m_userAccount) {
+		topLayer->showDialog("error", "can't big more");
+	}
+	// 不能不出
+	else if (pPlayResp->playresult() == table::ERROR_CODE::CAN_NOT_NO_PLAY &&
+		pPlayResp->account() == m_userAccount) {
+		topLayer->showDialog("warning", "turn to you, can't not no play");
+	}
+	// 出牌类型错误
+	else if (pPlayResp->playresult() == table::ERROR_CODE::PLAY_TYPE_ERROR &&
+		pPlayResp->account() == m_userAccount) {
+		topLayer->showDialog("warning", "play poker type error, please reelect");
+	}
+	// 出牌成功
+	else if (pPlayResp->playresult() == table::ERROR_CODE::SUCCESS ||
+		pPlayResp->playresult() == table::ERROR_CODE::NO_PLAY) {
+		GEventDispatch->dispatchCustomEvent(strPlayPokerSuccess, (void *)pPlayResp.get());
+	}
+	// 地主胜利游戏结束
+	else if (pPlayResp->playresult() == table::ERROR_CODE::LANDLORD_WIN) {
+		//// 胜利
+		//if (pPlayResp->account() == m_pUserMgr->GetCurrentUserName()) {
+		//	cout << "地主胜利，你赢了" << endl;
+		//}
+		//// 失败
+		//else {
+		//	cout << pPlayResp->account() << "是地主，你输了" << endl;
+		//}
+
+		//// 重新切换为房间模块
+		//m_statu = GameStatus::CALL_LANDLORD;
+		//m_pRoomMgr->SendGameOver();
+		//nd::CModuleMgr::Instance().SetCurrentModule("room");
+		//CMsgMgr::NotifySend();
+	}
+	// 农名胜利游戏结束
+	else if (pPlayResp->playresult() == table::ERROR_CODE::PEASANT_WIN) {
+		////胜利
+		//if (pPlayResp->account() != m_pUserMgr->GetCurrentUserName()) {
+		//	cout << "农名胜利,你是地主，你输了" << endl;
+		//}
+		////失败
+		//else {
+		//	cout << "农名胜利，你赢了" << endl;
+		//}
+
+		//// 重新切换为房间模块
+		//m_statu = GameStatus::CALL_LANDLORD;
+		//m_pRoomMgr->SendGameOver();
+		//nd::CModuleMgr::Instance().SetCurrentModule("room");
+		//CMsgMgr::NotifySend();
+	}
+	
 }
 
 void CDataCenter::dealWithGetRoomResponse(MessagePtr pMsg)
