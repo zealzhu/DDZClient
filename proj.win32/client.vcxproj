@@ -14,7 +14,6 @@
     <ProjectGuid>{76A39BB2-9B84-4C65-98A5-654D86B86F2A}</ProjectGuid>
     <RootNamespace>test_win32</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -76,7 +75,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Users\zhu\Documents\DDZClient\Classes\FrameWork\UI;C:\Users\zhu\Documents\DDZClient\Classes\FrameWork\Thread;C:\Users\zhu\Documents\DDZClient\Classes\FrameWork\Net\Socket;C:\Users\zhu\Documents\DDZClient\Classes\FrameWork\Net\Message;C:\Users\zhu\Documents\DDZClient\Classes\FrameWork\Control;C:\Users\zhu\Documents\DDZClient\Classes\UI\Layer;C:\Users\zhu\Documents\DDZClient\Classes\UI\Scene;C:\Users\zhu\Documents\DDZClient\Classes\FrameWork\Data;C:\Users\zhu\Documents\DDZClient\Classes\FrameWork\NET;C:\Users\zhu\Documents\DDZClient\Classes\Common;$(EngineRoot);$(EngineRoot)external;$(EngineRoot)cocos\audio\include;$(EngineRoot)external\protobuf\include;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Classes\FrameWork\UI;..\Classes\FrameWork\Thread;..\Classes\FrameWork\Net\Socket;..\Classes\FrameWork\Net\Message;..\Classes\FrameWork\Control;..\Classes\UI\Layer;..\Classes\UI\Scene;..\Classes\FrameWork\Data;..\Classes\FrameWork\NET;..\Classes\Common;$(EngineRoot);$(EngineRoot)external;$(EngineRoot)cocos\audio\include;$(EngineRoot)external\protobuf\include;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -91,7 +90,7 @@
     <Link>
       <AdditionalDependencies>libprotobufd.lib;%(AdditionalDependencies);$(_COCOS_LIB_WIN32_BEGIN);$(_COCOS_LIB_WIN32_END)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>C:\Users\zhu\Documents\DDZClient\cocos2d\external\protobuf\prebuilt\win32\debug-lib;$(OutDir);%(AdditionalLibraryDirectories);$(_COCOS_LIB_PATH_WIN32_BEGIN);$(_COCOS_LIB_PATH_WIN32_END)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\cocos2d\external\protobuf\prebuilt\win32\debug-lib;$(OutDir);%(AdditionalLibraryDirectories);$(_COCOS_LIB_PATH_WIN32_BEGIN);$(_COCOS_LIB_PATH_WIN32_END)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>

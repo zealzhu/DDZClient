@@ -21,6 +21,7 @@ public:
 	void initMsg();
 	void initCallLandlordLayer();
 	void initPlayCardLayer();
+	void initHandCardPanel();
 	virtual void onEnter();
 	virtual void onExit();
 
@@ -45,6 +46,9 @@ private:
 	void onUpdateCurrentPoker(cocos2d::EventCustom * event);
 	void onPlaySuccess(cocos2d::EventCustom * event);
 	void onShowOtherPlayerPoker(cocos2d::EventCustom * event);
+	void onGameOver(cocos2d::EventCustom * event);
+
+	void handCardPanelTouchListener(cocos2d::Ref * ref, cocos2d::ui::Widget::TouchEventType type);
 	
 private:
 	int computeClientPosition(int serverPosition);
@@ -56,7 +60,11 @@ private:
 	void updateCurrentPoker(const ::google::protobuf::RepeatedPtrField<zhu::table::Poker> & pokers);
 	void updatePlayPoker(const ::google::protobuf::RepeatedPtrField<zhu::table::Poker> & pokers);
 	void updatePlayerPokerNumber(int serverPosition, int number);
-	void reelectPoker();	
+	void reelectPoker();
+	void updateHead();
+	void hideAllMsg();
+	void hideAllClock();
+	void clearAllPlayPoker();
 
 private:
 	cocos2d::Node * m_layerGraphNode;
@@ -75,6 +83,10 @@ private:
 	cocos2d::ui::Button * m_playButton;
 	cocos2d::ui::Button * m_notPlayButton;
 	cocos2d::ui::Button * m_reelectButton;
+
+private:
+	int m_landlordServerPosition;
+	int m_noPlayFlag;
 };
 
 #endif

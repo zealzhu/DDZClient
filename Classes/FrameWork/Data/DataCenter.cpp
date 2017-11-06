@@ -223,6 +223,7 @@ void CDataCenter::dealWithPlayResponse(MessagePtr pMsg)
 {
 	shared_ptr<zhu::table::PlayResp> pPlayResp = dynamic_pointer_cast<zhu::table::PlayResp>(pMsg);
 	auto topLayer = UIManagerIns->getTopLayer();
+	bool landlordWin = false;
 
 	// 比牌失败
 	if (pPlayResp->playresult() == table::ERROR_CODE::COMPARE_LOSE && 
@@ -246,39 +247,14 @@ void CDataCenter::dealWithPlayResponse(MessagePtr pMsg)
 	}
 	// 地主胜利游戏结束
 	else if (pPlayResp->playresult() == table::ERROR_CODE::LANDLORD_WIN) {
-		//// 胜利
-		//if (pPlayResp->account() == m_pUserMgr->GetCurrentUserName()) {
-		//	cout << "地主胜利，你赢了" << endl;
-		//}
-		//// 失败
-		//else {
-		//	cout << pPlayResp->account() << "是地主，你输了" << endl;
-		//}
-
-		//// 重新切换为房间模块
-		//m_statu = GameStatus::CALL_LANDLORD;
-		//m_pRoomMgr->SendGameOver();
-		//nd::CModuleMgr::Instance().SetCurrentModule("room");
-		//CMsgMgr::NotifySend();
+		landlordWin = true;
+		GEventDispatch->dispatchCustomEvent(strGameOver, (void *)&landlordWin);
 	}
 	// 农名胜利游戏结束
 	else if (pPlayResp->playresult() == table::ERROR_CODE::PEASANT_WIN) {
-		////胜利
-		//if (pPlayResp->account() != m_pUserMgr->GetCurrentUserName()) {
-		//	cout << "农名胜利,你是地主，你输了" << endl;
-		//}
-		////失败
-		//else {
-		//	cout << "农名胜利，你赢了" << endl;
-		//}
-
-		//// 重新切换为房间模块
-		//m_statu = GameStatus::CALL_LANDLORD;
-		//m_pRoomMgr->SendGameOver();
-		//nd::CModuleMgr::Instance().SetCurrentModule("room");
-		//CMsgMgr::NotifySend();
+		landlordWin = false;
+		GEventDispatch->dispatchCustomEvent(strGameOver, (void *)&landlordWin);
 	}
-	
 }
 
 void CDataCenter::dealWithGetRoomResponse(MessagePtr pMsg)

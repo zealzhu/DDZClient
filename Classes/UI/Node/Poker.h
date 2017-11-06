@@ -39,6 +39,7 @@ public:
 	int getValue();
 	int getSuit();
 	int getNumber();
+	void click();
 
 private:
 	cocos2d::Sprite * m_spPoker;		// ÆË¿Ë¾«Áé

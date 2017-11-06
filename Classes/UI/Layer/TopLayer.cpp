@@ -84,9 +84,14 @@ void CTopLayer::showDialog(std::string strTitle, std::string strMessage, std::fu
 	auto message = (ui::Text*)m_dialog->getChildByName("txt_message");
 	message->setString(strMessage);
 
-	if (callBack != NULL) {
-		auto btnOk = (ui::Button*)m_dialog->getChildByName("btn_ok");
+	auto btnOk = (ui::Button*)m_dialog->getChildByName("btn_ok");
+	if (callBack != NULL) {		
 		btnOk->addClickEventListener(callBack);
+	}
+	else {
+		btnOk->addClickEventListener([this](Ref *) {
+			hideDialog();
+		});
 	}
 }
 

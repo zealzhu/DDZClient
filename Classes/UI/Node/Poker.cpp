@@ -87,18 +87,18 @@ void CPoker::initPoker()
 void CPoker::onEnter()
 {
 	Node::onEnter();
-	auto touchListener = EventListenerTouchOneByOne::create();
+	/*auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->setSwallowTouches(true);
 	touchListener->onTouchBegan = CC_CALLBACK_2(CPoker::onTouchBegin, this);
 	touchListener->onTouchMoved = CC_CALLBACK_2(CPoker::onTouchMoved, this);
 	touchListener->onTouchEnded = CC_CALLBACK_2(CPoker::onTouchEnded, this);
 	touchListener->onTouchCancelled = CC_CALLBACK_2(CPoker::onTouchCancelled, this);
-	GEventDispatch->addEventListenerWithSceneGraphPriority(touchListener, this);
+	GEventDispatch->addEventListenerWithSceneGraphPriority(touchListener, this);*/
 }
 
 void CPoker::onExit()
 {
-	GEventDispatch->removeEventListenersForTarget(this);
+	//GEventDispatch->removeEventListenersForTarget(this);
 	Node::onExit();
 }
 
@@ -122,8 +122,7 @@ void CPoker::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 {
 	auto touchLocation = touch->getLocation();
 	if (this->getBoundingBox().containsPoint(touchLocation)) {	
-		updatePositionY();
-		m_choose = !m_choose;
+		
 	}
 }
 
@@ -133,10 +132,10 @@ void CPoker::onTouchCancelled(cocos2d::Touch * touch, cocos2d::Event * event)
 
 void CPoker::updatePositionY()
 {
-	if (!m_choose)
+	if (m_choose)
 		this->setPositionY(this->getPositionY() + 30.0f);
 	else
-		this->setPositionY(this->getPositionY() - 30.0f);
+		this->setPositionY(0);
 }
 
 bool CPoker::getChoose()
@@ -162,4 +161,10 @@ int CPoker::getSuit()
 int CPoker::getNumber()
 {
 	return m_pokerNumber;
+}
+
+void CPoker::click()
+{
+	m_choose = !m_choose;
+	updatePositionY();
 }

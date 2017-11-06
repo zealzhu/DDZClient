@@ -34,6 +34,12 @@ struct PlayerInfo {
 	std::string _userHead;
 };
 
+// 对局信息
+struct GameOverInfo {
+public:
+	int _landlordPosition;
+};
+
 typedef std::shared_ptr<RoomInfo> ROOM_INFO_PTR;
 
 class CDataCenter
