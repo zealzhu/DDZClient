@@ -689,22 +689,43 @@ void CRoomLayer::handCardPanelTouchListener(cocos2d::Ref * ref, cocos2d::ui::Wid
 	auto pokers = pokerPanel->getChildren();
 
 	auto beginPosition = pokerPanel->convertToNodeSpace(pokerPanel->getTouchBeganPosition());
-	auto endPosition = pokerPanel->convertToNodeSpace(pokerPanel->getTouchEndPos());
-	log("begin position:%.2f   %.2f", beginPosition.x, beginPosition.y);
+	auto endPosition = pokerPanel->convertToNodeSpace(pokerPanel->getTouchEndPosition());
+	auto movePosition = pokerPanel->convertToNodeSpace(pokerPanel->getTouchMovePosition());
+
+	Rect rect;
 
 	if (type == cocos2d::ui::Widget::TouchEventType::ENDED) {
 		for (auto & temp : pokers) {
 			auto poker = (CPoker *)temp;
-			if (poker->getBoundingBox().containsPoint(endPosition)) {
+
+			if (poker->getTouchFlag() == true) {
 				poker->click();
+				poker->setTouchFlag(false);
+				poker->updateColor();
 			}
 		}
 	}
 	else if (type == cocos2d::ui::Widget::TouchEventType::MOVED) {
-
+		for (auto & temp : pokers) {
+			auto poker = (CPoker *)temp;
+			if (poker->getTouchFlag() == false) {
+				rect.setRect(poker->getPositionX(), poker->getPositionY(), poker->getBoundingBox().size.width / 4, poker->getBoundingBox().size.height);
+				if (rect.containsPoint(movePosition)) {
+					poker->setTouchFlag(true);
+					poker->updateColor();
+				}
+			}	
+		}
 	}
 	else if (type == cocos2d::ui::Widget::TouchEventType::BEGAN) {
-
+		for (auto & temp : pokers) {
+			auto poker = (CPoker *)temp;
+			rect.setRect(poker->getPositionX(), poker->getPositionY(), poker->getBoundingBox().size.width / 4, poker->getBoundingBox().size.height);
+			if (rect.containsPoint(beginPosition)) {
+				poker->setTouchFlag(true);
+				poker->updateColor();
+			}
+		}
 	}
 }
 

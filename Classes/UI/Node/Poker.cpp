@@ -42,6 +42,7 @@ std::string CPoker::getPokerFileName(int number, PokerSuit suit)
 CPoker::CPoker()
 {
 	m_choose = false;
+	m_touchFlag = false;
 }
 
 Node * CPoker::create(int number, int value, PokerSuit suit)
@@ -79,55 +80,9 @@ void CPoker::initPoker()
 	m_spPoker = Sprite::createWithSpriteFrameName(getPokerFileName(m_pokerNumber, m_suit));
 
 	m_spPoker->setAnchorPoint(Vec2(0, 0));
-	//m_spPoker->setScale(0.7f);
+	m_spPoker->setScale(0.7f);
 	this->addChild(m_spPoker);
-	this->setContentSize(m_spPoker->getContentSize());
-}
-
-void CPoker::onEnter()
-{
-	Node::onEnter();
-	/*auto touchListener = EventListenerTouchOneByOne::create();
-	touchListener->setSwallowTouches(true);
-	touchListener->onTouchBegan = CC_CALLBACK_2(CPoker::onTouchBegin, this);
-	touchListener->onTouchMoved = CC_CALLBACK_2(CPoker::onTouchMoved, this);
-	touchListener->onTouchEnded = CC_CALLBACK_2(CPoker::onTouchEnded, this);
-	touchListener->onTouchCancelled = CC_CALLBACK_2(CPoker::onTouchCancelled, this);
-	GEventDispatch->addEventListenerWithSceneGraphPriority(touchListener, this);*/
-}
-
-void CPoker::onExit()
-{
-	//GEventDispatch->removeEventListenersForTarget(this);
-	Node::onExit();
-}
-
-bool CPoker::onTouchBegin(cocos2d::Touch * touch, cocos2d::Event * event)
-{
-	auto touchLocation = touch->getLocation();
-	// ×ª»»×ø±ê
-	auto parentLocation = this->getParent()->convertToNodeSpace(touchLocation);
-	if (this->getBoundingBox().containsPoint(parentLocation))
-		return true;
-	else
-		return false;
-}
-
-void CPoker::onTouchMoved(cocos2d::Touch * touch, cocos2d::Event * event)
-{
-
-}
-
-void CPoker::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
-{
-	auto touchLocation = touch->getLocation();
-	if (this->getBoundingBox().containsPoint(touchLocation)) {	
-		
-	}
-}
-
-void CPoker::onTouchCancelled(cocos2d::Touch * touch, cocos2d::Event * event)
-{
+	this->setContentSize(m_spPoker->getBoundingBox().size);
 }
 
 void CPoker::updatePositionY()
@@ -167,4 +122,22 @@ void CPoker::click()
 {
 	m_choose = !m_choose;
 	updatePositionY();
+}
+
+bool CPoker::getTouchFlag()
+{
+	return m_touchFlag;
+}
+
+void CPoker::setTouchFlag(bool touch)
+{
+	m_touchFlag = touch;
+}
+
+void CPoker::updateColor()
+{
+	if (m_touchFlag)
+		m_spPoker->setColor(Color3B::GRAY);
+	else
+		m_spPoker->setColor(Color3B::WHITE);
 }

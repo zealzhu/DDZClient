@@ -25,12 +25,6 @@ public:
 	static cocos2d::Node * create(int number, int value, PokerSuit suit);
 	bool init(int number, int value, PokerSuit suit);
 	void initPoker();
-	virtual void onEnter();
-	virtual void onExit();
-	bool onTouchBegin(cocos2d::Touch * touch, cocos2d::Event * event);
-	void onTouchMoved(cocos2d::Touch * touch, cocos2d::Event * event);
-	void onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event);
-	void onTouchCancelled(cocos2d::Touch * touch, cocos2d::Event * event);
 
 public:
 	void updatePositionY();
@@ -40,13 +34,18 @@ public:
 	int getSuit();
 	int getNumber();
 	void click();
-
+	
+	bool getTouchFlag();
+	void setTouchFlag(bool touch);
+	void updateColor();
+	
 private:
 	cocos2d::Sprite * m_spPoker;		// 扑克精灵
 	int m_pokerNumber;					// 牌面数
 	int m_value;						// 比值
 	PokerSuit m_suit;					// 花色
 	bool m_choose;						// 是否选中
+	bool m_touchFlag;					// 触摸标记
 };
 
 
