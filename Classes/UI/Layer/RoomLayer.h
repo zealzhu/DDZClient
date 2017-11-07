@@ -47,6 +47,7 @@ private:
 	void onPlaySuccess(cocos2d::EventCustom * event);
 	void onShowOtherPlayerPoker(cocos2d::EventCustom * event);
 	void onGameOver(cocos2d::EventCustom * event);
+	void onPlayerOut(cocos2d::EventCustom * event);
 
 	void handCardPanelTouchListener(cocos2d::Ref * ref, cocos2d::ui::Widget::TouchEventType type);
 	
@@ -65,6 +66,8 @@ private:
 	void hideAllMsg();
 	void hideAllClock();
 	void clearAllPlayPoker();
+	void reinit();
+	void clearAllHandPoker();
 
 private:
 	cocos2d::Node * m_layerGraphNode;

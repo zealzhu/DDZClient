@@ -71,6 +71,9 @@ void CDataCenter::handle(std::shared_ptr<SelfDescribingMessage> pMsg)
 	else if ("zhu.table.PlayResp" == pMsg->type_name()) {
 		dealWithPlayResponse(pInnerMsg);
 	}
+	else if ("zhu.table.PlayerOut" == pMsg->type_name()) {
+		dealWithPlayerOut(pInnerMsg);
+	}
 }
 
 void CDataCenter::dealWithLoginResponse(MessagePtr pMsg)
@@ -255,6 +258,13 @@ void CDataCenter::dealWithPlayResponse(MessagePtr pMsg)
 		landlordWin = false;
 		GEventDispatch->dispatchCustomEvent(strGameOver, (void *)&landlordWin);
 	}
+}
+
+void CDataCenter::dealWithPlayerOut(MessagePtr pMsg)
+{
+	shared_ptr<zhu::table::PlayerOut> pPlayerOut = dynamic_pointer_cast<zhu::table::PlayerOut>(pMsg);
+
+	GEventDispatch->dispatchCustomEvent(strGameOver, (void *)&pPlayerOut->account());
 }
 
 void CDataCenter::dealWithGetRoomResponse(MessagePtr pMsg)

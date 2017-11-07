@@ -67,6 +67,7 @@ public:
 	void dealWithDispatchPokerMsg(MessagePtr pMsg);			// 分牌
 	void dealWithCallLandlordMsg(MessagePtr pMsg);			// 请求地主
 	void dealWithPlayResponse(MessagePtr pMsg);				// 出牌响应
+	void dealWithPlayerOut(MessagePtr pMsg);				// 玩家中途离开游戏
 
 public:
 	std::list<ROOM_INFO_PTR> & getRoomInfoList();
