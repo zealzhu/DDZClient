@@ -201,6 +201,23 @@ void CRoomListViewItem::updateInfo(RoomInfo & info)
 	m_roomID->setString(StringUtils::toString(info._roomID));
 	m_roomName->setString(info._roomName);
 	m_playerNumber->setString(StringUtils::toString(info._sitUserNum));
-	m_roomStatu->setString(StringUtils::toString(info._statu));
+	switch (info._statu)
+	{
+	case zhu::room::RoomStatus::DESTORYE:
+		m_roomStatu->setString("wait");
+		break;
+	case zhu::room::RoomStatus::FULL:
+		m_roomStatu->setString("full");
+		break;
+	case zhu::room::RoomStatus::START:
+		m_roomStatu->setString("start");
+		break;
+	case zhu::room::RoomStatus::WAIT:
+		m_roomStatu->setString("wait");
+		break;
+	default:
+		break;
+	}
+	
 }
 

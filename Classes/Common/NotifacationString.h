@@ -16,5 +16,6 @@ const std::string strPlayPokerSuccess = "PLAY_POKER_SUCCESS";
 const std::string strShowOtherPlayerPoker = "SHOW_OTHER_PLAYER_POKER";
 const std::string strGameOver = "GANE_OVER";
 const std::string strPlayerOut = "PLAYER_OUT";
+const std::string strNoOneCallLandlord = "NO_ONE_CALL_LANDLORD";
 
 #endif

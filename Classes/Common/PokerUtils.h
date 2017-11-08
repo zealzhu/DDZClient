@@ -115,7 +115,7 @@ public:
 		vector<CPoker *> temp2;
 		for (int i = 0; i < 6; i++)
 			temp1.push_back(vecPoker[i]);;
-		for (int i = 3; i < 8; i++)
+		for (int i = 2; i < 8; i++)
 			temp2.push_back(vecPoker[i]);;
 		if (IsTwoPlane(temp1) &&
 			vecPoker[6]->getValue() != vecPoker[7]->getValue())

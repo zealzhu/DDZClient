@@ -48,6 +48,7 @@ private:
 	void onShowOtherPlayerPoker(cocos2d::EventCustom * event);
 	void onGameOver(cocos2d::EventCustom * event);
 	void onPlayerOut(cocos2d::EventCustom * event);
+	void onNoOneCallLandlord(cocos2d::EventCustom * event);
 
 	void handCardPanelTouchListener(cocos2d::Ref * ref, cocos2d::ui::Widget::TouchEventType type);
 	
@@ -59,12 +60,13 @@ private:
 	void showTimeClock(int serverPosition, bool show);
 	void showPlayButton(bool show);
 	void updateCurrentPoker(const ::google::protobuf::RepeatedPtrField<zhu::table::Poker> & pokers);
-	void updatePlayPoker(const ::google::protobuf::RepeatedPtrField<zhu::table::Poker> & pokers);
+	void updatePlayPoker(const ::google::protobuf::RepeatedPtrField<zhu::table::Poker> & pokers, int position);
 	void updatePlayerPokerNumber(int serverPosition, int number);
 	void reelectPoker();
 	void updateHead();
 	void hideAllMsg();
 	void hideAllClock();
+	void clearPlayPoker(int position);
 	void clearAllPlayPoker();
 	void reinit();
 	void clearAllHandPoker();
@@ -78,6 +80,7 @@ private:
 
 	std::vector<cocos2d::Node *> m_players;
 	std::vector<cocos2d::Sprite *> m_playerMsgs;
+	std::vector<cocos2d::Node *> m_playCardPanel;
 	std::list<cocos2d::Node *> m_currentPokers;
 
 	cocos2d::ui::Button * m_readyButton;
@@ -90,6 +93,7 @@ private:
 private:
 	int m_landlordServerPosition;
 	int m_noPlayFlag;
+	bool m_start;
 };
 
 #endif

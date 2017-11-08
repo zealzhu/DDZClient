@@ -16,6 +16,7 @@ CRoomLayer::CRoomLayer()
 {
 	m_landlordServerPosition = 0;
 	m_noPlayFlag = 0;
+	m_start = false;
 }
 
 bool CRoomLayer::init()
@@ -114,12 +115,22 @@ void CRoomLayer::initPlayCardLayer()
 	m_reelectButton = (ui::Button *)m_playCardLayer->getChildByName("btn_reelect");
 	m_reelectButton->addClickEventListener(CC_CALLBACK_1(CRoomLayer::onReelectClickListener, this));
 	m_reelectButton->setVisible(false);
+
+	char nodeName[30];
+	for (int i = 1; i <= 3; i++) {
+		sprintf(nodeName, "panel_play_card_%d", i);
+		//std::string nodeName = cocos2d::StringUtils::format();
+		auto panel = m_playCardLayer->getChildByName(nodeName);
+		panel->setVisible(true);
+		m_playCardPanel.push_back(panel);
+	}
 }
 
 void CRoomLayer::initHandCardPanel()
 {
 	auto pokerPanel = (ui::Layout *)m_layerGraphNode->getChildByName("pannel_hand_cards");
 	pokerPanel->addTouchEventListener(CC_CALLBACK_2(CRoomLayer::handCardPanelTouchListener, this));
+	pokerPanel->setSwallowTouches(false);
 }
 
 void CRoomLayer::onEnter()
@@ -136,6 +147,7 @@ void CRoomLayer::onEnter()
 	GEventDispatch->addCustomEventListener(strShowOtherPlayerPoker, CC_CALLBACK_1(CRoomLayer::onShowOtherPlayerPoker, this));
 	GEventDispatch->addCustomEventListener(strGameOver, CC_CALLBACK_1(CRoomLayer::onGameOver, this));
 	GEventDispatch->addCustomEventListener(strPlayerOut, CC_CALLBACK_1(CRoomLayer::onPlayerOut, this));
+	GEventDispatch->addCustomEventListener(strNoOneCallLandlord, CC_CALLBACK_1(CRoomLayer::onNoOneCallLandlord, this));
 }
 
 void CRoomLayer::onExit()
@@ -151,6 +163,7 @@ void CRoomLayer::onExit()
 	GEventDispatch->removeCustomEventListeners(strShowOtherPlayerPoker);
 	GEventDispatch->removeCustomEventListeners(strGameOver);
 	GEventDispatch->removeCustomEventListeners(strPlayerOut);
+	GEventDispatch->removeCustomEventListeners(strNoOneCallLandlord);
 
 	Layer::onExit();
 }
@@ -467,6 +480,7 @@ void CRoomLayer::onPlayerReady(cocos2d::EventCustom * event)
 
 void CRoomLayer::onGameStart(cocos2d::EventCustom * event)
 {
+	m_start = true;
 	m_callLandlordLayer->setVisible(true);
 
 	for (int i = 1; i <= 3; i++) {
@@ -484,7 +498,7 @@ void CRoomLayer::onInitPoker(cocos2d::EventCustom * event)
 		updateCallLandlordButton(true);
 	}
 	else {
-		//updateCallLandlordButton(false);
+		updateCallLandlordButton(false, false);
 		int landlordPosition = computeClientPosition(msg->position());
 		m_players[landlordPosition - 1]->getChildByName("img_wait")->setVisible(true);
 	}
@@ -614,6 +628,9 @@ void CRoomLayer::onPlaySuccess(cocos2d::EventCustom * event)
 		showPlayButton(false);
 	}
 
+	// 清除下一位玩家出的牌
+	clearPlayPoker(msg->nextposition());
+
 	// 该玩家不出则要显示不出按钮
 	if (msg->playresult() == zhu::table::ERROR_CODE::NO_PLAY) {
 		showNoPlay(msg->currentposition(), true);
@@ -645,7 +662,7 @@ void CRoomLayer::onShowOtherPlayerPoker(cocos2d::EventCustom * event)
 {
 	auto msg = (zhu::table::DispatchPoker *)event->getUserData();
 
-	updatePlayPoker(msg->pockers());
+	updatePlayPoker(msg->pockers(), msg->position());
 }
 
 void CRoomLayer::onGameOver(cocos2d::EventCustom * event)
@@ -690,10 +707,19 @@ void CRoomLayer::onGameOver(cocos2d::EventCustom * event)
 void CRoomLayer::onPlayerOut(cocos2d::EventCustom * event)
 {
 	std::string account = *(string *)event->getUserData();
+	char msgBuf[100];
+	sprintf(msgBuf, "%s leave room, game restart", account.c_str());
 	UIManagerIns->getTopLayer()->
-		showDialog("hint", StringUtils::format("%s leave room, game restart", account.c_str()));
+		showDialog("hint", msgBuf);
 
 	reinit();
+}
+
+void CRoomLayer::onNoOneCallLandlord(cocos2d::EventCustom * event)
+{
+	UIManagerIns->getTopLayer()->showDialog("hint", "No one call, Restart!");
+	hideAllMsg();
+	hideAllClock();
 }
 
 void CRoomLayer::handCardPanelTouchListener(cocos2d::Ref * ref, cocos2d::ui::Widget::TouchEventType type)
@@ -861,9 +887,10 @@ void CRoomLayer::updateCurrentPoker(const ::google::protobuf::RepeatedPtrField<z
 	}
 }
 
-void CRoomLayer::updatePlayPoker(const::google::protobuf::RepeatedPtrField<zhu::table::Poker>& pokers)
+void CRoomLayer::updatePlayPoker(const::google::protobuf::RepeatedPtrField<zhu::table::Poker>& pokers, int position)
 {
-	auto pokerPanel = m_playCardLayer->getChildByName("panel_play_card");
+	int currentIndex = computeClientPosition(position) - 1;
+	auto pokerPanel = m_playCardPanel[currentIndex];
 	pokerPanel->removeAllChildrenWithCleanup(true);
 
 	const float pokerWidth = CPoker::create(1, 1, PokerSuit::SUIT_CLUB)->getContentSize().width;
@@ -878,7 +905,6 @@ void CRoomLayer::updatePlayPoker(const::google::protobuf::RepeatedPtrField<zhu::
 			pokerPanel->getContentSize().width / 2 - (pokerWidth * TOTAL_WIDTH / 2 - pokerWidth / 4 * iPosition),
 			0);
 		pokerPanel->addChild(createPoker);
-		m_currentPokers.push_back(createPoker);
 		iPosition++;
 	}
 }
@@ -904,16 +930,23 @@ void CRoomLayer::reelectPoker()
 void CRoomLayer::updateHead()
 {
 	int landlordClientPosition = computeClientPosition(m_landlordServerPosition);
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < m_players.size(); i++) {
 		auto spHead = (Sprite *)m_players[i]->getChildByName("sp_head");
-		if (landlordClientPosition == i + 1) {
-			// 更新为地主的头像
-			spHead->setDisplayFrame(GSpriteFrameCache->getSpriteFrameByName("UITest/pic/logo_dizhu.png"));
+
+		if (m_start) {
+			if (landlordClientPosition == i + 1) {
+				// 更新为地主的头像
+				spHead->setDisplayFrame(GSpriteFrameCache->getSpriteFrameByName("UITest/pic/logo_dizhu.png"));
+			}
+			else {
+				// 更新为农民的头像
+				spHead->setDisplayFrame(GSpriteFrameCache->getSpriteFrameByName("UITest/pic/logo_nongmin.png"));
+			}
 		}
 		else {
-			// 更新为农民的头像
-			spHead->setDisplayFrame(GSpriteFrameCache->getSpriteFrameByName("UITest/pic/logo_nongmin.png"));
-		}
+			// 更新为正常的头像
+			spHead->setDisplayFrame(GSpriteFrameCache->getSpriteFrameByName("UITest/pic/logo_unknown.png"));
+		}	
 	}
 	
 }
@@ -932,22 +965,33 @@ void CRoomLayer::hideAllClock()
 	showTimeClock(3, false);
 }
 
+void CRoomLayer::clearPlayPoker(int position)
+{
+	int currentIndex = computeClientPosition(position) - 1;
+	auto pokerPanel = m_playCardPanel[currentIndex];
+	pokerPanel->removeAllChildrenWithCleanup(true);
+}
+
 void CRoomLayer::clearAllPlayPoker()
 {
-	auto pokerPanel = m_playCardLayer->getChildByName("panel_play_card");
-	pokerPanel->removeAllChildrenWithCleanup(true);
+	for (auto panel : m_playCardPanel) {
+		panel->removeAllChildrenWithCleanup(true);
+	}
 }
 
 void CRoomLayer::reinit()
 {
+	m_start = false;
+
 	// 显示准备按钮
 	m_readyButton->setVisible(true);
 
+	updateHead();
 	hideAllClock();
 	hideAllMsg();
 	clearAllPlayPoker();
 	m_callLandlordLayer->setVisible(false);
-	//m_playCardLayer->setVisible(false);
+	m_playCardLayer->setVisible(false);
 
 	updateCallLandlordButton(false, false);
 	showPlayButton(false);
@@ -965,8 +1009,8 @@ void CRoomLayer::reinit()
 void CRoomLayer::clearAllHandPoker()
 {
 	auto pokerPanel = m_layerGraphNode->getChildByName("pannel_hand_cards");
-	pokerPanel->removeAllChildrenWithCleanup(true);
 	m_currentPokers.clear();
+	pokerPanel->removeAllChildrenWithCleanup(true);
 }
 
 void CRoomLayer::onReadyClickListener(cocos2d::Ref * target)

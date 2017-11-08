@@ -219,6 +219,10 @@ void CDataCenter::dealWithCallLandlordMsg(MessagePtr pMsg)
 		//cout << "还没轮到你请求" << endl;
 		return;
 	}
+	// 无人选地主
+	else if (pRequestLandlordResp->calllandlordresult() == table::ERROR_CODE::NO_ONE_CALL_LANDLORD) {
+		GEventDispatch->dispatchCustomEvent(strNoOneCallLandlord);
+	}
 	GEventDispatch->dispatchCustomEvent(strCallLandlordResult, (void *)pRequestLandlordResp.get());
 }
 
@@ -264,7 +268,7 @@ void CDataCenter::dealWithPlayerOut(MessagePtr pMsg)
 {
 	shared_ptr<zhu::table::PlayerOut> pPlayerOut = dynamic_pointer_cast<zhu::table::PlayerOut>(pMsg);
 
-	GEventDispatch->dispatchCustomEvent(strGameOver, (void *)&pPlayerOut->account());
+	GEventDispatch->dispatchCustomEvent(strPlayerOut, (void *)&pPlayerOut->account());
 }
 
 void CDataCenter::dealWithGetRoomResponse(MessagePtr pMsg)
