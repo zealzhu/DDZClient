@@ -3,27 +3,18 @@
 
 #include <cocos2d.h>
 #include <string>
-
-enum PokerSuit
-{
-	SUIT_SPADE,				// 黑桃
-	SUIT_HEART,				// 红心
-	SUIT_DIAMOND,			// 方块
-	SUIT_CLUB,				// 梅花
-	SUIT_SMALL_JACKER,		// 小王
-	SUIT_BIG_JACKER,		// 大王 
-};
+#include <card.hpp>
 
 class CPoker
 	: public cocos2d::Node
 {
 public:
-	static std::string getPokerFileName(int number, PokerSuit suit);
+	static std::string getPokerFileName( int number, Suit suit);
 
 public:
 	CPoker();
-	static cocos2d::Node * create(int number, int value, PokerSuit suit);
-	bool init(int number, int value, PokerSuit suit);
+	static cocos2d::Node * create(int id, int number, int value, Suit suit);
+	bool init(int id, int number, int value, Suit suit);
 	void initPoker();
 
 public:
@@ -34,6 +25,7 @@ public:
 	int getSuit();
 	int getNumber();
 	void click();
+	int getCid() { return m_id; }
 	
 	bool getTouchFlag();
 	void setTouchFlag(bool touch);
@@ -43,9 +35,10 @@ private:
 	cocos2d::Sprite * m_spPoker;		// 扑克精灵
 	int m_pokerNumber;					// 牌面数
 	int m_value;						// 比值
-	PokerSuit m_suit;					// 花色
+	Suit m_suit;					// 花色
 	bool m_choose;						// 是否选中
 	bool m_touchFlag;					// 触摸标记
+	int m_id;
 };
 
 

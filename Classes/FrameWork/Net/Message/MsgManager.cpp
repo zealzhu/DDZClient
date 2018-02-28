@@ -1,9 +1,10 @@
 #include "MsgManager.h"
 #include <NetManager.h>
 #include <AppFunc.h>
-#include <ModuleManager.h>
+#include <DataCenter.h>
 #include <cocos2d.h>
 #include <UIManager.h>
+#include "Protocol/protobuf.hpp"
 
 bool CMsgLooper::m_flag = false;
 ThreadLib::ThreadID CMsgLooper::m_receiveThread = 0;
@@ -14,7 +15,7 @@ void CMsgLooper::update(float dt)
 		return;
 	auto msg = CMsgDeque::getInstance().getReceivedMsg();
 	// 分发处理消息
-	CModuleManager::getInstance()->dispatchMsg(msg);
+	CDataCenter::getInstance()->process(msg);
 }
 
 void CMsgLooper::beginReceiveThread()

@@ -3,7 +3,8 @@
 
 #include "BaseLayer.h"
 #include <ui/CocosGUI.h>
-#include <table/table.pb.h>
+#include <map>
+#include <DataCenter.h>
 
 enum Player {
 	PLAYER_1,
@@ -37,11 +38,13 @@ private:
 
 private:
 	// Event
+	void onGetSeatInfo(cocos2d::EventCustom * event);
 	void onPlayerEnterInRoom(cocos2d::EventCustom * event);
 	void onPlayerReady(cocos2d::EventCustom * event);
+	void onReadySuccess(cocos2d::EventCustom * event);
 	void onGameStart(cocos2d::EventCustom * event);
 	void onInitPoker(cocos2d::EventCustom * event);
-	void onCallLandlordResult(cocos2d::EventCustom * event);
+	void onCallLandlordSuccess(cocos2d::EventCustom * event);
 	void onShowLandlordPoker(cocos2d::EventCustom * event);
 	void onUpdateCurrentPoker(cocos2d::EventCustom * event);
 	void onPlaySuccess(cocos2d::EventCustom * event);
@@ -54,13 +57,13 @@ private:
 	
 private:
 	int computeClientPosition(int serverPosition);
-	void updateCallLandlordMsg(int serverPosition, int msg, bool call, bool show = true);
+	void updateCallLandlordMsg(int serverPosition, bool isQiang, bool call, bool show = true);
 	void showNoPlay(int serverPosition, bool show);
 	void updateCallLandlordButton(bool isCall, bool show = true);
 	void showTimeClock(int serverPosition, bool show);
 	void showPlayButton(bool show);
-	void updateCurrentPoker(const ::google::protobuf::RepeatedPtrField<zhu::table::Poker> & pokers);
-	void updatePlayPoker(const ::google::protobuf::RepeatedPtrField<zhu::table::Poker> & pokers, int position);
+	void updateCurrentPoker(std::vector<Card> & cards);
+	void updatePlayPoker(const std::vector<Card> & cards, int position);
 	void updatePlayerPokerNumber(int serverPosition, int number);
 	void reelectPoker();
 	void updateHead();
@@ -70,6 +73,7 @@ private:
 	void clearAllPlayPoker();
 	void reinit();
 	void clearAllHandPoker();
+	void Sort(std::vector<Card> & card);
 
 private:
 	cocos2d::Node * m_layerGraphNode;
@@ -94,6 +98,8 @@ private:
 	int m_landlordServerPosition;
 	int m_noPlayFlag;
 	bool m_start;
+	std::map<int32_t, SeatInfo> m_user_seat_map;
+	std::vector<Card> m_currentCards;
 };
 
 #endif

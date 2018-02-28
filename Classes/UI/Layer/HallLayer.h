@@ -47,9 +47,6 @@ private:
 	void sendEnterRoomMessage(int iRoomId);
 
 private:
-
-
-private:
 	cocos2d::Node * m_layerGraphNode;
 	cocos2d::ui::ListView * m_roomList;
 	cocos2d::Node * m_enterRoomInputDialog;

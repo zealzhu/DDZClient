@@ -4,7 +4,6 @@
 #include <AppFunc.h>
 #include <RayCommonFunction.h>
 #include <NotifacationString.h>
-#include <room/room.pb.h>
 #include <DataCenter.h>
 #include <NetManager.h>
 
@@ -42,9 +41,9 @@ bool CHallLayer::init()
 	btnEnterRoom->addClickEventListener(CC_CALLBACK_1(CHallLayer::enterRoomCallback, this));
 
 	// get room list
-	zhu::room::GetRoomReq msg;
-	msg.set_account(StringUtils::toString(CDataCenter::getInstance()->getCurrentUserId()));
-	NetManagerIns->getGameServerSocket().send(msg);
+	room::GetRoomReq req;
+	req.set_id(CDataCenter::getInstance()->getCurrentUserId());
+	NetManagerIns->getGameServerSocket().send(kC2SGetRoom, req);
 
 	return true;
 }
@@ -105,9 +104,10 @@ void CHallLayer::updateRoomList(cocos2d::EventCustom * event)
 void CHallLayer::createRoomCallback(cocos2d::Ref * target)
 {
 	// 创建房间
-	static zhu::room::CreateRoomReq msg;
+	room::CreateRoomReq msg;
+	msg.set_id(CDataCenter::getInstance()->getCurrentUserId());
 	msg.set_account(CDataCenter::getInstance()->getUserAccount());
-	NetManagerIns->getGameServerSocket().send(msg);
+	NetManagerIns->getGameServerSocket().send(kC2SCreateRoom, msg);
 	UIManagerIns->getTopLayer()->showLoadingCircle();
 }
 
@@ -170,10 +170,11 @@ void CHallLayer::roomListViewTouchListener(cocos2d::Ref * ref, cocos2d::ui::Widg
 void CHallLayer::sendEnterRoomMessage(int iRoomId)
 {
 	UIManagerIns->getTopLayer()->showLoadingCircle();
-	zhu::room::EnterRoomReq msg;
+	room::EnterRoomReq msg;
 	msg.set_account(CDataCenter::getInstance()->getUserAccount());
-	msg.set_roomid(iRoomId);
-	NetManagerIns->getGameServerSocket().send(msg);
+	msg.set_rid(iRoomId);
+	msg.set_uid(CDataCenter::getInstance()->getCurrentUserId());
+	NetManagerIns->getGameServerSocket().send(kC2SEnterRoom, msg);
 }
 
 bool CRoomListViewItem::init()
@@ -201,23 +202,23 @@ void CRoomListViewItem::updateInfo(RoomInfo & info)
 	m_roomID->setString(StringUtils::toString(info._roomID));
 	m_roomName->setString(info._roomName);
 	m_playerNumber->setString(StringUtils::toString(info._sitUserNum));
-	switch (info._statu)
-	{
-	case zhu::room::RoomStatus::DESTORYE:
-		m_roomStatu->setString("wait");
-		break;
-	case zhu::room::RoomStatus::FULL:
-		m_roomStatu->setString("full");
-		break;
-	case zhu::room::RoomStatus::START:
-		m_roomStatu->setString("start");
-		break;
-	case zhu::room::RoomStatus::WAIT:
-		m_roomStatu->setString("wait");
-		break;
-	default:
-		break;
-	}
+	//switch (info._statu)
+	//{
+	//case zhu::room::RoomStatus::DESTORYE:
+	//	m_roomStatu->setString("wait");
+	//	break;
+	//case zhu::room::RoomStatus::FULL:
+	//	m_roomStatu->setString("full");
+	//	break;
+	//case zhu::room::RoomStatus::START:
+	//	m_roomStatu->setString("start");
+	//	break;
+	//case zhu::room::RoomStatus::WAIT:
+	//	m_roomStatu->setString("wait");
+	//	break;
+	//default:
+	//	break;
+	//}
 	
 }
 

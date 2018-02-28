@@ -1,0 +1,202 @@
+﻿syntax = "proto2";
+
+import "base.proto";
+
+package room;
+
+//房间
+message RoomInfo {
+    required uint32 id = 1;   //房间id
+    required bytes name = 2;  //房间名
+    required uint32 count = 3;//玩家数
+
+    //房间状态
+    enum RoomState {
+        WAIT = 0; //等待
+        START = 1;//开始
+    }
+    required RoomState state = 4;//房间状态
+}
+
+//获取房间请求
+message GetRoomReq {
+    required uint32 id = 1;     // 请求用户id
+}
+
+//获取房间请求
+message GetRoomResp {
+    repeated RoomInfo rooms = 1;//所有房间
+}
+
+//离开房间请求
+message LeaveRoomReq {
+    required uint32 uid = 1;
+    required uint32 rid = 2;
+}
+
+message LeaveRoomResp {
+    required base.ERROR_CODE result = 1;
+}
+
+//进入房间请求
+message EnterRoomReq {
+    required uint32 uid = 1;
+    required uint32 rid = 2;   //进入房间id
+    required bytes account = 3;//进入房间账号
+}
+
+//进入房间响应
+message EnterRoomResp {
+    required base.ERROR_CODE result = 1;
+    optional bytes desc = 2;
+    optional uint32 rid = 3;
+    optional uint32 index = 4;
+    optional bool ready = 5;
+    repeated uint32 otherid = 6;
+}
+
+message GetSeatInfoReq {
+    required uint32 uid = 1;
+    required uint32 rid = 2;
+    required uint32 find = 3;
+}
+
+message GetSeatInfoResp {
+    required base.ERROR_CODE result = 1;
+    optional bytes desc = 2;
+    required uint32 uid = 3;
+    required uint32 index = 4;
+    required bytes account = 5;
+    required bool ready = 6;
+}
+
+//创建房间请求
+message CreateRoomReq {
+    required uint32 id = 1;
+    required bytes account = 2;
+}
+
+//创建房间响应
+message CreateRoomResp {
+    required base.ERROR_CODE result = 1;
+    optional bytes desc = 2;//消息
+    optional uint32 rid = 3;
+    optional uint32 index = 4;
+}
+
+message EnterRoomNtf {
+    required uint32 rid = 1;
+    required uint32 uid = 2;
+    required uint32 index = 3;
+    required bool ready = 5;
+}
+
+message LeaveRoomNtf {
+    required uint32 rid = 1;
+    required uint32 uid = 2;
+    required uint32 index = 3;
+}
+
+//准备请求
+message ReadyReq {
+    required uint32 uid = 1;
+    required uint32 rid = 2;
+    required bool ready = 3;
+}
+
+message ReadyResp {
+    required base.ERROR_CODE result = 1;
+}
+
+//准备响应
+message ReadyNtf {
+    required uint32 uid = 1;
+    required uint32 rid = 2;
+    required uint32 index = 3;
+    required bool ready = 4;// 是否准备
+}
+
+// 开始响应
+message GameBeginNtf {
+    required uint32 rid = 1;
+    required uint32 first = 2;
+}
+
+message RestartNtf {
+    required uint32 first = 1;
+}
+
+message PutCardNtf {
+    required uint32 uid = 1;
+    repeated uint32 cid = 2;
+}
+message PutLandlordCardNtf {
+    required uint32 landlord = 1;
+    repeated uint32 cid = 2;
+}
+
+message LandlordNtf {
+    required uint32 cindex = 1;
+    required uint32 nindex = 2;
+    required bool call = 3;
+    required bool ctype = 4;
+    required bool ntype = 5;
+}
+
+message LandlordReq {
+    required uint32 uid = 1;
+    required uint32 rid = 2;
+    required bool call = 3;
+}
+message LandlordResp {
+    required base.ERROR_CODE result = 1;
+}
+
+message PlayReq {
+    required uint32 uid = 1;
+    required uint32 rid = 2;
+    repeated uint32 cid = 3;
+}
+message PlayResp {
+    required base.ERROR_CODE result = 1;
+    optional uint32 next = 2;
+}
+message PlayNtf {
+    required uint32 current = 1;
+    required uint32 next = 2;
+    repeated uint32 cid = 3;
+    required uint32 multiple = 4;
+}
+
+//游戏结束消息
+message GameOverNtf{
+    required uint32 rid = 1;
+    required uint32 winner = 2;
+    required uint32 landlord = 3;
+    required uint32 multiple = 4;
+}
+
+message LostFromRoomMsg {
+    required uint32 rid = 1;
+}
+
+message ReconnectReq {
+    required uint32 rid = 1;
+    required uint32 uid= 2;
+}
+
+message ReconnectResp {
+    required base.ERROR_CODE result = 1;
+    required uint32 index = 2;      // 位置
+    required uint32 current = 3;    // 当前操作用户
+    required uint32 landlord = 4;
+    repeated uint32 otherid = 5;
+    repeated uint32 cid = 6;
+
+    enum PlayState {
+        CALL = 0;
+        RUSH = 1;
+        PLAY = 2;
+    }
+    required PlayState state = 7;
+}

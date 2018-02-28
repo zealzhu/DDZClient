@@ -3,34 +3,34 @@
 
 USING_NS_CC;
 
-std::string CPoker::getPokerFileName(int number, PokerSuit suit)
+std::string CPoker::getPokerFileName(int number, Suit suit)
 {
 	std::string fileName;
 	char buf[20];
 
 	switch (suit)
 	{
-	case SUIT_SPADE:
+	case kSpade:
 		sprintf(buf, "S%d.png", number);
 		fileName = buf;
 		break;
-	case SUIT_HEART:
+	case kHeart:
 		sprintf(buf, "H%d.png", number);
 		fileName = buf;
 		break;
-	case SUIT_DIAMOND:
+	case kDiamond:
 		sprintf(buf, "D%d.png", number);
 		fileName = buf;
 		break;
-	case SUIT_CLUB:
+	case kClub:
 		sprintf(buf, "C%d.png", number);
 		fileName = buf;
 		break;
-	case SUIT_SMALL_JACKER:
-		fileName = "J14.png";
-		break;
-	case SUIT_BIG_JACKER:
-		fileName = "J15.png";
+	case kJocker:
+		if(number == 2)
+			fileName = "J14.png";
+		else
+			fileName = "J15.png";
 		break;
 	default:
 		break;
@@ -45,10 +45,10 @@ CPoker::CPoker()
 	m_touchFlag = false;
 }
 
-Node * CPoker::create(int number, int value, PokerSuit suit)
+Node * CPoker::create(int id, int number, int value, Suit suit)
 {
 	CPoker *pRet = new(std::nothrow) CPoker();
-	if (pRet && pRet->init(number, value, suit))
+	if (pRet && pRet->init(id, number, value, suit))
 	{
 		pRet->autorelease();
 		return pRet;
@@ -61,7 +61,7 @@ Node * CPoker::create(int number, int value, PokerSuit suit)
 	}
 }
 
-bool CPoker::init(int number, int value, PokerSuit suit)
+bool CPoker::init(int id, int number, int value, Suit suit)
 {
 	if(!Node::init())
 		return false;
@@ -69,6 +69,7 @@ bool CPoker::init(int number, int value, PokerSuit suit)
 	m_pokerNumber = number;
 	m_value = value;
 	m_suit = suit;
+	m_id = id;
 
 	initPoker();
 

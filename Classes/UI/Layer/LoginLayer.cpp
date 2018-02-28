@@ -2,11 +2,10 @@
 #include <editor-support/cocostudio/CocoStudio.h>
 #include <ui/CocosGUI.h>
 #include <NetManager.h>
-#include <user/player.pb.h>
-#include <Protocol/Code.h>
 #include <MsgManager.h>
 #include <TopLayer.h>
 #include <UIManager.h>
+#include <DataCenter.h>
 
 #include <AppFunc.h>
 #include "UI\Node\Poker.h"
@@ -80,11 +79,11 @@ void CLoginLayer::loginCallback(cocos2d::Ref * target)
 
 	// ·¢ËÍµÇÂ¼
 	log("login account: %s password: %s", strAccount.c_str(), strPassword.c_str());
-	zhu::user::LoginReq msg;
+	user::LoginReq msg;
 	msg.set_account(strAccount.c_str());
 	msg.set_password(strPassword.c_str());
 
-	if (!NetManagerIns->getGameServerSocket().send(msg) > 0) {
+	if (!NetManagerIns->getGameServerSocket().send(kC2SLogin, msg) > 0) {
 		// ÏÔÊ¾·¢ËÍµÇÂ¼ÇëÇóÊ§°ÜÏûÏ¢
 		UIManagerIns->getTopLayer()->showDialog("error", "send login request error");
 		UIManagerIns->getTopLayer()->hideLoadingCircle();

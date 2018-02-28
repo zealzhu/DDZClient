@@ -1,88 +1,51 @@
 #include "DataCenter.h"
-#include "Protocol/Code.h"
 #include <cocos2d.h>
 #include <UIManager.h>
-#include <user/player.pb.h>
-#include <room/room.pb.h>
-#include <table/table.pb.h>
 #include <AppFunc.h>
 #include <NotifacationString.h>
 #include <NetManager.h>
 
 USING_NS_CC;
-using namespace zhu;
 using namespace std;
+using namespace base;
 
 CDataCenter::CDataCenter()
 {
+	m_processor.RegistHandler(this, kS2CLogin, &CDataCenter::dealWithLoginResponse);
+	m_processor.RegistHandler(this, kS2CRegister, &CDataCenter::dealWithRegisterResponse);
+	m_processor.RegistHandler(this, kS2CEnterRoom, &CDataCenter::dealWithEnterRoomResponse);
+	m_processor.RegistHandler(this, kS2CCreateRoom, &CDataCenter::dealWithCreateRoomResponse);
+	m_processor.RegistHandler(this, kS2CGetRoom, &CDataCenter::dealWithGetRoomResponse);
+	m_processor.RegistHandler(this, kS2CLeaveRoom, &CDataCenter::dealWithLeaveRoomResponse);
+	m_processor.RegistHandler(this, kS2CReady, &CDataCenter::dealWithReadyResponse);
+	m_processor.RegistHandler(this, kS2CLandlord, &CDataCenter::dealWithLandlordResponse);
+	m_processor.RegistHandler(this, kS2CPlay, &CDataCenter::dealWithPlayResponse);
+	m_processor.RegistHandler(this, kS2CGameBeginNtf, &CDataCenter::dealWithGameBegin);
+	m_processor.RegistHandler(this, kS2CPutCardNtf, &CDataCenter::dealWithPutCard);
+	m_processor.RegistHandler(this, kS2CPutLandlordCardNtf, &CDataCenter::dealWithPutLandlordCard);
+	m_processor.RegistHandler(this, kS2CPlayNtf, &CDataCenter::dealWithPlayNtf);
+	m_processor.RegistHandler(this, kS2CGameOverNtf, &CDataCenter::dealWithGameOver);
+	m_processor.RegistHandler(this, kS2CEnterRoomNtf, &CDataCenter::dealWithOtherEnterInRoom);
+	m_processor.RegistHandler(this, kS2CLeaveRoomNtf, &CDataCenter::dealWithOtherLeaveRoom);
+	m_processor.RegistHandler(this, kS2CReadyNtf, &CDataCenter::dealWithOtherReady); 
+	m_processor.RegistHandler(this, kS2CLandlordNtf, &CDataCenter::dealWithOtherLandlord);
+	m_processor.RegistHandler(this, kS2CGetSeatInfo, &CDataCenter::dealWithGetSeatInfoResponse);
+
+	for (int i = 0; i < 54; i++) {
+		m_cards[i] = Card(i);
+	}
 }
 
 CDataCenter::~CDataCenter()
 {
 }
 
-bool CDataCenter::init()
+void CDataCenter::dealWithLoginResponse(user::LoginResp & rsp)
 {
-	return true;
-}
-
-void CDataCenter::handle(std::shared_ptr<SelfDescribingMessage> pMsg)
-{
-	ProtocolCode::ErrorCode errorCode;
-	auto pInnerMsg = ProtocolCode::parseInnerMsg(pMsg, errorCode);
-
-	if (ProtocolCode::ErrorCode::UNKNOWN_MESSAGE_TYPE == errorCode || ProtocolCode::ErrorCode::PARSE_ERROR == errorCode)
-	{
-		// 解析消息失败
-		log("ProtocolCode parseInnerMsg failed");
-		return;
-	}
-
-	if ("zhu.user.LoginResp" == pMsg->type_name()) {
-		dealWithLoginResponse(pInnerMsg);
-	}
-	else if ("zhu.room.CreateRoomResp" == pMsg->type_name()) {
-		dealWithCreateRoomResponse(pInnerMsg);
-	}
-	else if ("zhu.room.GetRoomResp" == pMsg->type_name()) {
-		dealWithGetRoomResponse(pInnerMsg);
-	}
-	else if ("zhu.room.LeaveRoomResp" == pMsg->type_name()) {
-		dealWithLeaveRoomResponse(pInnerMsg);
-	}
-	else if ("zhu.room.EnterRoomResp" == pMsg->type_name()) {
-		dealWithEnterRoomResponse(pInnerMsg);
-	}
-	else if ("zhu.room.Seat" == pMsg->type_name() && m_currentRoomId != 0) {
-		dealWithOtherEnterInRoom(pInnerMsg);
-	}
-	else if ("zhu.room.ReadyResp" == pMsg->type_name()) {
-		dealWithPlayerReadyMsg(pInnerMsg);
-	}
-	else if ("zhu.room.RoomGameStatuChangeNotify" == pMsg->type_name()) {
-		dealWithRoomStatuChangeMsg(pInnerMsg);
-	}
-	else if ("zhu.table.DispatchPoker" == pMsg->type_name()) {
-		dealWithDispatchPokerMsg(pInnerMsg);
-	}
-	else if ("zhu.table.RequestLandlordResp" == pMsg->type_name()) {
-		dealWithCallLandlordMsg(pInnerMsg);
-	}
-	else if ("zhu.table.PlayResp" == pMsg->type_name()) {
-		dealWithPlayResponse(pInnerMsg);
-	}
-	else if ("zhu.table.PlayerOut" == pMsg->type_name()) {
-		dealWithPlayerOut(pInnerMsg);
-	}
-}
-
-void CDataCenter::dealWithLoginResponse(MessagePtr pMsg)
-{
-	shared_ptr<zhu::user::LoginResp> pLoginResp = dynamic_pointer_cast<zhu::user::LoginResp>(pMsg);
-	if (pLoginResp->loginresult() == zhu::user::ERROR_CODE::SUCCESS) {
+	if (rsp.code() == SUCCESS) {
 		// 登录成功
-		m_userId = pLoginResp->id();
-		m_userAccount = pLoginResp->account();
+		m_userId = rsp.id();
+		m_userAccount = rsp.account();
 
 		UIManagerIns->getTopLayer()->hideLoadingCircle();
 		UIManagerIns->getTopLayer()->showDialog("Hint", "Login success", [](Ref *) {
@@ -93,42 +56,51 @@ void CDataCenter::dealWithLoginResponse(MessagePtr pMsg)
 	//登录失败
 	else {
 		UIManagerIns->getTopLayer()->hideLoadingCircle();
-		UIManagerIns->getTopLayer()->showDialog("Login failed", pLoginResp->desc());
+		UIManagerIns->getTopLayer()->showDialog("Login failed", rsp.desc());
 	}
 }
 
-void CDataCenter::dealWithEnterRoomResponse(MessagePtr pMsg)
+void CDataCenter::dealWithRegisterResponse(user::RegisterResp & rsp)
 {
-	shared_ptr<zhu::room::EnterRoomResp> pEnterRoomResp = dynamic_pointer_cast<zhu::room::EnterRoomResp>(pMsg);
+}
+
+void CDataCenter::dealWithEnterRoomResponse(room::EnterRoomResp & rsp)
+{
 	UIManagerIns->getTopLayer()->hideLoadingCircle();
-	if (pEnterRoomResp->enterresult() == zhu::room::ERROR_CODE::SUCCESS) {
+	if (rsp.result() == SUCCESS) {
 		// set room id
-		m_currentRoomId = pEnterRoomResp->roominfo().id();
-		m_currentSeatPosition = pEnterRoomResp->position();
+		m_currentRoomId = rsp.rid();
+		m_currentSeatPosition = rsp.index();
 
 		// ui change
 		UIManagerIns->replaceCurrentLayer(ENUM_ROOM_LAYER);
 
+		for (auto & id : rsp.otherid()) {
+			room::GetSeatInfoReq req;
+			req.set_uid(CDataCenter::getInstance()->getCurrentUserId());
+			req.set_rid(CDataCenter::getInstance()->getCurrentRoomId());
+			req.set_find(id);
+			NetManagerIns->getGameServerSocket().send(kC2SGetSeatInfo, req);
+		}
 		// send current seat info to room
-		if(m_currentSeatPosition != 1)
-			GEventDispatch->dispatchCustomEvent(strPlayerEnterInRoom, (void *)&pEnterRoomResp->roominfo().seat1());
-		if (m_currentSeatPosition != 2)
-			GEventDispatch->dispatchCustomEvent(strPlayerEnterInRoom, (void *)&pEnterRoomResp->roominfo().seat2());
-		if (m_currentSeatPosition != 3)
-			GEventDispatch->dispatchCustomEvent(strPlayerEnterInRoom, (void *)&pEnterRoomResp->roominfo().seat3());
+		//if(m_currentSeatPosition != 1)
+		//	GEventDispatch->dispatchCustomEvent(strPlayerEnterInRoom, (void *)&pEnterRoomResp->roominfo().seat1());
+		//if (m_currentSeatPosition != 2)
+		//	GEventDispatch->dispatchCustomEvent(strPlayerEnterInRoom, (void *)&pEnterRoomResp->roominfo().seat2());
+		//if (m_currentSeatPosition != 3)
+		//	GEventDispatch->dispatchCustomEvent(strPlayerEnterInRoom, (void *)&pEnterRoomResp->roominfo().seat3());
 	}
 	else {
-		UIManagerIns->getTopLayer()->showDialog("error", pEnterRoomResp->desc());
+		UIManagerIns->getTopLayer()->showDialog("error", rsp.desc());
 	}
 }
 
-void CDataCenter::dealWithCreateRoomResponse(MessagePtr pMsg)
+void CDataCenter::dealWithCreateRoomResponse(room::CreateRoomResp & rsp)
 {
-	shared_ptr<zhu::room::CreateRoomResp> pCreateRoomResp = dynamic_pointer_cast<zhu::room::CreateRoomResp>(pMsg);
 	// 创建房间成功
-	if (pCreateRoomResp->createresult() == zhu::room::ERROR_CODE::SUCCESS) {
-		m_currentRoomId = pCreateRoomResp->createroom().id();
-		m_currentSeatPosition = 1;
+	if (rsp.result() == SUCCESS) {
+		m_currentRoomId = rsp.rid();
+		m_currentSeatPosition = rsp.index();
 
 		// 更新房间列表
 		//zhu::room::GetRoomReq msg;
@@ -140,16 +112,15 @@ void CDataCenter::dealWithCreateRoomResponse(MessagePtr pMsg)
 	}
 	// 创建房间失败
 	else {
-		UIManagerIns->getTopLayer()->showDialog("hint", pCreateRoomResp->desc());
+		UIManagerIns->getTopLayer()->showDialog("hint", rsp.desc());
 	}
 
 }
 
-void CDataCenter::dealWithLeaveRoomResponse(MessagePtr pMsg)
+void CDataCenter::dealWithLeaveRoomResponse(room::LeaveRoomResp & rsp)
 {
-	shared_ptr<zhu::room::LeaveRoomResp> pLeaveRoomResp = dynamic_pointer_cast<zhu::room::LeaveRoomResp>(pMsg);
 	UIManagerIns->getTopLayer()->hideLoadingCircle();
-	if (pLeaveRoomResp->leaveroomresult() == zhu::room::ERROR_CODE::SUCCESS) {
+	if (rsp.result() == SUCCESS) {
 		UIManagerIns->replaceCurrentLayer(ENUM_HALL_LAYER);
 		m_currentRoomId = 0;
 	}
@@ -158,132 +129,242 @@ void CDataCenter::dealWithLeaveRoomResponse(MessagePtr pMsg)
 	}
 }
 
-void CDataCenter::dealWithOtherEnterInRoom(MessagePtr pMsg)
+void CDataCenter::dealWithOtherEnterInRoom(room::EnterRoomNtf & ntf)
 {
-	shared_ptr<zhu::room::Seat> pSeat = dynamic_pointer_cast<zhu::room::Seat>(pMsg);
+	int32_t rid = ntf.rid();
+	int32_t uid = ntf.uid();
+	int8_t index = ntf.index();
+	bool ready = ntf.ready();
 
-	// send current seat info to room
-	GEventDispatch->dispatchCustomEvent(strPlayerEnterInRoom, (void *)pSeat.get());
+	std::string data;
+	data.append((char *)&rid, sizeof(rid));
+	data.append((char *)&uid, sizeof(uid));
+	data.append((char *)&index, sizeof(index));
+	data.append((char *)&ready, sizeof(ready));
+	
+	//shared_ptr<zhu::room::Seat> pSeat = dynamic_pointer_cast<zhu::room::Seat>(pMsg);
+	
+	GEventDispatch->dispatchCustomEvent(strPlayerEnterInRoom, (void *)data.data());
 }
 
-void CDataCenter::dealWithPlayerReadyMsg(MessagePtr pMsg)
+void CDataCenter::dealWithReadyResponse(room::ReadyResp & ntf)
 {
-	shared_ptr<zhu::room::ReadyResp> pReadyResp = dynamic_pointer_cast<zhu::room::ReadyResp>(pMsg);
-
 	// 当前用户准备成功
-	if (pReadyResp->readyresult() == zhu::room::ERROR_CODE::SUCCESS) {
-		GEventDispatch->dispatchCustomEvent(strPlayerReady, (void *)pReadyResp.get());
+	if (ntf.result() != SUCCESS) {
+		UIManagerIns->getTopLayer()->showDialog("error", "ready error");
 	}
-	else if(pReadyResp->account() == m_userAccount){
-		UIManagerIns->getTopLayer()->showDialog("error", pReadyResp->desc());
-	}
-}
-
-void CDataCenter::dealWithRoomStatuChangeMsg(MessagePtr pMsg)
-{
-	shared_ptr<zhu::room::RoomGameStatuChangeNotify> pStatuChangeMsg =
-		dynamic_pointer_cast<zhu::room::RoomGameStatuChangeNotify>(pMsg);
-
-	if (pStatuChangeMsg->start() == true) {
-		GEventDispatch->dispatchCustomEvent(strAllPlayerReady);
+	else {
+		GEventDispatch->dispatchCustomEvent(strReadySuccess, nullptr);
 	}
 }
 
-void CDataCenter::dealWithDispatchPokerMsg(MessagePtr pMsg)
-{
-	shared_ptr<zhu::table::DispatchPoker> pDispatchPockerResp = dynamic_pointer_cast<zhu::table::DispatchPoker>(pMsg);
+//void CDataCenter::dealWithRoomStatuChangeMsg(MessagePtr pMsg)
+//{
+//	shared_ptr<zhu::room::RoomGameStatuChangeNotify> pStatuChangeMsg =
+//		dynamic_pointer_cast<zhu::room::RoomGameStatuChangeNotify>(pMsg);
+//
+//	if (pStatuChangeMsg->start() == true) {
+//		GEventDispatch->dispatchCustomEvent(strAllPlayerReady);
+//	}
+//}
 
-	// 服务器初始分牌
-	if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::DEAL_POKER) {
-		GEventDispatch->dispatchCustomEvent(strFirstDispatchPoker, (void *)pDispatchPockerResp.get());
+void CDataCenter::dealWithGameBegin(room::GameBeginNtf & ntf)
+{
+	m_landlord = ntf.first();
+	GEventDispatch->dispatchCustomEvent(strAllPlayerReady, (void *)&m_landlord);
+}
+
+void CDataCenter::dealWithPutCard(room::PutCardNtf & ntf)
+{
+	std::vector<Card> card;
+	for (auto & cid : ntf.cid()) {
+		card.emplace_back(m_cards[cid]);
 	}
-	// 显示地主牌
-	else if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::LANDLORD_POKER) {
-		GEventDispatch->dispatchCustomEvent(strShowLandlordPoker, (void *)pDispatchPockerResp.get());
+	GEventDispatch->dispatchCustomEvent(strFirstDispatchPoker, (void *)&card);
+	//// 服务器初始分牌
+	//if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::DEAL_POKER) {
+	//	GEventDispatch->dispatchCustomEvent(strFirstDispatchPoker, (void *)pDispatchPockerResp.get());
+	//}
+	//// 显示地主牌
+	//else if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::LANDLORD_POKER) {
+	//	GEventDispatch->dispatchCustomEvent(strShowLandlordPoker, (void *)pDispatchPockerResp.get());
+	//}
+	//// 显示当前牌
+	//else if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::CURRENT_POKER) {
+	//	GEventDispatch->dispatchCustomEvent(strUpdateCurrentPoker, (void *)pDispatchPockerResp.get());
+	//}
+	//// 显示出的牌
+	//else if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::PLAYER_POKER) {
+	//	GEventDispatch->dispatchCustomEvent(strShowOtherPlayerPoker, (void *)pDispatchPockerResp.get());
+	//}
+}
+
+void CDataCenter::dealWithPutLandlordCard(room::PutLandlordCardNtf & ntf)
+{
+	int8_t landlord = ntf.landlord();
+	std::vector< Card > cards;
+	for (auto & cid : ntf.cid()) {
+		cards.emplace_back(m_cards[cid]);
 	}
-	// 显示当前牌
-	else if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::CURRENT_POKER) {
-		GEventDispatch->dispatchCustomEvent(strUpdateCurrentPoker, (void *)pDispatchPockerResp.get());
+
+	std::string data;
+	data.append((char *)&landlord, sizeof(landlord));
+	data.append((char *)&cards, sizeof(std::vector< Card >));
+	GEventDispatch->dispatchCustomEvent(strShowLandlordPoker, (void *)data.data());
+}
+
+void CDataCenter::dealWithPlayNtf(room::PlayNtf & ntf)
+{
+	int8_t curr = ntf.current();
+	int8_t next = ntf.next();
+	int16_t multiple = ntf.multiple();
+	std::vector< Card > cards;
+	for (auto & cid : ntf.cid()) {
+		cards.emplace_back(m_cards[cid]);
 	}
-	// 显示出的牌
-	else if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::PLAYER_POKER) {
-		GEventDispatch->dispatchCustomEvent(strShowOtherPlayerPoker, (void *)pDispatchPockerResp.get());
+
+	std::string data;
+	data.append((char *)&curr, sizeof(curr));
+	data.append((char *)&next, sizeof(next));
+	data.append((char *)&multiple, sizeof(multiple));
+	data.append((char *)&cards, sizeof(std::vector< Card >));
+	GEventDispatch->dispatchCustomEvent(strShowOtherPlayerPoker, (void *)data.data());
+}
+
+void CDataCenter::dealWithGameOver(room::GameOverNtf & ntf)
+{
+	int8_t winner = ntf.winner();
+	int8_t landlord = ntf.landlord();
+	int16_t multiple = ntf.multiple();
+
+	std::string data;
+	data.append((char *)&winner, sizeof(winner));
+	data.append((char *)&landlord, sizeof(landlord));
+	data.append((char *)&multiple, sizeof(multiple));
+	GEventDispatch->dispatchCustomEvent(strGameOver, (void *)data.data());
+}
+
+void CDataCenter::dealWithLandlordResponse(room::LandlordResp & rsp)
+{
+	if (rsp.result() != SUCCESS) {
+		UIManagerIns->getTopLayer()->showDialog("error", "call error");
 	}
 }
 
-void CDataCenter::dealWithCallLandlordMsg(MessagePtr pMsg)
+void CDataCenter::dealWithPlayResponse(room::PlayResp & rsp)
 {
-	shared_ptr<zhu::table::RequestLandlordResp> pRequestLandlordResp = dynamic_pointer_cast<zhu::table::RequestLandlordResp>(pMsg);
-	// 未轮到该玩家请求地主
-	if (pRequestLandlordResp->calllandlordresult() == table::ERROR_CODE::NO_TURN_TO_REQUEST) {
-		//cout << "还没轮到你请求" << endl;
-		return;
-	}
-	// 无人选地主
-	else if (pRequestLandlordResp->calllandlordresult() == table::ERROR_CODE::NO_ONE_CALL_LANDLORD) {
-		GEventDispatch->dispatchCustomEvent(strNoOneCallLandlord);
-	}
-	GEventDispatch->dispatchCustomEvent(strCallLandlordResult, (void *)pRequestLandlordResp.get());
-}
-
-void CDataCenter::dealWithPlayResponse(MessagePtr pMsg)
-{
-	shared_ptr<zhu::table::PlayResp> pPlayResp = dynamic_pointer_cast<zhu::table::PlayResp>(pMsg);
 	auto topLayer = UIManagerIns->getTopLayer();
-	bool landlordWin = false;
+	int next = rsp.next();
+	if (rsp.result() != SUCCESS) {
+		topLayer->showDialog("error", "play error");
+	}
+	else {
+		GEventDispatch->dispatchCustomEvent(strPlayPokerSuccess, (void *)&next);
+	}
+	//shared_ptr<zhu::table::PlayResp> pPlayResp = dynamic_pointer_cast<zhu::table::PlayResp>(pMsg);
+	//auto topLayer = UIManagerIns->getTopLayer();
+	//bool landlordWin = false;
 
-	// 比牌失败
-	if (pPlayResp->playresult() == table::ERROR_CODE::COMPARE_LOSE && 
-		pPlayResp->account() == m_userAccount) {
-		topLayer->showDialog("error", "can't big more");
+	//// 比牌失败
+	//if (pPlayResp->playresult() == table::ERROR_CODE::COMPARE_LOSE && 
+	//	pPlayResp->account() == m_userAccount) {
+	//	topLayer->showDialog("error", "can't big more");
+	//}
+	//// 不能不出
+	//else if (pPlayResp->playresult() == table::ERROR_CODE::CAN_NOT_NO_PLAY &&
+	//	pPlayResp->account() == m_userAccount) {
+	//	topLayer->showDialog("warning", "turn to you, can't not no play");
+	//}
+	//// 出牌类型错误
+	//else if (pPlayResp->playresult() == table::ERROR_CODE::PLAY_TYPE_ERROR &&
+	//	pPlayResp->account() == m_userAccount) {
+	//	topLayer->showDialog("warning", "play poker type error, please reelect");
+	//}
+	//// 出牌成功
+	//else if (pPlayResp->playresult() == table::ERROR_CODE::SUCCESS ||
+	//	pPlayResp->playresult() == table::ERROR_CODE::NO_PLAY) {
+	//	GEventDispatch->dispatchCustomEvent(strPlayPokerSuccess, (void *)pPlayResp.get());
+	//}
+	//// 地主胜利游戏结束
+	//else if (pPlayResp->playresult() == table::ERROR_CODE::LANDLORD_WIN) {
+	//	landlordWin = true;
+	//	GEventDispatch->dispatchCustomEvent(strGameOver, (void *)&landlordWin);
+	//}
+	//// 农名胜利游戏结束
+	//else if (pPlayResp->playresult() == table::ERROR_CODE::PEASANT_WIN) {
+	//	landlordWin = false;
+	//	GEventDispatch->dispatchCustomEvent(strGameOver, (void *)&landlordWin);
+	//}
+}
+
+void CDataCenter::dealWithGetSeatInfoResponse(room::GetSeatInfoResp & rsp)
+{
+	if (rsp.result() == SUCCESS) {
+		int32_t uid = rsp.uid();
+		std::string account = rsp.account();
+		int8_t index = rsp.index();
+		bool ready = rsp.ready();
+		int32_t nameSize = account.size();
+
+		std::string data;
+		data.append((char *)&uid, sizeof(uid));
+		data.append((char *)&index, sizeof(index));
+		data.append((char *)&ready, sizeof(ready));
+		data.append((char *)&nameSize, sizeof(nameSize));
+		data.append(account.data(), account.size());
+		GEventDispatch->dispatchCustomEvent(strGetSeatInfo, (void *)data.data());
 	}
-	// 不能不出
-	else if (pPlayResp->playresult() == table::ERROR_CODE::CAN_NOT_NO_PLAY &&
-		pPlayResp->account() == m_userAccount) {
-		topLayer->showDialog("warning", "turn to you, can't not no play");
-	}
-	// 出牌类型错误
-	else if (pPlayResp->playresult() == table::ERROR_CODE::PLAY_TYPE_ERROR &&
-		pPlayResp->account() == m_userAccount) {
-		topLayer->showDialog("warning", "play poker type error, please reelect");
-	}
-	// 出牌成功
-	else if (pPlayResp->playresult() == table::ERROR_CODE::SUCCESS ||
-		pPlayResp->playresult() == table::ERROR_CODE::NO_PLAY) {
-		GEventDispatch->dispatchCustomEvent(strPlayPokerSuccess, (void *)pPlayResp.get());
-	}
-	// 地主胜利游戏结束
-	else if (pPlayResp->playresult() == table::ERROR_CODE::LANDLORD_WIN) {
-		landlordWin = true;
-		GEventDispatch->dispatchCustomEvent(strGameOver, (void *)&landlordWin);
-	}
-	// 农名胜利游戏结束
-	else if (pPlayResp->playresult() == table::ERROR_CODE::PEASANT_WIN) {
-		landlordWin = false;
-		GEventDispatch->dispatchCustomEvent(strGameOver, (void *)&landlordWin);
+	else {
+		UIManagerIns->getTopLayer()->showDialog("error", "get seat info error");
 	}
 }
 
-void CDataCenter::dealWithPlayerOut(MessagePtr pMsg)
+void CDataCenter::dealWithOtherLeaveRoom(room::LeaveRoomNtf & ntf)
 {
-	shared_ptr<zhu::table::PlayerOut> pPlayerOut = dynamic_pointer_cast<zhu::table::PlayerOut>(pMsg);
-
-	GEventDispatch->dispatchCustomEvent(strPlayerOut, (void *)&pPlayerOut->account());
+	int32_t uid = ntf.uid();
+	GEventDispatch->dispatchCustomEvent(strPlayerOut, (void *)&uid);
 }
 
-void CDataCenter::dealWithGetRoomResponse(MessagePtr pMsg)
+void CDataCenter::dealWithOtherReady(room::ReadyNtf & ntf)
 {
-	shared_ptr<zhu::room::GetRoomResp> pGetRoomResp = dynamic_pointer_cast<zhu::room::GetRoomResp>(pMsg);
+	int8_t index = ntf.index();
+	bool ready = ntf.ready();
 
+	std::string data;
+	data.append((char *)&index, sizeof(index));
+	data.append((char *)&ready, sizeof(ready));
+
+	GEventDispatch->dispatchCustomEvent(strPlayerReady, (void *)data.data());
+}
+
+void CDataCenter::dealWithOtherLandlord(room::LandlordNtf & ntf)
+{
+	int8_t cindex = ntf.cindex();
+	int8_t nindex = ntf.nindex();
+	bool call = ntf.call();
+	bool ctype = ntf.ctype();
+	bool ntype = ntf.ntype();
+
+	std::string data;
+	data.append((char *)&cindex, sizeof(int8_t));
+	data.append((char *)&nindex, sizeof(int8_t));
+	data.append((char *)&call, sizeof(bool));
+	data.append((char *)&ctype, sizeof(bool));
+	data.append((char *)&ntype, sizeof(bool));
+	GEventDispatch->dispatchCustomEvent(strCallLandlordResult, (void *)data.data());
+}
+
+void CDataCenter::dealWithGetRoomResponse(room::GetRoomResp & rsp)
+{
 	m_roomInfoList.clear();
 
-	for (int i = 0; i < pGetRoomResp->count(); i++) {
+	for (int i = 0; i < rsp.rooms_size(); i++) {
 		ROOM_INFO_PTR roomInfo(new RoomInfo);
-		auto room = pGetRoomResp->room(i);
+		auto room = rsp.rooms(i);
 		roomInfo->_roomID = room.id();
-		roomInfo->_roomName = room.roomname();
-		roomInfo->_sitUserNum = room.usercount();
-		roomInfo->_statu = room.status();
+		roomInfo->_roomName = room.name();
+		roomInfo->_sitUserNum = room.count();
+		roomInfo->_statu = room.state();
 		m_roomInfoList.push_back(roomInfo);
 	}
 	// 更新房间列表
@@ -315,4 +396,9 @@ int CDataCenter::getCurrentRoomId()
 int CDataCenter::getCurrentSeatPosition()
 {
 	return m_currentSeatPosition;
+}
+
+void CDataCenter::process(std::shared_ptr<proto::Protobuf> msg)
+{
+	m_processor.Dispatch(*msg);
 }

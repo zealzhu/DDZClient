@@ -1,0 +1,37 @@
+syntax = "proto2";
+
+package base;
+
+enum ERROR_CODE {
+    SUCCESS = 0;
+    ACCOUNT_NOT_EXIST = 1;
+    ACCOUNT_OR_PASSWD_ERROR = 2;
+    ALREADY_LOGON = 3;
+    ILLEGAL_PARAM = 4;
+    ACCOUNT_HAS_EXIST = 5;
+    ACCOUNT_INVALIDATE = 6;
+
+    ROOM_NOT_EXIST = 7;//房间不存在
+    ROOM_PLAYER_FULL = 8;//人满
+    ROOM_ENTER_FAIL = 9;
+    CREATE_ROOM_ERROR = 10;//创建房间失败
+    PLAYER_NOT_IN_ROOM = 11;//用户不在房间中
+    PLAYER_HAS_IN_ROOM = 12;//用户已经在房间中
+    ERROR_HAS_READY = 13;//用户已经准备
+    ERROR_USER_NOT_READY = 14; // 用户未准备
+    ROOM_HAS_START = 15;
+
+    NOT_TURN_YOU = 16;
+    COMB_FAIL= 17;
+    MUST_PLAY = 18;
+    CHOOSE_ERROR = 19;
+
+    USER_NOT_FOUND = 20;
+    ROOM_STATE_IS_NOT_PLAYING = 21;
+    NOT_FOUND_CARD = 22;
+}
+
+message ErrorCode{
+    required ERROR_CODE code = 1;
+    optional bytes desc = 2;
+}

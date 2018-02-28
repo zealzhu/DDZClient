@@ -32,7 +32,7 @@ public:
 	virtual void receive();
 
 	// 发送数据
-	virtual int send(const google::protobuf::Message & message);
+	virtual int send(int32_t id, const google::protobuf::Message & message);
 	
 protected:
 	// 初始化

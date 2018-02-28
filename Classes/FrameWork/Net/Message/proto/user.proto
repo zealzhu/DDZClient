@@ -1,0 +1,51 @@
+﻿syntax = "proto2";
+
+import "base.proto";
+
+package user;
+
+enum UserStatus {
+    OFFLINE = 0;
+    ONLINE = 1;
+    FORBIDDEN = 2;
+}
+
+message LoginReq {
+    required bytes account = 1;
+    required bytes password = 2;
+    optional bytes verifyCode = 3;
+}
+
+
+message LoginResp {
+    required base.ERROR_CODE code = 1;
+    optional bytes desc = 2;
+    optional uint32 id = 3;
+    optional bytes account = 4;
+}
+
+message LogoutReq {
+    required uint32 id = 1;
+    required bytes account = 2;
+}
+
+message Player {
+    required uint32 id = 1[default = 0];
+    required bytes account = 2;
+    required bytes password = 3;
+    required bytes name = 4;
+
+    enum SexType {
+        MALE = 0;
+        FEMALE = 1;
+    }
+    optional SexType sex = 6 [default = MALE];
+
+    optional UserStatus status = 7;
+    optional int32 money = 8;
+}
+
+message RegisterResp {
+    required base.ERROR_CODE code = 1;
+    required bytes desc = 2;
+}

@@ -3,10 +3,15 @@
 #define _DATA_CENTER_H
 
 #include "Common/Singleton.h"
-#include "IModule.h"
-#include "FrameWork/Net/Protocol/Code.h"
+#include "FrameWork/Net/Protocol/protobuf.hpp"
+#include "protobuf_processor.hpp"
 #include <list>
 #include <memory>
+#include <proto/user.pb.h>
+#include <proto/base.pb.h>
+#include <proto/room.pb.h>
+#include <protobuf_define.hpp>
+#include <card.hpp>
 
 // 房间信息
 struct RoomInfo {
@@ -34,6 +39,12 @@ struct PlayerInfo {
 	std::string _userHead;
 };
 
+struct SeatInfo {
+	int8_t index;
+	bool ready;
+	PlayerInfo playerInfo;
+};
+
 // 对局信息
 struct GameOverInfo {
 public:
@@ -43,38 +54,45 @@ public:
 typedef std::shared_ptr<RoomInfo> ROOM_INFO_PTR;
 
 class CDataCenter
-	: public IModule
 {
 public:
 	static CDataCenter * getInstance() {
 		static CDataCenter instance;
 		return &instance;
 	}
-	virtual bool init();
-	virtual void handle(std::shared_ptr<zhu::SelfDescribingMessage> pTmpMsg);
 	~CDataCenter();
-
-public:
-	void dealWithLoginResponse(MessagePtr pMsg);			// 处理登录响应
-
-	void dealWithEnterRoomResponse(MessagePtr pMsg);		// 进入房间响应
-	void dealWithCreateRoomResponse(MessagePtr pMsg);		// 创建房间响应
-	void dealWithGetRoomResponse(MessagePtr pMsg);			// 获取房间响应
-	void dealWithLeaveRoomResponse(MessagePtr pMsg);		// 离开房间响应
-	void dealWithOtherEnterInRoom(MessagePtr pMsg);			// 其他玩家进入房间
-	void dealWithPlayerReadyMsg(MessagePtr pMsg);			// 玩家准备消息
-	void dealWithRoomStatuChangeMsg(MessagePtr pMsg);		// 房间状态改变
-	void dealWithDispatchPokerMsg(MessagePtr pMsg);			// 分牌
-	void dealWithCallLandlordMsg(MessagePtr pMsg);			// 请求地主
-	void dealWithPlayResponse(MessagePtr pMsg);				// 出牌响应
-	void dealWithPlayerOut(MessagePtr pMsg);				// 玩家中途离开游戏
-
 public:
 	std::list<ROOM_INFO_PTR> & getRoomInfoList();
 	int getCurrentUserId();
 	std::string & getUserAccount();
 	int getCurrentRoomId();
 	int getCurrentSeatPosition();
+
+	void process(std::shared_ptr<proto::Protobuf> msg);
+
+private:
+	void dealWithLoginResponse(user::LoginResp & rsp);			// 处理登录响应
+	void dealWithRegisterResponse(user::RegisterResp & rsp);
+
+	void dealWithEnterRoomResponse(room::EnterRoomResp & rsp);		// 进入房间响应
+	void dealWithCreateRoomResponse(room::CreateRoomResp & rsp);		// 创建房间响应
+	void dealWithGetRoomResponse(room::GetRoomResp & rsp);			// 获取房间响应
+	void dealWithLeaveRoomResponse(room::LeaveRoomResp & rsp);		// 离开房间响应
+	void dealWithReadyResponse(room::ReadyResp & rsp);
+	void dealWithLandlordResponse(room::LandlordResp & rsp);
+	void dealWithPlayResponse(room::PlayResp & rsp);
+	void dealWithGetSeatInfoResponse(room::GetSeatInfoResp & rsp);
+
+	void dealWithGameBegin(room::GameBeginNtf & ntf);
+	void dealWithPutCard(room::PutCardNtf & ntf);
+	void dealWithPutLandlordCard(room::PutLandlordCardNtf & ntf);
+	void dealWithPlayNtf(room::PlayNtf & ntf);
+	void dealWithGameOver(room::GameOverNtf & ntf);
+
+	void dealWithOtherEnterInRoom(room::EnterRoomNtf & ntf);			// 其他玩家进入房间
+	void dealWithOtherLeaveRoom(room::LeaveRoomNtf & ntf);
+	void dealWithOtherReady(room::ReadyNtf & ntf);
+	void dealWithOtherLandlord(room::LandlordNtf & ntf);
 
 private:
 	CDataCenter();
@@ -88,6 +106,11 @@ private:
 	// 房间列表
 	std::list<ROOM_INFO_PTR> m_roomInfoList;
 	int m_currentSeatPosition;
+	int m_landlord;
+
+	std::map<int, Card> m_cards;
+
+	ProtobufProcessor m_processor;
 };
 
 #endif

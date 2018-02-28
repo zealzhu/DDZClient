@@ -157,13 +157,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Common\UIDataDefine.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Control\AppInitManager.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Data\DataCenter.cpp" />
-    <ClCompile Include="..\Classes\FrameWork\Net\Message\BaseMsg.pb.cc" />
     <ClCompile Include="..\Classes\FrameWork\Net\Message\MsgManager.cpp" />
-    <ClCompile Include="..\Classes\FrameWork\Net\Message\room\room.pb.cc" />
-    <ClCompile Include="..\Classes\FrameWork\Net\Message\table\table.pb.cc" />
-    <ClCompile Include="..\Classes\FrameWork\Net\Message\user\player.pb.cc" />
+    <ClCompile Include="..\Classes\FrameWork\Net\Message\proto\base.pb.cc" />
+    <ClCompile Include="..\Classes\FrameWork\Net\Message\proto\room.pb.cc" />
+    <ClCompile Include="..\Classes\FrameWork\Net\Message\proto\user.pb.cc" />
     <ClCompile Include="..\Classes\FrameWork\Net\NetManager.cpp" />
-    <ClCompile Include="..\Classes\FrameWork\Net\Protocol\Code.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Socket\GameServerSocket.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Socket\SocketLibErrors.cpp" />
     <ClCompile Include="..\Classes\FrameWork\Net\Socket\SocketLibSocket.cpp" />
@@ -190,16 +188,21 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Common\Singleton.h" />
     <ClInclude Include="..\Classes\Common\UIDataDefine.h" />
     <ClInclude Include="..\Classes\FrameWork\Control\AppInitManager.h" />
+    <ClInclude Include="..\Classes\FrameWork\Data\card.hpp" />
     <ClInclude Include="..\Classes\FrameWork\Data\DataCenter.h" />
-    <ClInclude Include="..\Classes\FrameWork\Data\IModule.h" />
-    <ClInclude Include="..\Classes\FrameWork\Data\ModuleManager.h" />
-    <ClInclude Include="..\Classes\FrameWork\Net\Message\BaseMsg.pb.h" />
+    <ClInclude Include="..\Classes\FrameWork\Data\protobuf_processor.hpp" />
     <ClInclude Include="..\Classes\FrameWork\Net\Message\MsgManager.h" />
-    <ClInclude Include="..\Classes\FrameWork\Net\Message\room\room.pb.h" />
-    <ClInclude Include="..\Classes\FrameWork\Net\Message\table\table.pb.h" />
-    <ClInclude Include="..\Classes\FrameWork\Net\Message\user\player.pb.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\protobuf_define.hpp" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\proto\base.pb.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\proto\room.pb.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Message\proto\user.pb.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\NetManager.h" />
-    <ClInclude Include="..\Classes\FrameWork\Net\Protocol\Code.h" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Protocol\bytebuffer.hpp" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Protocol\crypto.hpp" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Protocol\eventbuf.hpp" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Protocol\pipebuf.hpp" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Protocol\protobuf.hpp" />
+    <ClInclude Include="..\Classes\FrameWork\Net\Protocol\protocol.hpp" />
     <ClInclude Include="..\Classes\FrameWork\Net\Socket\GameServerSocket.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibErrors.h" />
     <ClInclude Include="..\Classes\FrameWork\Net\Socket\SocketLibSocket.h" />
@@ -233,6 +236,13 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Classes\FrameWork\Net\Message\proto\base.proto" />
+    <None Include="..\Classes\FrameWork\Net\Message\proto\room.proto" />
+    <None Include="..\Classes\FrameWork\Net\Message\proto\score.proto" />
+    <None Include="..\Classes\FrameWork\Net\Message\proto\table.proto" />
+    <None Include="..\Classes\FrameWork\Net\Message\proto\user.proto" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

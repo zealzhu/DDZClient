@@ -7,12 +7,13 @@
 #ifndef _MSG_MANAGER_H
 #define _MSG_MANAGER_H
 
+#include "Protocol/protobuf.hpp"
 #include <google/protobuf/message.h>
 #include <deque>
 #include <ThreadLib.h>
 #include <Singleton.h>
 
-typedef std::shared_ptr<google::protobuf::Message> MSG_PTR;
+typedef std::shared_ptr<proto::Protobuf> MSG_PTR;
 typedef std::deque<MSG_PTR> MSG_DEQUE;
 typedef std::deque<MSG_PTR>::iterator MSG_ITER;
 
