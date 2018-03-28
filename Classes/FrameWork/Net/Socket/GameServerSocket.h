@@ -2,9 +2,12 @@
 #ifndef _GAME_SERVER_SOCKET_H
 #define _GAME_SERVER_SOCKET_H
 
+#define HEART_TIME 3000
+
 #include "SocketLibSocket.h"
 #include <string>
 #include <google/protobuf/message.h>
+#include <chrono>
 
 class CGameServerSocket 
 	: public SocketLib::DataSocket
@@ -43,6 +46,7 @@ public:
 	~CGameServerSocket();
 
 protected:
+	int64_t m_lastRecvHeartTime;
 	// ¡¥Ω” «∑Òπÿ±’
 	bool m_closed;
 

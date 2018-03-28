@@ -72,7 +72,6 @@ void CRoomLayer::initMsg()
 	char nodeName[30];
 	for (int i = 1; i <= 3; i++) {
 		sprintf(nodeName, "sp_player_%d_msg", i);
-		//std::string nodeName = cocos2d::StringUtils::format();
 		auto msgNode = m_layerGraphNode->getChildByName(nodeName);
 		msgNode->setVisible(false);
 		m_playerMsgs.push_back((Sprite*)msgNode);
@@ -87,7 +86,6 @@ void CRoomLayer::initCallLandlordLayer()
 	m_callLandlordButton = (ui::Button *)m_callLandlordLayer->getChildByName("btn_call");
 	m_callLandlordButton->addClickEventListener(CC_CALLBACK_1(CRoomLayer::onCallLandlordClickListener, this));
 	m_callLandlordButton->setVisible(false);
-	//m_callLandlordButton->setTag(zhu::table::CALL);
 
 	// Not Call Button
 	m_notCallLandlordButton = (ui::Button *)m_callLandlordLayer->getChildByName("btn_cancle");
@@ -117,7 +115,6 @@ void CRoomLayer::initPlayCardLayer()
 	char nodeName[30];
 	for (int i = 1; i <= 3; i++) {
 		sprintf(nodeName, "panel_play_card_%d", i);
-		//std::string nodeName = cocos2d::StringUtils::format();
 		auto panel = m_playCardLayer->getChildByName(nodeName);
 		panel->setVisible(true);
 		m_playCardPanel.push_back(panel);
@@ -140,7 +137,6 @@ void CRoomLayer::onEnter()
 	GEventDispatch->addCustomEventListener(strFirstDispatchPoker, CC_CALLBACK_1(CRoomLayer::onInitPoker, this)); 
 	GEventDispatch->addCustomEventListener(strCallLandlordResult, CC_CALLBACK_1(CRoomLayer::onCallLandlordSuccess, this));
 	GEventDispatch->addCustomEventListener(strShowLandlordPoker, CC_CALLBACK_1(CRoomLayer::onShowLandlordPoker, this));
-	GEventDispatch->addCustomEventListener(strUpdateCurrentPoker, CC_CALLBACK_1(CRoomLayer::onUpdateCurrentPoker, this));
 	GEventDispatch->addCustomEventListener(strPlayPokerSuccess, CC_CALLBACK_1(CRoomLayer::onPlaySuccess, this));
 	GEventDispatch->addCustomEventListener(strShowOtherPlayerPoker, CC_CALLBACK_1(CRoomLayer::onShowOtherPlayerPoker, this));
 	GEventDispatch->addCustomEventListener(strGameOver, CC_CALLBACK_1(CRoomLayer::onGameOver, this));
@@ -148,6 +144,7 @@ void CRoomLayer::onEnter()
 	GEventDispatch->addCustomEventListener(strNoOneCallLandlord, CC_CALLBACK_1(CRoomLayer::onNoOneCallLandlord, this));
 	GEventDispatch->addCustomEventListener(strGetSeatInfo, CC_CALLBACK_1(CRoomLayer::onGetSeatInfo, this));
 	GEventDispatch->addCustomEventListener(strReadySuccess, CC_CALLBACK_1(CRoomLayer::onReadySuccess, this));
+	GEventDispatch->addCustomEventListener(strReconnect, CC_CALLBACK_1(CRoomLayer::onReconnect, this));
 
 	auto dataCenter = CDataCenter::getInstance();
 	m_user_seat_map[dataCenter->getCurrentUserId()].index = dataCenter->getCurrentSeatPosition();
@@ -175,7 +172,6 @@ void CRoomLayer::onExit()
 	GEventDispatch->removeCustomEventListeners(strFirstDispatchPoker);
 	GEventDispatch->removeCustomEventListeners(strCallLandlordResult);
 	GEventDispatch->removeCustomEventListeners(strShowLandlordPoker);
-	GEventDispatch->removeCustomEventListeners(strUpdateCurrentPoker);
 	GEventDispatch->removeCustomEventListeners(strPlayPokerSuccess);
 	GEventDispatch->removeCustomEventListeners(strShowOtherPlayerPoker);
 	GEventDispatch->removeCustomEventListeners(strGameOver);
@@ -450,13 +446,6 @@ void CRoomLayer::onNotPlayClickListener(cocos2d::Ref * target)
 	req.set_uid(dataCenter->getCurrentUserId());
 	req.set_rid(dataCenter->getCurrentRoomId());
 	NetManagerIns->getGameServerSocket().send(kC2SPlay, req);
-	//auto dataCenter = CDataCenter::getInstance();
-	//zhu::table::PlayReq pMsg;
-	//pMsg.set_roomid(dataCenter->getCurrentRoomId());
-	//pMsg.set_account(dataCenter->getUserAccount());
-	//pMsg.set_type(zhu::table::PLAY_TYPE::NO_PLAYER);
-
-	//NetManagerIns->getGameServerSocket().send(pMsg);
 }
 
 void CRoomLayer::onReelectClickListener(cocos2d::Ref * target)
@@ -469,8 +458,8 @@ void CRoomLayer::onGetSeatInfo(cocos2d::EventCustom * event)
 	int32_t uid = (int32_t)*((char *)event->getUserData());
 	int8_t index = (int8_t)*((char *)event->getUserData() + sizeof(int32_t));
 	bool ready = (bool)*((char *)event->getUserData() + sizeof(int32_t) + sizeof(int8_t));
-	int32_t nameSize = (int32_t)*((char *)event->getUserData() + sizeof(int32_t) + sizeof(int8_t) + sizeof(bool));
-	const char * account = (char *)event->getUserData() + sizeof(int32_t) + sizeof(int8_t) + sizeof(bool) + sizeof(int32_t);
+	int8_t cnumber = (int8_t)*((char *)event->getUserData() + sizeof(int32_t) + sizeof(int8_t) + sizeof(bool));
+	std::string account = (char *)event->getUserData() + sizeof(int32_t) + sizeof(int8_t) + sizeof(bool) + sizeof(int8_t);
 	
 	m_user_seat_map[uid].index = index;
 	m_user_seat_map[uid].playerInfo._userId = uid;
@@ -484,6 +473,8 @@ void CRoomLayer::onGetSeatInfo(cocos2d::EventCustom * event)
 	auto spReady = player->getChildByName("sp_ready");
 	name->setString(account);
 	spHead->setVisible(true);
+
+	updatePlayerPokerNumber(index, cnumber);
 	
 	if (!m_start) {
 		spReady->setVisible(ready);
@@ -626,18 +617,6 @@ void CRoomLayer::onShowLandlordPoker(cocos2d::EventCustom * event)
 	updateHead();
 }
 
-void CRoomLayer::onUpdateCurrentPoker(cocos2d::EventCustom * event)
-{
-	//auto msg = (zhu::table::DispatchPoker *)event->getUserData();
-
-	//// 当前牌数没有变化则不更新
-	//if (msg->pockers().size() == m_currentPokers.size())
-	//	return;
-
-	//// 更新显示手牌
-	//updateCurrentPoker(msg->pockers());
-}
-
 void CRoomLayer::onPlaySuccess(cocos2d::EventCustom * event)
 {
 	//auto posi = CDataCenter::getInstance()->getCurrentSeatPosition();
@@ -693,8 +672,9 @@ void CRoomLayer::onShowOtherPlayerPoker(cocos2d::EventCustom * event)
 	// 该玩家不是自己的话要更新牌数
 	if (curr != posi) {
 		int currentIndex = computeClientPosition(curr);
-		auto pokerPanel = m_playCardPanel[currentIndex];
-		int number = pokerPanel->getChildrenCount() - cards.size();
+		auto player = m_players[currentIndex];
+		auto pokerNumber = (ui::TextBMFont *)player->getChildByName("txt_surplus_card_number");
+		int number = atoi(pokerNumber->getString().c_str()) - cards.size();
 		updatePlayerPokerNumber(curr, number > 0 ? number : 0);
 	}
 	// 更新手牌
@@ -735,6 +715,12 @@ void CRoomLayer::onGameOver(cocos2d::EventCustom * event)
 		UIManagerIns->getTopLayer()->showDialog("fuck", "you lose");
 	}
 	reinit();
+	//m_readyButton->setVisible(false);
+	//room::ReadyReq req;
+	//req.set_ready(true);
+	//req.set_rid(CDataCenter::getInstance()->getCurrentRoomId());
+	//req.set_uid(CDataCenter::getInstance()->getCurrentUserId());
+	//NetManagerIns->getGameServerSocket().send(kC2SReady, req);
 }
 
 void CRoomLayer::onPlayerOut(cocos2d::EventCustom * event)
@@ -758,6 +744,49 @@ void CRoomLayer::onNoOneCallLandlord(cocos2d::EventCustom * event)
 	UIManagerIns->getTopLayer()->showDialog("hint", "No one call, Restart!");
 	hideAllMsg();
 	hideAllClock();
+}
+
+void CRoomLayer::onReconnect(cocos2d::EventCustom * event)
+{
+	auto posi = CDataCenter::getInstance()->getCurrentSeatPosition();
+	int current = *(int *)event->getUserData();
+	int landlord = *(int *)((char*)event->getUserData() + sizeof(int));
+	int multiple = *(int *)((char*)event->getUserData() + sizeof(int) + sizeof(int));
+	ReconnectRoomState state = *(ReconnectRoomState *)((char*)event->getUserData() + sizeof(int) + sizeof(int) + sizeof(int));
+	std::vector<int> & other = *(std::vector<int> *)((char*)event->getUserData() + sizeof(int) + sizeof(int) + sizeof(int) + sizeof(ReconnectRoomState));
+	std::vector<Card> & card = *(std::vector<Card> *)((char*)event->getUserData() + sizeof(int) + sizeof(int) + sizeof(int) + sizeof(ReconnectRoomState) + sizeof(other));
+	int noplay = *(int *)((char*)event->getUserData() + sizeof(int) + sizeof(int) + sizeof(int) + sizeof(ReconnectRoomState) + sizeof(other) + sizeof(card));
+
+	for (auto & id : other) {
+		room::GetSeatInfoReq req;
+		req.set_uid(CDataCenter::getInstance()->getCurrentUserId());
+		req.set_rid(CDataCenter::getInstance()->getCurrentRoomId());
+		req.set_find(id);
+		NetManagerIns->getGameServerSocket().send(kC2SGetSeatInfo, req);
+	}
+	m_landlordServerPosition = landlord;
+	updateCurrentPoker(card);
+	if (current == posi) {
+		if (state == ReconnectRoomState::CALL) {
+			updateCallLandlordButton(true, true);
+		}
+		else if (state == ReconnectRoomState::RUSH) {
+			updateCallLandlordButton(false, true);
+		}
+		else if (state == ReconnectRoomState::PLAY) {
+			showPlayButton(true);
+		}
+	}
+	else {
+		showTimeClock(current, true);
+	}
+	m_playCardLayer->setVisible(true);
+	m_noPlayFlag = noplay == 1 ? 1 : 0;
+	m_start = true;
+	auto player = m_players[computeClientPosition(posi)];
+	auto spReady = player->getChildByName("sp_ready");
+	spReady->setVisible(false);
+	updateHead();
 }
 
 void CRoomLayer::handCardPanelTouchListener(cocos2d::Ref * ref, cocos2d::ui::Widget::TouchEventType type)

@@ -30,6 +30,8 @@ CDataCenter::CDataCenter()
 	m_processor.RegistHandler(this, kS2CReadyNtf, &CDataCenter::dealWithOtherReady); 
 	m_processor.RegistHandler(this, kS2CLandlordNtf, &CDataCenter::dealWithOtherLandlord);
 	m_processor.RegistHandler(this, kS2CGetSeatInfo, &CDataCenter::dealWithGetSeatInfoResponse);
+	m_processor.RegistHandler(this, kS2CLostFromRoomMsg, &CDataCenter::dealWithLostFromRoomMsg);
+	m_processor.RegistHandler(this, kS2CReconnect, &CDataCenter::dealWithReconnectResponse);
 
 	for (int i = 0; i < 54; i++) {
 		m_cards[i] = Card(i);
@@ -82,13 +84,6 @@ void CDataCenter::dealWithEnterRoomResponse(room::EnterRoomResp & rsp)
 			req.set_find(id);
 			NetManagerIns->getGameServerSocket().send(kC2SGetSeatInfo, req);
 		}
-		// send current seat info to room
-		//if(m_currentSeatPosition != 1)
-		//	GEventDispatch->dispatchCustomEvent(strPlayerEnterInRoom, (void *)&pEnterRoomResp->roominfo().seat1());
-		//if (m_currentSeatPosition != 2)
-		//	GEventDispatch->dispatchCustomEvent(strPlayerEnterInRoom, (void *)&pEnterRoomResp->roominfo().seat2());
-		//if (m_currentSeatPosition != 3)
-		//	GEventDispatch->dispatchCustomEvent(strPlayerEnterInRoom, (void *)&pEnterRoomResp->roominfo().seat3());
 	}
 	else {
 		UIManagerIns->getTopLayer()->showDialog("error", rsp.desc());
@@ -102,10 +97,6 @@ void CDataCenter::dealWithCreateRoomResponse(room::CreateRoomResp & rsp)
 		m_currentRoomId = rsp.rid();
 		m_currentSeatPosition = rsp.index();
 
-		// 更新房间列表
-		//zhu::room::GetRoomReq msg;
-		//msg.set_account(StringUtils::toString(m_userAccount));
-		//NetManagerIns->getGameServerSocket().send(msg);
 		// 进入房间
 		UIManagerIns->getTopLayer()->hideLoadingCircle();
 		UIManagerIns->replaceCurrentLayer(ENUM_ROOM_LAYER);
@@ -141,8 +132,6 @@ void CDataCenter::dealWithOtherEnterInRoom(room::EnterRoomNtf & ntf)
 	data.append((char *)&uid, sizeof(uid));
 	data.append((char *)&index, sizeof(index));
 	data.append((char *)&ready, sizeof(ready));
-	
-	//shared_ptr<zhu::room::Seat> pSeat = dynamic_pointer_cast<zhu::room::Seat>(pMsg);
 	
 	GEventDispatch->dispatchCustomEvent(strPlayerEnterInRoom, (void *)data.data());
 }
@@ -181,22 +170,6 @@ void CDataCenter::dealWithPutCard(room::PutCardNtf & ntf)
 		card.emplace_back(m_cards[cid]);
 	}
 	GEventDispatch->dispatchCustomEvent(strFirstDispatchPoker, (void *)&card);
-	//// 服务器初始分牌
-	//if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::DEAL_POKER) {
-	//	GEventDispatch->dispatchCustomEvent(strFirstDispatchPoker, (void *)pDispatchPockerResp.get());
-	//}
-	//// 显示地主牌
-	//else if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::LANDLORD_POKER) {
-	//	GEventDispatch->dispatchCustomEvent(strShowLandlordPoker, (void *)pDispatchPockerResp.get());
-	//}
-	//// 显示当前牌
-	//else if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::CURRENT_POKER) {
-	//	GEventDispatch->dispatchCustomEvent(strUpdateCurrentPoker, (void *)pDispatchPockerResp.get());
-	//}
-	//// 显示出的牌
-	//else if (pDispatchPockerResp->type() == zhu::table::DispatchPokerType::PLAYER_POKER) {
-	//	GEventDispatch->dispatchCustomEvent(strShowOtherPlayerPoker, (void *)pDispatchPockerResp.get());
-	//}
 }
 
 void CDataCenter::dealWithPutLandlordCard(room::PutLandlordCardNtf & ntf)
@@ -261,40 +234,6 @@ void CDataCenter::dealWithPlayResponse(room::PlayResp & rsp)
 	else {
 		GEventDispatch->dispatchCustomEvent(strPlayPokerSuccess, (void *)&next);
 	}
-	//shared_ptr<zhu::table::PlayResp> pPlayResp = dynamic_pointer_cast<zhu::table::PlayResp>(pMsg);
-	//auto topLayer = UIManagerIns->getTopLayer();
-	//bool landlordWin = false;
-
-	//// 比牌失败
-	//if (pPlayResp->playresult() == table::ERROR_CODE::COMPARE_LOSE && 
-	//	pPlayResp->account() == m_userAccount) {
-	//	topLayer->showDialog("error", "can't big more");
-	//}
-	//// 不能不出
-	//else if (pPlayResp->playresult() == table::ERROR_CODE::CAN_NOT_NO_PLAY &&
-	//	pPlayResp->account() == m_userAccount) {
-	//	topLayer->showDialog("warning", "turn to you, can't not no play");
-	//}
-	//// 出牌类型错误
-	//else if (pPlayResp->playresult() == table::ERROR_CODE::PLAY_TYPE_ERROR &&
-	//	pPlayResp->account() == m_userAccount) {
-	//	topLayer->showDialog("warning", "play poker type error, please reelect");
-	//}
-	//// 出牌成功
-	//else if (pPlayResp->playresult() == table::ERROR_CODE::SUCCESS ||
-	//	pPlayResp->playresult() == table::ERROR_CODE::NO_PLAY) {
-	//	GEventDispatch->dispatchCustomEvent(strPlayPokerSuccess, (void *)pPlayResp.get());
-	//}
-	//// 地主胜利游戏结束
-	//else if (pPlayResp->playresult() == table::ERROR_CODE::LANDLORD_WIN) {
-	//	landlordWin = true;
-	//	GEventDispatch->dispatchCustomEvent(strGameOver, (void *)&landlordWin);
-	//}
-	//// 农名胜利游戏结束
-	//else if (pPlayResp->playresult() == table::ERROR_CODE::PEASANT_WIN) {
-	//	landlordWin = false;
-	//	GEventDispatch->dispatchCustomEvent(strGameOver, (void *)&landlordWin);
-	//}
 }
 
 void CDataCenter::dealWithGetSeatInfoResponse(room::GetSeatInfoResp & rsp)
@@ -304,14 +243,15 @@ void CDataCenter::dealWithGetSeatInfoResponse(room::GetSeatInfoResp & rsp)
 		std::string account = rsp.account();
 		int8_t index = rsp.index();
 		bool ready = rsp.ready();
-		int32_t nameSize = account.size();
+		int8_t cnumber = rsp.cnumber();
 
 		std::string data;
 		data.append((char *)&uid, sizeof(uid));
 		data.append((char *)&index, sizeof(index));
 		data.append((char *)&ready, sizeof(ready));
-		data.append((char *)&nameSize, sizeof(nameSize));
-		data.append(account.data(), account.size());
+		data.append((char *)&cnumber, sizeof(cnumber));
+		data.append(account.data(), account.size() + 1);
+		
 		GEventDispatch->dispatchCustomEvent(strGetSeatInfo, (void *)data.data());
 	}
 	else {
@@ -352,6 +292,57 @@ void CDataCenter::dealWithOtherLandlord(room::LandlordNtf & ntf)
 	data.append((char *)&ctype, sizeof(bool));
 	data.append((char *)&ntype, sizeof(bool));
 	GEventDispatch->dispatchCustomEvent(strCallLandlordResult, (void *)data.data());
+}
+
+void CDataCenter::dealWithLostFromRoomMsg(room::LostFromRoomMsg & msg)
+{
+	UIManagerIns->getTopLayer()->hideLoadingCircle();
+	m_currentRoomId = msg.rid();
+	UIManagerIns->getTopLayer()->showDialog("lost", "lost from" + std::to_string(msg.rid()), [&](Ref *) {
+		room::ReconnectReq req;
+		req.set_rid(m_currentRoomId);
+		req.set_uid(m_userId);
+
+		NetManagerIns->getGameServerSocket().send(kC2SReconnect, req);
+		UIManagerIns->getTopLayer()->hideDialog();
+		UIManagerIns->getTopLayer()->showLoadingCircle();
+	});
+}
+
+void CDataCenter::dealWithReconnectResponse(room::ReconnectResp & rsp)
+{
+	UIManagerIns->getTopLayer()->hideLoadingCircle();
+	if (rsp.result() == SUCCESS) {
+		std::string data;
+		m_currentSeatPosition = rsp.index();
+		int current = rsp.current();
+		int landlord = rsp.landlord();
+		int multiple = rsp.multiple();
+		int noplay = rsp.noplay();
+		ReconnectRoomState state = (ReconnectRoomState)rsp.state();
+		std::vector<int> other;
+		std::vector<Card> cards;
+		
+		data.append((char *)&current, sizeof(current));
+		data.append((char *)&landlord, sizeof(landlord));
+		data.append((char *)&multiple, sizeof(multiple));
+		data.append((char *)&state, sizeof(state));
+		for (auto & id : rsp.otherid()) {
+			other.emplace_back(id);		
+		}
+		data.append((char *)&other, sizeof(other));
+		for (auto & card : rsp.cid()) {
+			cards.emplace_back(Card(card));
+		}
+		data.append((char *)&cards, sizeof(cards));
+		data.append((char *)&noplay, sizeof(noplay));
+		// ui change
+		UIManagerIns->replaceCurrentLayer(ENUM_ROOM_LAYER);
+		GEventDispatch->dispatchCustomEvent(strReconnect, (void *)data.data());
+	}
+	else {
+		UIManagerIns->getTopLayer()->showDialog("lost", "reconnect error");
+	}
 }
 
 void CDataCenter::dealWithGetRoomResponse(room::GetRoomResp & rsp)

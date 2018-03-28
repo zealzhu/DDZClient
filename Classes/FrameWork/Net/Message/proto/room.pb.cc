@@ -226,12 +226,14 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSeatInfoResp, index_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSeatInfoResp, account_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSeatInfoResp, ready_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSeatInfoResp, cnumber_),
   2,
   0,
   3,
   4,
   1,
   5,
+  6,
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CreateRoomReq, _has_bits_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CreateRoomReq, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -450,6 +452,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReconnectResp, otherid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReconnectResp, cid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReconnectResp, state_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReconnectResp, multiple_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReconnectResp, noplay_),
   0,
   1,
   2,
@@ -457,6 +461,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,
   ~0u,
   4,
+  5,
+  6,
 };
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
@@ -468,28 +474,28 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 43, 51, sizeof(EnterRoomReq)},
   { 54, 65, sizeof(EnterRoomResp)},
   { 71, 79, sizeof(GetSeatInfoReq)},
-  { 82, 93, sizeof(GetSeatInfoResp)},
-  { 99, 106, sizeof(CreateRoomReq)},
-  { 108, 117, sizeof(CreateRoomResp)},
-  { 121, 130, sizeof(EnterRoomNtf)},
-  { 134, 142, sizeof(LeaveRoomNtf)},
-  { 145, 153, sizeof(ReadyReq)},
-  { 156, 162, sizeof(ReadyResp)},
-  { 163, 172, sizeof(ReadyNtf)},
-  { 176, 183, sizeof(GameBeginNtf)},
-  { 185, 191, sizeof(RestartNtf)},
-  { 192, 199, sizeof(PutCardNtf)},
-  { 201, 208, sizeof(PutLandlordCardNtf)},
-  { 210, 220, sizeof(LandlordNtf)},
-  { 225, 233, sizeof(LandlordReq)},
-  { 236, 242, sizeof(LandlordResp)},
-  { 243, 251, sizeof(PlayReq)},
-  { 254, 261, sizeof(PlayResp)},
-  { 263, 272, sizeof(PlayNtf)},
-  { 276, 285, sizeof(GameOverNtf)},
-  { 289, 295, sizeof(LostFromRoomMsg)},
-  { 296, 303, sizeof(ReconnectReq)},
-  { 305, 317, sizeof(ReconnectResp)},
+  { 82, 94, sizeof(GetSeatInfoResp)},
+  { 101, 108, sizeof(CreateRoomReq)},
+  { 110, 119, sizeof(CreateRoomResp)},
+  { 123, 132, sizeof(EnterRoomNtf)},
+  { 136, 144, sizeof(LeaveRoomNtf)},
+  { 147, 155, sizeof(ReadyReq)},
+  { 158, 164, sizeof(ReadyResp)},
+  { 165, 174, sizeof(ReadyNtf)},
+  { 178, 185, sizeof(GameBeginNtf)},
+  { 187, 193, sizeof(RestartNtf)},
+  { 194, 201, sizeof(PutCardNtf)},
+  { 203, 210, sizeof(PutLandlordCardNtf)},
+  { 212, 222, sizeof(LandlordNtf)},
+  { 227, 235, sizeof(LandlordReq)},
+  { 238, 244, sizeof(LandlordResp)},
+  { 245, 253, sizeof(PlayReq)},
+  { 256, 263, sizeof(PlayResp)},
+  { 265, 274, sizeof(PlayNtf)},
+  { 278, 287, sizeof(GameOverNtf)},
+  { 291, 297, sizeof(LostFromRoomMsg)},
+  { 298, 305, sizeof(ReconnectReq)},
+  { 307, 321, sizeof(ReconnectResp)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -669,47 +675,48 @@ void AddDescriptorsImpl() {
       "c\030\002 \001(\014\022\013\n\003rid\030\003 \001(\r\022\r\n\005index\030\004 \001(\r\022\r\n\005r"
       "eady\030\005 \001(\010\022\017\n\007otherid\030\006 \003(\r\"8\n\016GetSeatIn"
       "foReq\022\013\n\003uid\030\001 \002(\r\022\013\n\003rid\030\002 \002(\r\022\014\n\004find\030"
-      "\003 \002(\r\"}\n\017GetSeatInfoResp\022 \n\006result\030\001 \002(\016"
-      "2\020.base.ERROR_CODE\022\014\n\004desc\030\002 \001(\014\022\013\n\003uid\030"
-      "\003 \002(\r\022\r\n\005index\030\004 \002(\r\022\017\n\007account\030\005 \002(\014\022\r\n"
-      "\005ready\030\006 \002(\010\",\n\rCreateRoomReq\022\n\n\002id\030\001 \002("
-      "\r\022\017\n\007account\030\002 \002(\014\"\\\n\016CreateRoomResp\022 \n\006"
-      "result\030\001 \002(\0162\020.base.ERROR_CODE\022\014\n\004desc\030\002"
-      " \001(\014\022\013\n\003rid\030\003 \001(\r\022\r\n\005index\030\004 \001(\r\"F\n\014Ente"
-      "rRoomNtf\022\013\n\003rid\030\001 \002(\r\022\013\n\003uid\030\002 \002(\r\022\r\n\005in"
-      "dex\030\003 \002(\r\022\r\n\005ready\030\005 \002(\010\"7\n\014LeaveRoomNtf"
-      "\022\013\n\003rid\030\001 \002(\r\022\013\n\003uid\030\002 \002(\r\022\r\n\005index\030\003 \002("
-      "\r\"3\n\010ReadyReq\022\013\n\003uid\030\001 \002(\r\022\013\n\003rid\030\002 \002(\r\022"
-      "\r\n\005ready\030\003 \002(\010\"-\n\tReadyResp\022 \n\006result\030\001 "
-      "\002(\0162\020.base.ERROR_CODE\"B\n\010ReadyNtf\022\013\n\003uid"
-      "\030\001 \002(\r\022\013\n\003rid\030\002 \002(\r\022\r\n\005index\030\003 \002(\r\022\r\n\005re"
-      "ady\030\004 \002(\010\"*\n\014GameBeginNtf\022\013\n\003rid\030\001 \002(\r\022\r"
-      "\n\005first\030\002 \002(\r\"\033\n\nRestartNtf\022\r\n\005first\030\001 \002"
-      "(\r\"&\n\nPutCardNtf\022\013\n\003uid\030\001 \002(\r\022\013\n\003cid\030\002 \003"
-      "(\r\"3\n\022PutLandlordCardNtf\022\020\n\010landlord\030\001 \002"
-      "(\r\022\013\n\003cid\030\002 \003(\r\"Y\n\013LandlordNtf\022\016\n\006cindex"
-      "\030\001 \002(\r\022\016\n\006nindex\030\002 \002(\r\022\014\n\004call\030\003 \002(\010\022\r\n\005"
-      "ctype\030\004 \002(\010\022\r\n\005ntype\030\005 \002(\010\"5\n\013LandlordRe"
-      "q\022\013\n\003uid\030\001 \002(\r\022\013\n\003rid\030\002 \002(\r\022\014\n\004call\030\003 \002("
-      "\010\"0\n\014LandlordResp\022 \n\006result\030\001 \002(\0162\020.base"
-      ".ERROR_CODE\"0\n\007PlayReq\022\013\n\003uid\030\001 \002(\r\022\013\n\003r"
-      "id\030\002 \002(\r\022\013\n\003cid\030\003 \003(\r\":\n\010PlayResp\022 \n\006res"
-      "ult\030\001 \002(\0162\020.base.ERROR_CODE\022\014\n\004next\030\002 \001("
-      "\r\"G\n\007PlayNtf\022\017\n\007current\030\001 \002(\r\022\014\n\004next\030\002 "
-      "\002(\r\022\013\n\003cid\030\003 \003(\r\022\020\n\010multiple\030\004 \002(\r\"N\n\013Ga"
-      "meOverNtf\022\013\n\003rid\030\001 \002(\r\022\016\n\006winner\030\002 \002(\r\022\020"
-      "\n\010landlord\030\003 \002(\r\022\020\n\010multiple\030\004 \002(\r\"\036\n\017Lo"
-      "stFromRoomMsg\022\013\n\003rid\030\001 \002(\r\"(\n\014ReconnectR"
-      "eq\022\013\n\003rid\030\001 \002(\r\022\013\n\003uid\030\002 \002(\r\"\332\001\n\rReconne"
-      "ctResp\022 \n\006result\030\001 \002(\0162\020.base.ERROR_CODE"
-      "\022\r\n\005index\030\002 \002(\r\022\017\n\007current\030\003 \002(\r\022\020\n\010land"
-      "lord\030\004 \002(\r\022\017\n\007otherid\030\005 \003(\r\022\013\n\003cid\030\006 \003(\r"
-      "\022,\n\005state\030\007 \002(\0162\035.room.ReconnectResp.Pla"
-      "yState\")\n\tPlayState\022\010\n\004CALL\020\000\022\010\n\004RUSH\020\001\022"
-      "\010\n\004PLAY\020\002"
+      "\003 \002(\r\"\216\001\n\017GetSeatInfoResp\022 \n\006result\030\001 \002("
+      "\0162\020.base.ERROR_CODE\022\014\n\004desc\030\002 \001(\014\022\013\n\003uid"
+      "\030\003 \002(\r\022\r\n\005index\030\004 \002(\r\022\017\n\007account\030\005 \002(\014\022\r"
+      "\n\005ready\030\006 \002(\010\022\017\n\007cnumber\030\007 \002(\r\",\n\rCreate"
+      "RoomReq\022\n\n\002id\030\001 \002(\r\022\017\n\007account\030\002 \002(\014\"\\\n\016"
+      "CreateRoomResp\022 \n\006result\030\001 \002(\0162\020.base.ER"
+      "ROR_CODE\022\014\n\004desc\030\002 \001(\014\022\013\n\003rid\030\003 \001(\r\022\r\n\005i"
+      "ndex\030\004 \001(\r\"F\n\014EnterRoomNtf\022\013\n\003rid\030\001 \002(\r\022"
+      "\013\n\003uid\030\002 \002(\r\022\r\n\005index\030\003 \002(\r\022\r\n\005ready\030\005 \002"
+      "(\010\"7\n\014LeaveRoomNtf\022\013\n\003rid\030\001 \002(\r\022\013\n\003uid\030\002"
+      " \002(\r\022\r\n\005index\030\003 \002(\r\"3\n\010ReadyReq\022\013\n\003uid\030\001"
+      " \002(\r\022\013\n\003rid\030\002 \002(\r\022\r\n\005ready\030\003 \002(\010\"-\n\tRead"
+      "yResp\022 \n\006result\030\001 \002(\0162\020.base.ERROR_CODE\""
+      "B\n\010ReadyNtf\022\013\n\003uid\030\001 \002(\r\022\013\n\003rid\030\002 \002(\r\022\r\n"
+      "\005index\030\003 \002(\r\022\r\n\005ready\030\004 \002(\010\"*\n\014GameBegin"
+      "Ntf\022\013\n\003rid\030\001 \002(\r\022\r\n\005first\030\002 \002(\r\"\033\n\nResta"
+      "rtNtf\022\r\n\005first\030\001 \002(\r\"&\n\nPutCardNtf\022\013\n\003ui"
+      "d\030\001 \002(\r\022\013\n\003cid\030\002 \003(\r\"3\n\022PutLandlordCardN"
+      "tf\022\020\n\010landlord\030\001 \002(\r\022\013\n\003cid\030\002 \003(\r\"Y\n\013Lan"
+      "dlordNtf\022\016\n\006cindex\030\001 \002(\r\022\016\n\006nindex\030\002 \002(\r"
+      "\022\014\n\004call\030\003 \002(\010\022\r\n\005ctype\030\004 \002(\010\022\r\n\005ntype\030\005"
+      " \002(\010\"5\n\013LandlordReq\022\013\n\003uid\030\001 \002(\r\022\013\n\003rid\030"
+      "\002 \002(\r\022\014\n\004call\030\003 \002(\010\"0\n\014LandlordResp\022 \n\006r"
+      "esult\030\001 \002(\0162\020.base.ERROR_CODE\"0\n\007PlayReq"
+      "\022\013\n\003uid\030\001 \002(\r\022\013\n\003rid\030\002 \002(\r\022\013\n\003cid\030\003 \003(\r\""
+      ":\n\010PlayResp\022 \n\006result\030\001 \002(\0162\020.base.ERROR"
+      "_CODE\022\014\n\004next\030\002 \001(\r\"G\n\007PlayNtf\022\017\n\007curren"
+      "t\030\001 \002(\r\022\014\n\004next\030\002 \002(\r\022\013\n\003cid\030\003 \003(\r\022\020\n\010mu"
+      "ltiple\030\004 \002(\r\"N\n\013GameOverNtf\022\013\n\003rid\030\001 \002(\r"
+      "\022\016\n\006winner\030\002 \002(\r\022\020\n\010landlord\030\003 \002(\r\022\020\n\010mu"
+      "ltiple\030\004 \002(\r\"\036\n\017LostFromRoomMsg\022\013\n\003rid\030\001"
+      " \002(\r\"(\n\014ReconnectReq\022\013\n\003rid\030\001 \002(\r\022\013\n\003uid"
+      "\030\002 \002(\r\"\374\001\n\rReconnectResp\022 \n\006result\030\001 \002(\016"
+      "2\020.base.ERROR_CODE\022\r\n\005index\030\002 \002(\r\022\017\n\007cur"
+      "rent\030\003 \002(\r\022\020\n\010landlord\030\004 \002(\r\022\017\n\007otherid\030"
+      "\005 \003(\r\022\013\n\003cid\030\006 \003(\r\022,\n\005state\030\007 \002(\0162\035.room"
+      ".ReconnectResp.PlayState\022\020\n\010multiple\030\010 \002"
+      "(\r\022\016\n\006noplay\030\t \002(\r\")\n\tPlayState\022\010\n\004CALL\020"
+      "\000\022\010\n\004RUSH\020\001\022\010\n\004PLAY\020\002"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 2049);
+      descriptor, 2101);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "room.proto", &protobuf_RegisterTypes);
   ::base::protobuf_base_2eproto::AddDescriptors();
@@ -4029,6 +4036,7 @@ const int GetSeatInfoResp::kUidFieldNumber;
 const int GetSeatInfoResp::kIndexFieldNumber;
 const int GetSeatInfoResp::kAccountFieldNumber;
 const int GetSeatInfoResp::kReadyFieldNumber;
+const int GetSeatInfoResp::kCnumberFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 GetSeatInfoResp::GetSeatInfoResp()
@@ -4054,8 +4062,8 @@ GetSeatInfoResp::GetSeatInfoResp(const GetSeatInfoResp& from)
     account_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.account_);
   }
   ::memcpy(&result_, &from.result_,
-    reinterpret_cast<char*>(&ready_) -
-    reinterpret_cast<char*>(&result_) + sizeof(ready_));
+    reinterpret_cast<char*>(&cnumber_) -
+    reinterpret_cast<char*>(&result_) + sizeof(cnumber_));
   // @@protoc_insertion_point(copy_constructor:room.GetSeatInfoResp)
 }
 
@@ -4063,8 +4071,8 @@ void GetSeatInfoResp::SharedCtor() {
   _cached_size_ = 0;
   desc_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   account_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&result_, 0, reinterpret_cast<char*>(&ready_) -
-    reinterpret_cast<char*>(&result_) + sizeof(ready_));
+  ::memset(&result_, 0, reinterpret_cast<char*>(&cnumber_) -
+    reinterpret_cast<char*>(&result_) + sizeof(cnumber_));
 }
 
 GetSeatInfoResp::~GetSeatInfoResp() {
@@ -4112,9 +4120,9 @@ void GetSeatInfoResp::Clear() {
       (*account_.UnsafeRawStringPointer())->clear();
     }
   }
-  if (_has_bits_[0 / 32] & 60u) {
-    ::memset(&result_, 0, reinterpret_cast<char*>(&ready_) -
-      reinterpret_cast<char*>(&result_) + sizeof(ready_));
+  if (_has_bits_[0 / 32] & 124u) {
+    ::memset(&result_, 0, reinterpret_cast<char*>(&cnumber_) -
+      reinterpret_cast<char*>(&result_) + sizeof(cnumber_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
@@ -4215,6 +4223,20 @@ bool GetSeatInfoResp::MergePartialFromCodedStream(
         break;
       }
 
+      // required uint32 cnumber = 7;
+      case 7: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(56u)) {
+          set_has_cnumber();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &cnumber_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -4277,6 +4299,11 @@ void GetSeatInfoResp::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(6, this->ready(), output);
   }
 
+  // required uint32 cnumber = 7;
+  if (cached_has_bits & 0x00000040u) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(7, this->cnumber(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -4326,6 +4353,11 @@ void GetSeatInfoResp::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(6, this->ready(), target);
   }
 
+  // required uint32 cnumber = 7;
+  if (cached_has_bits & 0x00000040u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(7, this->cnumber(), target);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -4370,6 +4402,13 @@ size_t GetSeatInfoResp::RequiredFieldsByteSizeFallback() const {
     total_size += 1 + 1;
   }
 
+  if (has_cnumber()) {
+    // required uint32 cnumber = 7;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->cnumber());
+  }
+
   return total_size;
 }
 size_t GetSeatInfoResp::ByteSizeLong() const {
@@ -4381,7 +4420,7 @@ size_t GetSeatInfoResp::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         unknown_fields());
   }
-  if (((_has_bits_[0] & 0x0000003e) ^ 0x0000003e) == 0) {  // All required fields are present.
+  if (((_has_bits_[0] & 0x0000007e) ^ 0x0000007e) == 0) {  // All required fields are present.
     // required bytes account = 5;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -4403,6 +4442,11 @@ size_t GetSeatInfoResp::ByteSizeLong() const {
 
     // required bool ready = 6;
     total_size += 1 + 1;
+
+    // required uint32 cnumber = 7;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->cnumber());
 
   } else {
     total_size += RequiredFieldsByteSizeFallback();
@@ -4444,7 +4488,7 @@ void GetSeatInfoResp::MergeFrom(const GetSeatInfoResp& from) {
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 63u) {
+  if (cached_has_bits & 127u) {
     if (cached_has_bits & 0x00000001u) {
       set_has_desc();
       desc_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.desc_);
@@ -4465,6 +4509,9 @@ void GetSeatInfoResp::MergeFrom(const GetSeatInfoResp& from) {
     if (cached_has_bits & 0x00000020u) {
       ready_ = from.ready_;
     }
+    if (cached_has_bits & 0x00000040u) {
+      cnumber_ = from.cnumber_;
+    }
     _has_bits_[0] |= cached_has_bits;
   }
 }
@@ -4484,7 +4531,7 @@ void GetSeatInfoResp::CopyFrom(const GetSeatInfoResp& from) {
 }
 
 bool GetSeatInfoResp::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000003e) != 0x0000003e) return false;
+  if ((_has_bits_[0] & 0x0000007e) != 0x0000007e) return false;
   return true;
 }
 
@@ -4499,6 +4546,7 @@ void GetSeatInfoResp::InternalSwap(GetSeatInfoResp* other) {
   std::swap(uid_, other->uid_);
   std::swap(index_, other->index_);
   std::swap(ready_, other->ready_);
+  std::swap(cnumber_, other->cnumber_);
   std::swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -4733,6 +4781,30 @@ void GetSeatInfoResp::set_ready(bool value) {
   set_has_ready();
   ready_ = value;
   // @@protoc_insertion_point(field_set:room.GetSeatInfoResp.ready)
+}
+
+// required uint32 cnumber = 7;
+bool GetSeatInfoResp::has_cnumber() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+void GetSeatInfoResp::set_has_cnumber() {
+  _has_bits_[0] |= 0x00000040u;
+}
+void GetSeatInfoResp::clear_has_cnumber() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+void GetSeatInfoResp::clear_cnumber() {
+  cnumber_ = 0u;
+  clear_has_cnumber();
+}
+::google::protobuf::uint32 GetSeatInfoResp::cnumber() const {
+  // @@protoc_insertion_point(field_get:room.GetSeatInfoResp.cnumber)
+  return cnumber_;
+}
+void GetSeatInfoResp::set_cnumber(::google::protobuf::uint32 value) {
+  set_has_cnumber();
+  cnumber_ = value;
+  // @@protoc_insertion_point(field_set:room.GetSeatInfoResp.cnumber)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -12630,6 +12702,8 @@ const int ReconnectResp::kLandlordFieldNumber;
 const int ReconnectResp::kOtheridFieldNumber;
 const int ReconnectResp::kCidFieldNumber;
 const int ReconnectResp::kStateFieldNumber;
+const int ReconnectResp::kMultipleFieldNumber;
+const int ReconnectResp::kNoplayFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ReconnectResp::ReconnectResp()
@@ -12649,15 +12723,15 @@ ReconnectResp::ReconnectResp(const ReconnectResp& from)
       cid_(from.cid_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&result_, &from.result_,
-    reinterpret_cast<char*>(&state_) -
-    reinterpret_cast<char*>(&result_) + sizeof(state_));
+    reinterpret_cast<char*>(&noplay_) -
+    reinterpret_cast<char*>(&result_) + sizeof(noplay_));
   // @@protoc_insertion_point(copy_constructor:room.ReconnectResp)
 }
 
 void ReconnectResp::SharedCtor() {
   _cached_size_ = 0;
-  ::memset(&result_, 0, reinterpret_cast<char*>(&state_) -
-    reinterpret_cast<char*>(&result_) + sizeof(state_));
+  ::memset(&result_, 0, reinterpret_cast<char*>(&noplay_) -
+    reinterpret_cast<char*>(&result_) + sizeof(noplay_));
 }
 
 ReconnectResp::~ReconnectResp() {
@@ -12695,9 +12769,9 @@ void ReconnectResp::Clear() {
 // @@protoc_insertion_point(message_clear_start:room.ReconnectResp)
   otherid_.Clear();
   cid_.Clear();
-  if (_has_bits_[0 / 32] & 31u) {
-    ::memset(&result_, 0, reinterpret_cast<char*>(&state_) -
-      reinterpret_cast<char*>(&result_) + sizeof(state_));
+  if (_has_bits_[0 / 32] & 127u) {
+    ::memset(&result_, 0, reinterpret_cast<char*>(&noplay_) -
+      reinterpret_cast<char*>(&result_) + sizeof(noplay_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
@@ -12829,6 +12903,34 @@ bool ReconnectResp::MergePartialFromCodedStream(
         break;
       }
 
+      // required uint32 multiple = 8;
+      case 8: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(64u)) {
+          set_has_multiple();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &multiple_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // required uint32 noplay = 9;
+      case 9: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(72u)) {
+          set_has_noplay();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &noplay_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -12897,6 +12999,16 @@ void ReconnectResp::SerializeWithCachedSizes(
       7, this->state(), output);
   }
 
+  // required uint32 multiple = 8;
+  if (cached_has_bits & 0x00000020u) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(8, this->multiple(), output);
+  }
+
+  // required uint32 noplay = 9;
+  if (cached_has_bits & 0x00000040u) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(9, this->noplay(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -12946,6 +13058,16 @@ void ReconnectResp::SerializeWithCachedSizes(
       7, this->state(), target);
   }
 
+  // required uint32 multiple = 8;
+  if (cached_has_bits & 0x00000020u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(8, this->multiple(), target);
+  }
+
+  // required uint32 noplay = 9;
+  if (cached_has_bits & 0x00000040u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(9, this->noplay(), target);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -12991,6 +13113,20 @@ size_t ReconnectResp::RequiredFieldsByteSizeFallback() const {
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->state());
   }
 
+  if (has_multiple()) {
+    // required uint32 multiple = 8;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->multiple());
+  }
+
+  if (has_noplay()) {
+    // required uint32 noplay = 9;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->noplay());
+  }
+
   return total_size;
 }
 size_t ReconnectResp::ByteSizeLong() const {
@@ -13002,7 +13138,7 @@ size_t ReconnectResp::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         unknown_fields());
   }
-  if (((_has_bits_[0] & 0x0000001f) ^ 0x0000001f) == 0) {  // All required fields are present.
+  if (((_has_bits_[0] & 0x0000007f) ^ 0x0000007f) == 0) {  // All required fields are present.
     // required .base.ERROR_CODE result = 1;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->result());
@@ -13025,6 +13161,16 @@ size_t ReconnectResp::ByteSizeLong() const {
     // required .room.ReconnectResp.PlayState state = 7;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->state());
+
+    // required uint32 multiple = 8;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->multiple());
+
+    // required uint32 noplay = 9;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->noplay());
 
   } else {
     total_size += RequiredFieldsByteSizeFallback();
@@ -13079,7 +13225,7 @@ void ReconnectResp::MergeFrom(const ReconnectResp& from) {
   otherid_.MergeFrom(from.otherid_);
   cid_.MergeFrom(from.cid_);
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 31u) {
+  if (cached_has_bits & 127u) {
     if (cached_has_bits & 0x00000001u) {
       result_ = from.result_;
     }
@@ -13094,6 +13240,12 @@ void ReconnectResp::MergeFrom(const ReconnectResp& from) {
     }
     if (cached_has_bits & 0x00000010u) {
       state_ = from.state_;
+    }
+    if (cached_has_bits & 0x00000020u) {
+      multiple_ = from.multiple_;
+    }
+    if (cached_has_bits & 0x00000040u) {
+      noplay_ = from.noplay_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -13114,7 +13266,7 @@ void ReconnectResp::CopyFrom(const ReconnectResp& from) {
 }
 
 bool ReconnectResp::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
+  if ((_has_bits_[0] & 0x0000007f) != 0x0000007f) return false;
   return true;
 }
 
@@ -13130,6 +13282,8 @@ void ReconnectResp::InternalSwap(ReconnectResp* other) {
   std::swap(current_, other->current_);
   std::swap(landlord_, other->landlord_);
   std::swap(state_, other->state_);
+  std::swap(multiple_, other->multiple_);
+  std::swap(noplay_, other->noplay_);
   std::swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -13323,6 +13477,54 @@ void ReconnectResp::set_state(::room::ReconnectResp_PlayState value) {
   set_has_state();
   state_ = value;
   // @@protoc_insertion_point(field_set:room.ReconnectResp.state)
+}
+
+// required uint32 multiple = 8;
+bool ReconnectResp::has_multiple() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+void ReconnectResp::set_has_multiple() {
+  _has_bits_[0] |= 0x00000020u;
+}
+void ReconnectResp::clear_has_multiple() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+void ReconnectResp::clear_multiple() {
+  multiple_ = 0u;
+  clear_has_multiple();
+}
+::google::protobuf::uint32 ReconnectResp::multiple() const {
+  // @@protoc_insertion_point(field_get:room.ReconnectResp.multiple)
+  return multiple_;
+}
+void ReconnectResp::set_multiple(::google::protobuf::uint32 value) {
+  set_has_multiple();
+  multiple_ = value;
+  // @@protoc_insertion_point(field_set:room.ReconnectResp.multiple)
+}
+
+// required uint32 noplay = 9;
+bool ReconnectResp::has_noplay() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+void ReconnectResp::set_has_noplay() {
+  _has_bits_[0] |= 0x00000040u;
+}
+void ReconnectResp::clear_has_noplay() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+void ReconnectResp::clear_noplay() {
+  noplay_ = 0u;
+  clear_has_noplay();
+}
+::google::protobuf::uint32 ReconnectResp::noplay() const {
+  // @@protoc_insertion_point(field_get:room.ReconnectResp.noplay)
+  return noplay_;
+}
+void ReconnectResp::set_noplay(::google::protobuf::uint32 value) {
+  set_has_noplay();
+  noplay_ = value;
+  // @@protoc_insertion_point(field_set:room.ReconnectResp.noplay)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

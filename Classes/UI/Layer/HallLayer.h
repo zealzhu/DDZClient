@@ -34,6 +34,7 @@ public:
 
 public:
 	void updateRoomList(cocos2d::EventCustom * event);
+	void updateRoomListFromServer(float dt);
 
 public:
 	void createRoomCallback(cocos2d::Ref * target);

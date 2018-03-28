@@ -5,9 +5,11 @@
 #include <cocos2d.h>
 #include <UIManager.h>
 #include "Protocol/protobuf.hpp"
+#include "proto/base.pb.h"
 
 bool CMsgLooper::m_flag = false;
 ThreadLib::ThreadID CMsgLooper::m_receiveThread = 0;
+ThreadLib::ThreadID CMsgLooper::m_heartBeatThread = 0;
 
 void CMsgLooper::update(float dt)
 {
@@ -23,6 +25,18 @@ void CMsgLooper::beginReceiveThread()
 	m_flag = false;
 	try {
 		m_receiveThread = ThreadLib::Create(CMsgLooper::handleReceiveThread, NULL);
+		
+	}
+	catch (ThreadLib::Exception e) {
+		// 创建接收线程失败
+		assert(0);
+	}
+}
+
+void CMsgLooper::beginHeartBeatThread()
+{
+	try {
+		m_heartBeatThread = ThreadLib::Create(CMsgLooper::handleHeartBeatThread, NULL);
 	}
 	catch (ThreadLib::Exception e) {
 		// 创建接收线程失败
@@ -33,6 +47,8 @@ void CMsgLooper::beginReceiveThread()
 void CMsgLooper::endReceiveThread()
 {
 	m_flag = true;
+	ThreadLib::WaitForFinish(m_receiveThread);
+	ThreadLib::WaitForFinish(m_heartBeatThread);
 }
 
 void CMsgLooper::handleReceiveThread(void * pData)
@@ -46,20 +62,40 @@ void CMsgLooper::handleReceiveThread(void * pData)
 	}
 	catch (SocketLib::Exception & e)
 	{
-		cocos2d::log("%s", e.PrintError());
+		if (!m_flag) {
+			NetManagerIns->getGameServerSocket().Close();
+			UIManagerIns->getTopLayer()->showDialog("disconnect", "server connect lose", [](Ref*) {
+				UIManagerIns->replaceCurrentLayer(ENUM_LOGIN_LAYER);
+			});
+		}
 	}
-	
+
 	cocos2d::log("end receive thread");
+}
+
+void CMsgLooper::handleHeartBeatThread(void * pData)
+{
+	while (!m_flag) {
+		if (NetManagerIns->getGameServerSocket().IsConnected()) {
+			static base::HeartBeat heartBeat;
+			heartBeat.set_code(base::SUCCESS);
+			NetManagerIns->getGameServerSocket().send(kC2SHeartBeat, heartBeat);
+		}
+		ThreadLib::YieldThread(1000);
+	}
+	cocos2d::log("end beat thread");
 }
 
 CMsgLooper::CMsgLooper()
 {
+	m_heatNode = Node::create();
 	GDirector->getScheduler()->scheduleUpdate(this, 0, false);//跟游戏帧率相同的回调函数
 }
 
 CMsgLooper::~CMsgLooper()
 {
 	GDirector->getScheduler()->unscheduleUpdate(this);
+	
 	endReceiveThread();
 }
 
@@ -128,5 +164,6 @@ void CMsgDeque::init()
 bool CMsgManager::init()
 {
 	m_looper.beginReceiveThread();
+	m_looper.beginHeartBeatThread();
 	return true;
 }

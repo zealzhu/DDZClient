@@ -46,12 +46,12 @@ private:
 	void onInitPoker(cocos2d::EventCustom * event);
 	void onCallLandlordSuccess(cocos2d::EventCustom * event);
 	void onShowLandlordPoker(cocos2d::EventCustom * event);
-	void onUpdateCurrentPoker(cocos2d::EventCustom * event);
 	void onPlaySuccess(cocos2d::EventCustom * event);
 	void onShowOtherPlayerPoker(cocos2d::EventCustom * event);
 	void onGameOver(cocos2d::EventCustom * event);
 	void onPlayerOut(cocos2d::EventCustom * event);
 	void onNoOneCallLandlord(cocos2d::EventCustom * event);
+	void onReconnect(cocos2d::EventCustom * event);
 
 	void handCardPanelTouchListener(cocos2d::Ref * ref, cocos2d::ui::Widget::TouchEventType type);
 	

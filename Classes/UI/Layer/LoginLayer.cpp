@@ -27,7 +27,7 @@ bool CLoginLayer::init()
 	ui::Button * btnLogin = (ui::Button *)m_layerGraphNode->getChildByName("btn_login");
 	btnLogin->addClickEventListener(CC_CALLBACK_1(CLoginLayer::loginCallback, this));
 
-
+	UIManagerIns->getTopLayer()->hideDialog();
 	// poker test
 #if 0
 	for (int i = 1; i <= 13; i++) {

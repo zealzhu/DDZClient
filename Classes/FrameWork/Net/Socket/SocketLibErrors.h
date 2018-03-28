@@ -72,7 +72,8 @@ namespace SocketLib
         // auxilliary socketlib errors
         ESocketLimitReached,
         ENotAvailable,
-        EConnectionClosed
+        EConnectionClosed,
+		EHeartBeatTimeOut,
     };
 
 

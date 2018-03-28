@@ -330,3 +330,5 @@ proj.android/libs/armeabi/libMyGame.so
 # android studio
 *.iml
 cocos2d/cocos/platform/android/libcocos2dx/build
+cocos2d/
+Release.win32

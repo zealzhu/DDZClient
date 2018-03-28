@@ -5,6 +5,7 @@
 
 enum C2SProtobuf
 {
+    kC2SHeartBeat,
     kC2SLogin,
     kC2SRegister,
     kC2SLogout,
@@ -22,6 +23,7 @@ enum C2SProtobuf
 
 enum S2CProtobuf
 {
+    kS2CHeartBeatAck,
     kS2CError,
 
     kS2CLogin,

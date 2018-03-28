@@ -36,6 +36,12 @@ namespace base {
 class ErrorCode;
 class ErrorCodeDefaultTypeInternal;
 extern ErrorCodeDefaultTypeInternal _ErrorCode_default_instance_;
+class HeartBeat;
+class HeartBeatDefaultTypeInternal;
+extern HeartBeatDefaultTypeInternal _HeartBeat_default_instance_;
+class HeartBeatAck;
+class HeartBeatAckDefaultTypeInternal;
+extern HeartBeatAckDefaultTypeInternal _HeartBeatAck_default_instance_;
 }  // namespace base
 namespace room {
 class CreateRoomReq;
@@ -1251,6 +1257,13 @@ class GetSeatInfoResp : public ::google::protobuf::Message /* @@protoc_insertion
   bool ready() const;
   void set_ready(bool value);
 
+  // required uint32 cnumber = 7;
+  bool has_cnumber() const;
+  void clear_cnumber();
+  static const int kCnumberFieldNumber = 7;
+  ::google::protobuf::uint32 cnumber() const;
+  void set_cnumber(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:room.GetSeatInfoResp)
  private:
   void set_has_result();
@@ -1265,6 +1278,8 @@ class GetSeatInfoResp : public ::google::protobuf::Message /* @@protoc_insertion
   void clear_has_account();
   void set_has_ready();
   void clear_has_ready();
+  void set_has_cnumber();
+  void clear_has_cnumber();
 
   // helper for ByteSizeLong()
   size_t RequiredFieldsByteSizeFallback() const;
@@ -1278,6 +1293,7 @@ class GetSeatInfoResp : public ::google::protobuf::Message /* @@protoc_insertion
   ::google::protobuf::uint32 uid_;
   ::google::protobuf::uint32 index_;
   bool ready_;
+  ::google::protobuf::uint32 cnumber_;
   friend struct protobuf_room_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
@@ -3675,6 +3691,20 @@ class ReconnectResp : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::room::ReconnectResp_PlayState state() const;
   void set_state(::room::ReconnectResp_PlayState value);
 
+  // required uint32 multiple = 8;
+  bool has_multiple() const;
+  void clear_multiple();
+  static const int kMultipleFieldNumber = 8;
+  ::google::protobuf::uint32 multiple() const;
+  void set_multiple(::google::protobuf::uint32 value);
+
+  // required uint32 noplay = 9;
+  bool has_noplay() const;
+  void clear_noplay();
+  static const int kNoplayFieldNumber = 9;
+  ::google::protobuf::uint32 noplay() const;
+  void set_noplay(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:room.ReconnectResp)
  private:
   void set_has_result();
@@ -3687,6 +3717,10 @@ class ReconnectResp : public ::google::protobuf::Message /* @@protoc_insertion_p
   void clear_has_landlord();
   void set_has_state();
   void clear_has_state();
+  void set_has_multiple();
+  void clear_has_multiple();
+  void set_has_noplay();
+  void clear_has_noplay();
 
   // helper for ByteSizeLong()
   size_t RequiredFieldsByteSizeFallback() const;
@@ -3701,6 +3735,8 @@ class ReconnectResp : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::uint32 current_;
   ::google::protobuf::uint32 landlord_;
   int state_;
+  ::google::protobuf::uint32 multiple_;
+  ::google::protobuf::uint32 noplay_;
   friend struct protobuf_room_2eproto::TableStruct;
 };
 // ===================================================================
@@ -4600,6 +4636,30 @@ inline void GetSeatInfoResp::set_ready(bool value) {
   set_has_ready();
   ready_ = value;
   // @@protoc_insertion_point(field_set:room.GetSeatInfoResp.ready)
+}
+
+// required uint32 cnumber = 7;
+inline bool GetSeatInfoResp::has_cnumber() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void GetSeatInfoResp::set_has_cnumber() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void GetSeatInfoResp::clear_has_cnumber() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void GetSeatInfoResp::clear_cnumber() {
+  cnumber_ = 0u;
+  clear_has_cnumber();
+}
+inline ::google::protobuf::uint32 GetSeatInfoResp::cnumber() const {
+  // @@protoc_insertion_point(field_get:room.GetSeatInfoResp.cnumber)
+  return cnumber_;
+}
+inline void GetSeatInfoResp::set_cnumber(::google::protobuf::uint32 value) {
+  set_has_cnumber();
+  cnumber_ = value;
+  // @@protoc_insertion_point(field_set:room.GetSeatInfoResp.cnumber)
 }
 
 // -------------------------------------------------------------------
@@ -6244,6 +6304,54 @@ inline void ReconnectResp::set_state(::room::ReconnectResp_PlayState value) {
   set_has_state();
   state_ = value;
   // @@protoc_insertion_point(field_set:room.ReconnectResp.state)
+}
+
+// required uint32 multiple = 8;
+inline bool ReconnectResp::has_multiple() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void ReconnectResp::set_has_multiple() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void ReconnectResp::clear_has_multiple() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void ReconnectResp::clear_multiple() {
+  multiple_ = 0u;
+  clear_has_multiple();
+}
+inline ::google::protobuf::uint32 ReconnectResp::multiple() const {
+  // @@protoc_insertion_point(field_get:room.ReconnectResp.multiple)
+  return multiple_;
+}
+inline void ReconnectResp::set_multiple(::google::protobuf::uint32 value) {
+  set_has_multiple();
+  multiple_ = value;
+  // @@protoc_insertion_point(field_set:room.ReconnectResp.multiple)
+}
+
+// required uint32 noplay = 9;
+inline bool ReconnectResp::has_noplay() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void ReconnectResp::set_has_noplay() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void ReconnectResp::clear_has_noplay() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void ReconnectResp::clear_noplay() {
+  noplay_ = 0u;
+  clear_has_noplay();
+}
+inline ::google::protobuf::uint32 ReconnectResp::noplay() const {
+  // @@protoc_insertion_point(field_get:room.ReconnectResp.noplay)
+  return noplay_;
+}
+inline void ReconnectResp::set_noplay(::google::protobuf::uint32 value) {
+  set_has_noplay();
+  noplay_ = value;
+  // @@protoc_insertion_point(field_set:room.ReconnectResp.noplay)
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS

@@ -71,14 +71,13 @@ bool CUIManager::init()
 
 void CUIManager::initGraphBase()
 {
-	if (m_currentScene == NULL) {
+	if (m_currentScene == NULL) {	
 		m_currentScene = Scene::create();	
+		initTopLayer();
 		auto layer = createLayer(ENUM_LOGIN_LAYER);
 		m_currentLayerId = ENUM_LOGIN_LAYER;
 		m_currentScene->addChild(layer);
 		GDirector->runWithScene(m_currentScene);
-
-		initTopLayer();
 	}
 }
 

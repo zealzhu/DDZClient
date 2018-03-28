@@ -20,13 +20,17 @@
 namespace base {
 class ErrorCodeDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<ErrorCode> {
 } _ErrorCode_default_instance_;
+class HeartBeatDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<HeartBeat> {
+} _HeartBeat_default_instance_;
+class HeartBeatAckDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<HeartBeatAck> {
+} _HeartBeatAck_default_instance_;
 
 namespace protobuf_base_2eproto {
 
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[1];
+::google::protobuf::Metadata file_level_metadata[3];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 }  // namespace
@@ -43,6 +47,8 @@ PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::AuxillaryParseTableField
 PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::ParseTable const
     TableStruct::schema[] = {
   { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
+  { NULL, NULL, 0, -1, -1, false },
 };
 
 const ::google::protobuf::uint32 TableStruct::offsets[] = {
@@ -55,14 +61,32 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ErrorCode, desc_),
   1,
   0,
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeartBeat, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeartBeat, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeartBeat, code_),
+  0,
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeartBeatAck, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeartBeatAck, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeartBeatAck, code_),
+  0,
 };
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 0, 7, sizeof(ErrorCode)},
+  { 9, 15, sizeof(HeartBeat)},
+  { 16, 22, sizeof(HeartBeatAck)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_ErrorCode_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_HeartBeat_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_HeartBeatAck_default_instance_),
 };
 
 namespace {
@@ -83,7 +107,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 1);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 3);
 }
 
 }  // namespace
@@ -91,6 +115,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void TableStruct::Shutdown() {
   _ErrorCode_default_instance_.Shutdown();
   delete file_level_metadata[0].reflection;
+  _HeartBeat_default_instance_.Shutdown();
+  delete file_level_metadata[1].reflection;
+  _HeartBeatAck_default_instance_.Shutdown();
+  delete file_level_metadata[2].reflection;
 }
 
 void TableStruct::InitDefaultsImpl() {
@@ -98,6 +126,8 @@ void TableStruct::InitDefaultsImpl() {
 
   ::google::protobuf::internal::InitProtobufDefaults();
   _ErrorCode_default_instance_.DefaultConstruct();
+  _HeartBeat_default_instance_.DefaultConstruct();
+  _HeartBeatAck_default_instance_.DefaultConstruct();
 }
 
 void InitDefaults() {
@@ -108,23 +138,25 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] = {
       "\n\nbase.proto\022\004base\"9\n\tErrorCode\022\036\n\004code\030"
-      "\001 \002(\0162\020.base.ERROR_CODE\022\014\n\004desc\030\002 \001(\014*\364\003"
-      "\n\nERROR_CODE\022\013\n\007SUCCESS\020\000\022\025\n\021ACCOUNT_NOT"
-      "_EXIST\020\001\022\033\n\027ACCOUNT_OR_PASSWD_ERROR\020\002\022\021\n"
-      "\rALREADY_LOGON\020\003\022\021\n\rILLEGAL_PARAM\020\004\022\025\n\021A"
-      "CCOUNT_HAS_EXIST\020\005\022\026\n\022ACCOUNT_INVALIDATE"
-      "\020\006\022\022\n\016ROOM_NOT_EXIST\020\007\022\024\n\020ROOM_PLAYER_FU"
-      "LL\020\010\022\023\n\017ROOM_ENTER_FAIL\020\t\022\025\n\021CREATE_ROOM"
-      "_ERROR\020\n\022\026\n\022PLAYER_NOT_IN_ROOM\020\013\022\026\n\022PLAY"
-      "ER_HAS_IN_ROOM\020\014\022\023\n\017ERROR_HAS_READY\020\r\022\030\n"
-      "\024ERROR_USER_NOT_READY\020\016\022\022\n\016ROOM_HAS_STAR"
-      "T\020\017\022\020\n\014NOT_TURN_YOU\020\020\022\r\n\tCOMB_FAIL\020\021\022\r\n\t"
-      "MUST_PLAY\020\022\022\020\n\014CHOOSE_ERROR\020\023\022\022\n\016USER_NO"
-      "T_FOUND\020\024\022\035\n\031ROOM_STATE_IS_NOT_PLAYING\020\025"
-      "\022\022\n\016NOT_FOUND_CARD\020\026"
+      "\001 \002(\0162\020.base.ERROR_CODE\022\014\n\004desc\030\002 \001(\014\"+\n"
+      "\tHeartBeat\022\036\n\004code\030\001 \002(\0162\020.base.ERROR_CO"
+      "DE\".\n\014HeartBeatAck\022\036\n\004code\030\001 \002(\0162\020.base."
+      "ERROR_CODE*\364\003\n\nERROR_CODE\022\013\n\007SUCCESS\020\000\022\025"
+      "\n\021ACCOUNT_NOT_EXIST\020\001\022\033\n\027ACCOUNT_OR_PASS"
+      "WD_ERROR\020\002\022\021\n\rALREADY_LOGON\020\003\022\021\n\rILLEGAL"
+      "_PARAM\020\004\022\025\n\021ACCOUNT_HAS_EXIST\020\005\022\026\n\022ACCOU"
+      "NT_INVALIDATE\020\006\022\022\n\016ROOM_NOT_EXIST\020\007\022\024\n\020R"
+      "OOM_PLAYER_FULL\020\010\022\023\n\017ROOM_ENTER_FAIL\020\t\022\025"
+      "\n\021CREATE_ROOM_ERROR\020\n\022\026\n\022PLAYER_NOT_IN_R"
+      "OOM\020\013\022\026\n\022PLAYER_HAS_IN_ROOM\020\014\022\023\n\017ERROR_H"
+      "AS_READY\020\r\022\030\n\024ERROR_USER_NOT_READY\020\016\022\022\n\016"
+      "ROOM_HAS_START\020\017\022\020\n\014NOT_TURN_YOU\020\020\022\r\n\tCO"
+      "MB_FAIL\020\021\022\r\n\tMUST_PLAY\020\022\022\020\n\014CHOOSE_ERROR"
+      "\020\023\022\022\n\016USER_NOT_FOUND\020\024\022\035\n\031ROOM_STATE_IS_"
+      "NOT_PLAYING\020\025\022\022\n\016NOT_FOUND_CARD\020\026"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 580);
+      descriptor, 673);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "base.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -562,6 +594,550 @@ void ErrorCode::set_allocated_desc(::std::string* desc) {
   }
   desc_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), desc);
   // @@protoc_insertion_point(field_set_allocated:base.ErrorCode.desc)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int HeartBeat::kCodeFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+HeartBeat::HeartBeat()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_base_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:base.HeartBeat)
+}
+HeartBeat::HeartBeat(const HeartBeat& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _has_bits_(from._has_bits_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  code_ = from.code_;
+  // @@protoc_insertion_point(copy_constructor:base.HeartBeat)
+}
+
+void HeartBeat::SharedCtor() {
+  _cached_size_ = 0;
+  code_ = 0;
+}
+
+HeartBeat::~HeartBeat() {
+  // @@protoc_insertion_point(destructor:base.HeartBeat)
+  SharedDtor();
+}
+
+void HeartBeat::SharedDtor() {
+}
+
+void HeartBeat::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* HeartBeat::descriptor() {
+  protobuf_base_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_base_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const HeartBeat& HeartBeat::default_instance() {
+  protobuf_base_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+HeartBeat* HeartBeat::New(::google::protobuf::Arena* arena) const {
+  HeartBeat* n = new HeartBeat;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void HeartBeat::Clear() {
+// @@protoc_insertion_point(message_clear_start:base.HeartBeat)
+  code_ = 0;
+  _has_bits_.Clear();
+  _internal_metadata_.Clear();
+}
+
+bool HeartBeat::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:base.HeartBeat)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required .base.ERROR_CODE code = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::base::ERROR_CODE_IsValid(value)) {
+            set_code(static_cast< ::base::ERROR_CODE >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(1, value);
+          }
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:base.HeartBeat)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:base.HeartBeat)
+  return false;
+#undef DO_
+}
+
+void HeartBeat::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:base.HeartBeat)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  // required .base.ERROR_CODE code = 1;
+  if (cached_has_bits & 0x00000001u) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      1, this->code(), output);
+  }
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:base.HeartBeat)
+}
+
+::google::protobuf::uint8* HeartBeat::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:base.HeartBeat)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  // required .base.ERROR_CODE code = 1;
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      1, this->code(), target);
+  }
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:base.HeartBeat)
+  return target;
+}
+
+size_t HeartBeat::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:base.HeartBeat)
+  size_t total_size = 0;
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  // required .base.ERROR_CODE code = 1;
+  if (has_code()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->code());
+  }
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void HeartBeat::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:base.HeartBeat)
+  GOOGLE_DCHECK_NE(&from, this);
+  const HeartBeat* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const HeartBeat>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:base.HeartBeat)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:base.HeartBeat)
+    MergeFrom(*source);
+  }
+}
+
+void HeartBeat::MergeFrom(const HeartBeat& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:base.HeartBeat)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_code()) {
+    set_code(from.code());
+  }
+}
+
+void HeartBeat::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:base.HeartBeat)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void HeartBeat::CopyFrom(const HeartBeat& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:base.HeartBeat)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool HeartBeat::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  return true;
+}
+
+void HeartBeat::Swap(HeartBeat* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void HeartBeat::InternalSwap(HeartBeat* other) {
+  std::swap(code_, other->code_);
+  std::swap(_has_bits_[0], other->_has_bits_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata HeartBeat::GetMetadata() const {
+  protobuf_base_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_base_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// HeartBeat
+
+// required .base.ERROR_CODE code = 1;
+bool HeartBeat::has_code() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+void HeartBeat::set_has_code() {
+  _has_bits_[0] |= 0x00000001u;
+}
+void HeartBeat::clear_has_code() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+void HeartBeat::clear_code() {
+  code_ = 0;
+  clear_has_code();
+}
+::base::ERROR_CODE HeartBeat::code() const {
+  // @@protoc_insertion_point(field_get:base.HeartBeat.code)
+  return static_cast< ::base::ERROR_CODE >(code_);
+}
+void HeartBeat::set_code(::base::ERROR_CODE value) {
+  assert(::base::ERROR_CODE_IsValid(value));
+  set_has_code();
+  code_ = value;
+  // @@protoc_insertion_point(field_set:base.HeartBeat.code)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int HeartBeatAck::kCodeFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+HeartBeatAck::HeartBeatAck()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_base_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:base.HeartBeatAck)
+}
+HeartBeatAck::HeartBeatAck(const HeartBeatAck& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _has_bits_(from._has_bits_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  code_ = from.code_;
+  // @@protoc_insertion_point(copy_constructor:base.HeartBeatAck)
+}
+
+void HeartBeatAck::SharedCtor() {
+  _cached_size_ = 0;
+  code_ = 0;
+}
+
+HeartBeatAck::~HeartBeatAck() {
+  // @@protoc_insertion_point(destructor:base.HeartBeatAck)
+  SharedDtor();
+}
+
+void HeartBeatAck::SharedDtor() {
+}
+
+void HeartBeatAck::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* HeartBeatAck::descriptor() {
+  protobuf_base_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_base_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const HeartBeatAck& HeartBeatAck::default_instance() {
+  protobuf_base_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+HeartBeatAck* HeartBeatAck::New(::google::protobuf::Arena* arena) const {
+  HeartBeatAck* n = new HeartBeatAck;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void HeartBeatAck::Clear() {
+// @@protoc_insertion_point(message_clear_start:base.HeartBeatAck)
+  code_ = 0;
+  _has_bits_.Clear();
+  _internal_metadata_.Clear();
+}
+
+bool HeartBeatAck::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:base.HeartBeatAck)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required .base.ERROR_CODE code = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u)) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::base::ERROR_CODE_IsValid(value)) {
+            set_code(static_cast< ::base::ERROR_CODE >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(1, value);
+          }
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:base.HeartBeatAck)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:base.HeartBeatAck)
+  return false;
+#undef DO_
+}
+
+void HeartBeatAck::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:base.HeartBeatAck)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  // required .base.ERROR_CODE code = 1;
+  if (cached_has_bits & 0x00000001u) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      1, this->code(), output);
+  }
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:base.HeartBeatAck)
+}
+
+::google::protobuf::uint8* HeartBeatAck::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:base.HeartBeatAck)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  // required .base.ERROR_CODE code = 1;
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      1, this->code(), target);
+  }
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:base.HeartBeatAck)
+  return target;
+}
+
+size_t HeartBeatAck::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:base.HeartBeatAck)
+  size_t total_size = 0;
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  // required .base.ERROR_CODE code = 1;
+  if (has_code()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->code());
+  }
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void HeartBeatAck::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:base.HeartBeatAck)
+  GOOGLE_DCHECK_NE(&from, this);
+  const HeartBeatAck* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const HeartBeatAck>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:base.HeartBeatAck)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:base.HeartBeatAck)
+    MergeFrom(*source);
+  }
+}
+
+void HeartBeatAck::MergeFrom(const HeartBeatAck& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:base.HeartBeatAck)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.has_code()) {
+    set_code(from.code());
+  }
+}
+
+void HeartBeatAck::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:base.HeartBeatAck)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void HeartBeatAck::CopyFrom(const HeartBeatAck& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:base.HeartBeatAck)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool HeartBeatAck::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  return true;
+}
+
+void HeartBeatAck::Swap(HeartBeatAck* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void HeartBeatAck::InternalSwap(HeartBeatAck* other) {
+  std::swap(code_, other->code_);
+  std::swap(_has_bits_[0], other->_has_bits_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata HeartBeatAck::GetMetadata() const {
+  protobuf_base_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_base_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// HeartBeatAck
+
+// required .base.ERROR_CODE code = 1;
+bool HeartBeatAck::has_code() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+void HeartBeatAck::set_has_code() {
+  _has_bits_[0] |= 0x00000001u;
+}
+void HeartBeatAck::clear_has_code() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+void HeartBeatAck::clear_code() {
+  code_ = 0;
+  clear_has_code();
+}
+::base::ERROR_CODE HeartBeatAck::code() const {
+  // @@protoc_insertion_point(field_get:base.HeartBeatAck.code)
+  return static_cast< ::base::ERROR_CODE >(code_);
+}
+void HeartBeatAck::set_code(::base::ERROR_CODE value) {
+  assert(::base::ERROR_CODE_IsValid(value));
+  set_has_code();
+  code_ = value;
+  // @@protoc_insertion_point(field_set:base.HeartBeatAck.code)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

@@ -35,3 +35,11 @@ message ErrorCode{
     required ERROR_CODE code = 1;
     optional bytes desc = 2;
 }
+
+message HeartBeat {
+    required ERROR_CODE code = 1;
+}
+
+message HeartBeatAck {
+    required ERROR_CODE code = 1;
+}

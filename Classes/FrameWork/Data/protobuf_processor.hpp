@@ -45,7 +45,7 @@ public:
     }
 
     bool Dispatch(proto::Protobuf & protobuf) {
-        auto it = handlers_.find(protobuf.ReadId());
+        auto it = handlers_.find(protobuf.GetId());
         if (it != handlers_.end()) {
             it->second->Call(protobuf);
             return true;

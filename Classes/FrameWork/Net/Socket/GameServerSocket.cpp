@@ -4,6 +4,7 @@
 #include "Protocol/protocol.hpp"
 #include "Protocol/protobuf.hpp"
 #include <cocos2d.h>
+#include <protobuf_define.hpp>
 #include "Message/MsgManager.h"
 
 using namespace SocketLib;
@@ -19,13 +20,18 @@ bool CGameServerSocket::connectServer(std::string strAddress, int iPort)
 		cocos2d::log("Connect to %s failed! [%s]", strAddress.c_str(), e.PrintError().c_str());
 		return false;
 	}
-
+	m_lastRecvHeartTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 	cocos2d::log("connect to %s successes.", strAddress.c_str());
 	return true;
 }
 
 void CGameServerSocket::receive()
 {
+	int64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+	if ((now - m_lastRecvHeartTime) > HEART_TIME) {
+		throw Exception(EHeartBeatTimeOut);
+	}
+
 	ZeroMemory(headerBuf, sizeof(uint16_t));
 	int bytecount = 0;
 	int total = 0;
@@ -64,8 +70,14 @@ void CGameServerSocket::receive()
 	MSG_PTR protobuf(new proto::Protobuf);
 	proto::Decode(*protobuf, buffer, false); // 不加密
 
-	// 插入消息队列中
-	CMsgDeque::getInstance().insertReceivedMsg(protobuf);
+	auto id = protobuf->ReadId();
+	if (id == kS2CHeartBeatAck) {
+		m_lastRecvHeartTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+	}
+	else {
+		// 插入消息队列中
+		CMsgDeque::getInstance().insertReceivedMsg(protobuf);
+	}
 }
 
 int CGameServerSocket::send(int32_t id, const google::protobuf::Message & message)
@@ -78,9 +90,15 @@ int CGameServerSocket::send(int32_t id, const google::protobuf::Message & messag
 
 	// 发送数据
 	int iByteCount;
-	if ((iByteCount = DataSocket::Send((const char *)buffer.Contents(), buffer.Size())) == -1) {
-		cocos2d::log("error sending data %d", errno);
+	try {
+		if ((iByteCount = DataSocket::Send((const char *)buffer.Contents(), buffer.Size())) == -1) {
+			cocos2d::log("error sending data %d", errno);
+		}
 	}
+	catch (...) {
+		return 0;
+	}
+	
 	
 	return iByteCount;
 }

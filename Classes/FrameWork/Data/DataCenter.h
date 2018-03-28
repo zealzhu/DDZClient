@@ -12,6 +12,11 @@
 #include <proto/room.pb.h>
 #include <protobuf_define.hpp>
 #include <card.hpp>
+enum ReconnectRoomState {
+	CALL = 0,
+	RUSH = 1,
+	PLAY = 2
+};
 
 // 房间信息
 struct RoomInfo {
@@ -93,6 +98,9 @@ private:
 	void dealWithOtherLeaveRoom(room::LeaveRoomNtf & ntf);
 	void dealWithOtherReady(room::ReadyNtf & ntf);
 	void dealWithOtherLandlord(room::LandlordNtf & ntf);
+
+	void dealWithLostFromRoomMsg(room::LostFromRoomMsg & msg);
+	void dealWithReconnectResponse(room::ReconnectResp & rsp);
 
 private:
 	CDataCenter();

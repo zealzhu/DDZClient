@@ -35,6 +35,12 @@ namespace base {
 class ErrorCode;
 class ErrorCodeDefaultTypeInternal;
 extern ErrorCodeDefaultTypeInternal _ErrorCode_default_instance_;
+class HeartBeat;
+class HeartBeatDefaultTypeInternal;
+extern HeartBeatDefaultTypeInternal _HeartBeat_default_instance_;
+class HeartBeatAck;
+class HeartBeatAckDefaultTypeInternal;
+extern HeartBeatAckDefaultTypeInternal _HeartBeatAck_default_instance_;
 }  // namespace base
 
 namespace base {
@@ -203,6 +209,190 @@ class ErrorCode : public ::google::protobuf::Message /* @@protoc_insertion_point
   int code_;
   friend struct protobuf_base_2eproto::TableStruct;
 };
+// -------------------------------------------------------------------
+
+class HeartBeat : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:base.HeartBeat) */ {
+ public:
+  HeartBeat();
+  virtual ~HeartBeat();
+
+  HeartBeat(const HeartBeat& from);
+
+  inline HeartBeat& operator=(const HeartBeat& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields();
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const HeartBeat& default_instance();
+
+  static inline const HeartBeat* internal_default_instance() {
+    return reinterpret_cast<const HeartBeat*>(
+               &_HeartBeat_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    1;
+
+  void Swap(HeartBeat* other);
+
+  // implements Message ----------------------------------------------
+
+  inline HeartBeat* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  HeartBeat* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const HeartBeat& from);
+  void MergeFrom(const HeartBeat& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(HeartBeat* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required .base.ERROR_CODE code = 1;
+  bool has_code() const;
+  void clear_code();
+  static const int kCodeFieldNumber = 1;
+  ::base::ERROR_CODE code() const;
+  void set_code(::base::ERROR_CODE value);
+
+  // @@protoc_insertion_point(class_scope:base.HeartBeat)
+ private:
+  void set_has_code();
+  void clear_has_code();
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::HasBits<1> _has_bits_;
+  mutable int _cached_size_;
+  int code_;
+  friend struct protobuf_base_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class HeartBeatAck : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:base.HeartBeatAck) */ {
+ public:
+  HeartBeatAck();
+  virtual ~HeartBeatAck();
+
+  HeartBeatAck(const HeartBeatAck& from);
+
+  inline HeartBeatAck& operator=(const HeartBeatAck& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields();
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const HeartBeatAck& default_instance();
+
+  static inline const HeartBeatAck* internal_default_instance() {
+    return reinterpret_cast<const HeartBeatAck*>(
+               &_HeartBeatAck_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    2;
+
+  void Swap(HeartBeatAck* other);
+
+  // implements Message ----------------------------------------------
+
+  inline HeartBeatAck* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  HeartBeatAck* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const HeartBeatAck& from);
+  void MergeFrom(const HeartBeatAck& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(HeartBeatAck* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required .base.ERROR_CODE code = 1;
+  bool has_code() const;
+  void clear_code();
+  static const int kCodeFieldNumber = 1;
+  ::base::ERROR_CODE code() const;
+  void set_code(::base::ERROR_CODE value);
+
+  // @@protoc_insertion_point(class_scope:base.HeartBeatAck)
+ private:
+  void set_has_code();
+  void clear_has_code();
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::HasBits<1> _has_bits_;
+  mutable int _cached_size_;
+  int code_;
+  friend struct protobuf_base_2eproto::TableStruct;
+};
 // ===================================================================
 
 
@@ -299,7 +489,69 @@ inline void ErrorCode::set_allocated_desc(::std::string* desc) {
   // @@protoc_insertion_point(field_set_allocated:base.ErrorCode.desc)
 }
 
+// -------------------------------------------------------------------
+
+// HeartBeat
+
+// required .base.ERROR_CODE code = 1;
+inline bool HeartBeat::has_code() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void HeartBeat::set_has_code() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void HeartBeat::clear_has_code() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void HeartBeat::clear_code() {
+  code_ = 0;
+  clear_has_code();
+}
+inline ::base::ERROR_CODE HeartBeat::code() const {
+  // @@protoc_insertion_point(field_get:base.HeartBeat.code)
+  return static_cast< ::base::ERROR_CODE >(code_);
+}
+inline void HeartBeat::set_code(::base::ERROR_CODE value) {
+  assert(::base::ERROR_CODE_IsValid(value));
+  set_has_code();
+  code_ = value;
+  // @@protoc_insertion_point(field_set:base.HeartBeat.code)
+}
+
+// -------------------------------------------------------------------
+
+// HeartBeatAck
+
+// required .base.ERROR_CODE code = 1;
+inline bool HeartBeatAck::has_code() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void HeartBeatAck::set_has_code() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void HeartBeatAck::clear_has_code() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void HeartBeatAck::clear_code() {
+  code_ = 0;
+  clear_has_code();
+}
+inline ::base::ERROR_CODE HeartBeatAck::code() const {
+  // @@protoc_insertion_point(field_get:base.HeartBeatAck.code)
+  return static_cast< ::base::ERROR_CODE >(code_);
+}
+inline void HeartBeatAck::set_code(::base::ERROR_CODE value) {
+  assert(::base::ERROR_CODE_IsValid(value));
+  set_has_code();
+  code_ = value;
+  // @@protoc_insertion_point(field_set:base.HeartBeatAck.code)
+}
+
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 

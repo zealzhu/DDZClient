@@ -11,7 +11,6 @@ const std::string strAllPlayerReady = "ALL_PLAYER_READY";
 const std::string strFirstDispatchPoker = "FIRST_DISPATCH_POKER";
 const std::string strCallLandlordResult = "CALL_LANDLORD_RESULT";
 const std::string strShowLandlordPoker = "SHOW_LANDLORD_POKER";
-const std::string strUpdateCurrentPoker = "SHOW_UPDATE_CURRENT_POKER";
 const std::string strPlayPokerSuccess = "PLAY_POKER_SUCCESS";
 const std::string strShowOtherPlayerPoker = "SHOW_OTHER_PLAYER_POKER";
 const std::string strGameOver = "GANE_OVER";
@@ -19,5 +18,6 @@ const std::string strPlayerOut = "PLAYER_OUT";
 const std::string strNoOneCallLandlord = "NO_ONE_CALL_LANDLORD";
 const std::string strGetSeatInfo = "GET_SET_INFO";
 const std::string strReadySuccess = "READY_SUCCESS";
+const std::string strReconnect = "RECONNECT";
 
 #endif

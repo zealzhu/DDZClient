@@ -68,6 +68,7 @@ message GetSeatInfoResp {
     required uint32 index = 4;
     required bytes account = 5;
     required bool ready = 6;
+    required uint32 cnumber = 7;
 }
 
 //创建房间请求
@@ -199,4 +200,6 @@ message ReconnectResp {
         PLAY = 2;
     }
     required PlayState state = 7;
+    required uint32 multiple = 8;
+	required uint32 noplay = 9;
 }

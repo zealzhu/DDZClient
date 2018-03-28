@@ -12,6 +12,7 @@
 #include <deque>
 #include <ThreadLib.h>
 #include <Singleton.h>
+#include <cocos2d.h>
 
 typedef std::shared_ptr<proto::Protobuf> MSG_PTR;
 typedef std::deque<MSG_PTR> MSG_DEQUE;
@@ -33,19 +34,24 @@ public:
 	// 开启一个新线程用来接收数据
 	void beginReceiveThread();
 
+	void beginHeartBeatThread();
+
 	// 结束接收线程
 	void endReceiveThread();
 
 	// 接收线程处理函数
 	static void handleReceiveThread(void * pData);
+	static void handleHeartBeatThread(void * pData);
 
 public:
 	CMsgLooper();
 	~CMsgLooper();
 
 private:
+	cocos2d::Node * m_heatNode;
 	static bool m_flag;								//线程结束标志
 	static ThreadLib::ThreadID m_receiveThread;		//接收线程id
+	static ThreadLib::ThreadID m_heartBeatThread;	// 心跳检测线程id
 };
 
 class CMsgManager 

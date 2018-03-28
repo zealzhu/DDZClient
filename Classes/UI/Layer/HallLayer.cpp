@@ -45,6 +45,8 @@ bool CHallLayer::init()
 	req.set_id(CDataCenter::getInstance()->getCurrentUserId());
 	NetManagerIns->getGameServerSocket().send(kC2SGetRoom, req);
 
+	schedule(CC_SCHEDULE_SELECTOR(CHallLayer::updateRoomListFromServer), 2, CC_REPEAT_FOREVER, 2);
+
 	return true;
 }
 
@@ -92,13 +94,22 @@ void CHallLayer::initEnterRoomDialog()
 void CHallLayer::updateRoomList(cocos2d::EventCustom * event)
 {
 	auto roomInfoList = CDataCenter::getInstance()->getRoomInfoList();
-	m_roomList->getItems().clear();
+	//m_roomList->getItems().clear();
+	m_roomList->removeAllItems();
 	for (auto& roomInfo : roomInfoList) {
 		auto item = CRoomListViewItem::create();
 		item->updateInfo(*roomInfo);
 		item->_ID = roomInfo->_roomID;
 		m_roomList->pushBackCustomItem(item);
 	}
+}
+
+void CHallLayer::updateRoomListFromServer(float dt)
+{
+	// get room list
+	room::GetRoomReq req;
+	req.set_id(CDataCenter::getInstance()->getCurrentUserId());
+	NetManagerIns->getGameServerSocket().send(kC2SGetRoom, req);
 }
 
 void CHallLayer::createRoomCallback(cocos2d::Ref * target)
@@ -202,23 +213,17 @@ void CRoomListViewItem::updateInfo(RoomInfo & info)
 	m_roomID->setString(StringUtils::toString(info._roomID));
 	m_roomName->setString(info._roomName);
 	m_playerNumber->setString(StringUtils::toString(info._sitUserNum));
-	//switch (info._statu)
-	//{
-	//case zhu::room::RoomStatus::DESTORYE:
-	//	m_roomStatu->setString("wait");
-	//	break;
-	//case zhu::room::RoomStatus::FULL:
-	//	m_roomStatu->setString("full");
-	//	break;
-	//case zhu::room::RoomStatus::START:
-	//	m_roomStatu->setString("start");
-	//	break;
-	//case zhu::room::RoomStatus::WAIT:
-	//	m_roomStatu->setString("wait");
-	//	break;
-	//default:
-	//	break;
-	//}
+	switch (info._statu)
+	{
+	case 0:
+		m_roomStatu->setString("wait");
+		break;
+	case 1:
+		m_roomStatu->setString("start");
+		break;
+	default:
+		break;
+	}
 	
 }
 

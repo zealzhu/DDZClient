@@ -36,6 +36,12 @@ namespace base {
 class ErrorCode;
 class ErrorCodeDefaultTypeInternal;
 extern ErrorCodeDefaultTypeInternal _ErrorCode_default_instance_;
+class HeartBeat;
+class HeartBeatDefaultTypeInternal;
+extern HeartBeatDefaultTypeInternal _HeartBeat_default_instance_;
+class HeartBeatAck;
+class HeartBeatAckDefaultTypeInternal;
+extern HeartBeatAckDefaultTypeInternal _HeartBeatAck_default_instance_;
 }  // namespace base
 namespace user {
 class LoginReq;
